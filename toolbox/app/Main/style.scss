@@ -1,0 +1,44 @@
+#main .logo {
+  height: 32px;
+  background: #333;
+  border-radius: 6px;
+  margin: 16px;
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+  line-height: 32px;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 1.8px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+#main .ant-layout-sider-collapsed .anticon {
+  font-size: 16px;
+  margin-left: 8px;
+}
+
+#main .ant-layout-sider-collapsed .nav-text {
+  display: none;
+}
+
+#main .ant-layout-sider-collapsed .ant-menu-submenu-vertical > .ant-menu-submenu-title:after {
+  display: none;
+}
+#main {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+.nav-text a {
+  color: rgba(255, 255, 255, 0.67);
+  &:hover {
+    color: #fff;
+  }
+  letter-spacing: 0.2em;
+}
+.ant-layout-content {
+  margin: 10px 10px 0 10px;
+}
