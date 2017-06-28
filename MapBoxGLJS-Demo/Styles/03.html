@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Change a map's style</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <script src='../lib/mapbox-gl.js'></script>
+    <link href='../lib/mapbox-gl.css' rel='stylesheet'/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #menu {
+            position: absolute;
+            background: #ffffff;
+            padding: 10px;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<div id="menu">
+    <input type="radio" id="basic" name="rtoggle" value="basic" checked="checked" />
+    <label for="basic">basic</label>
+
+    <input type="radio" id="bright" name="rtoggle" value="bright" />
+    <label for="bright">bright</label>
+
+    <input type="radio" id="streets" name="rtoggle" value="streets" />
+    <label for="streets">streets</label>
+
+    <input type="radio" id="light" name="rtoggle" value="light" />
+    <label for="light">light</label>
+
+    <input type="radio" id="dark" name="rtoggle" value="dark" />
+    <label for="dark">dark</label>
+
+    <input type="radio" id="satellite" name="rtoggle" value="satellite" />
+    <label for="satellite">satellite</label>
+</div>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZ296ZSIsImEiOiJjaXg4ZTNycncwMDBhMm9xZmF1dXBqOW8zIn0.aqHVTtTUFWHMKAGMWvqd9Q';
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: "mapbox://styles/mapbox/basic-v9", // stylesheet location
+        center: [4.899, 52.372], // starting position
+        zoom: 13 // starting zoom
+    });
+
+    var layerList = document.getElementById('menu');
+    var inputs = layerList.getElementsByTagName('input');
+
+    function switchLayer(layer) {
+        var layerId = layer.target.id;
+        map.setStyle('mapbox://styles/mapbox/' + layerId + '-v9');
+    }
+
+    for(var i = 0; i < inputs.length; i++) {
+        inputs[i].onclick = switchLayer;
+    }
+</script>
+</body>
+</html>

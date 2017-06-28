@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show and hide layers</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <script src='../lib/mapbox-gl.js'></script>
+    <link href='../lib/mapbox-gl.css' rel='stylesheet'/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        #menu {
+            background: #ffffff;
+            position: absolute;
+            z-index: 1;
+            top: 10px;
+            right: 10px;
+            border-radius: 3px;
+            width: 120px;
+            border: 1px solid rgba(0,0,0,0.4);
+            font-family: 'Open Sans', sans-serif;
+        }
+        #menu a {
+            font-size: 13px;
+            color: #404040;
+            display: block;
+            margin: 0;
+            padding: 10px;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0,0,0,0.25);
+            text-align: center;
+        }
+        #menu a:last-child {
+            border: none;
+        }
+        #menu a:hover{
+            background-color: #f8f8f8;
+            color: #404040;
+        }
+        #menu a.active{
+            background-color: #3887be;
+            color: #ffffff;
+        }
+        #menu a.active:hover {
+            background: #3074a4;
+        }
+    </style>
+</head>
+<body>
+<nav id="menu"></nav>
+<div id='map'></div>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZ296ZSIsImEiOiJjaXg4ZTNycncwMDBhMm9xZmF1dXBqOW8zIn0.aqHVTtTUFWHMKAGMWvqd9Q';
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: "mapbox://styles/mapbox/streets-v9", // stylesheet location
+        center: [-71.97722138410576, -13.517379300798098], // starting position
+        zoom: 15 // starting zoom
+    });
+    /*on(type,listener):为type类型事件添加监听器，lisener是响应函数 */
+    map.on('load', function () {
+        /*addSource(id, source) :向map的style添加source，source是数据*/
+        map.addSource('museums', {
+            type: 'vector',
+            url: 'mapbox://mapbox.2opop9hr'
+        });
+        /* addLayer(layer, [before])将style layer添加到地图的style中，layer是数据的显示 */
+        map.addLayer({
+            'id': 'museums',
+            'type': 'circle',
+            'source': 'museums',
+            'layout': {
+                'visibility': 'visible'
+            },
+            'paint': {
+                'circle-radius': 8,
+                'circle-color': 'rgba(55,148,179,1)'
+            },
+            'source-layer': 'museum-cusco'
+        });
+
+        map.addSource('contours', {
+            type: 'vector',
+            url: 'mapbox://mapbox.mapbox-terrain-v2'
+        });
+        map.addLayer({
+            'id': 'contours',
+            'type': 'line',
+            'source': 'contours',
+            'source-layer': 'contour',
+            'layout': {
+                'visibility': 'visible',
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            'paint': {
+                'line-color': '#877b59',
+                'line-width': 1
+            }
+        });
+    });
+
+    var toggleableLayerIds = [ 'contours', 'museums' ];
+
+    for (var i = 0; i < toggleableLayerIds.length; i++) {
+        var id = toggleableLayerIds[i];
+
+        var link = document.createElement('a');
+        link.href = '#';
+        link.className = 'active';
+        link.textContent = id;
+
+        link.onclick = function (e) {
+            var clickedLayer = this.textContent;
+            e.preventDefault();
+            e.stopPropagation();
+            /* getLayoutProperty(layer, name) 返回指定style layer上名为name的layout属性的值*/
+            var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+            if (visibility === 'visible') {
+                /* setLayoutProperty(layer, name, value)设置指定layer上名为name的layou属性的值 */
+                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                this.className = '';
+            } else {
+                this.className = 'active';
+                map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+            }
+        };
+
+        var layers = document.getElementById('menu');
+        layers.appendChild(link);
+    }
+
+</script>
+</body>
+</html>
