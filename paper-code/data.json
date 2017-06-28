@@ -1,0 +1,191 @@
+{
+    "data": [{
+            "point": {
+                "lng": 117.193571,
+                "lat": 39.160001
+            },
+            "address": "天津市河北区三岔河口永乐桥",
+            "title": "天津之眼",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>"
+            ],
+            "phoneNumber": "(022)26288830",
+            "averagePlayTime": 1,
+            "popularity": 3
+        },
+        {
+            "point": {
+                "lng": 117.204471,
+                "lat": 39.140409
+            },
+            "address": "天津河北区自由道25号",
+            "title": "天津意大利风情旅游区",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>",
+                "风景区/旅游区"
+            ],
+            "averagePlayTime": 1,
+            "popularity": 5
+        },
+        {
+            "point": {
+                "lng": 117.172324,
+                "lat": 39.098374
+            },
+            "address": "水上公园路48号",
+            "title": "天津水上公园",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>",
+                "游乐园"
+            ],
+            "averagePlayTime": 2,
+            "popularity": 5
+        },
+        {
+            "point": {
+                "lng": 117.017184,
+                "lat": 39.1409
+            },
+            "address": "天津市西青区杨柳青镇估衣街47号",
+            "title": "石家大院",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>",
+                "博物馆"
+            ],
+            "phoneNumber": "(022)27391617",
+            "averagePlayTime": 1,
+            "popularity": 2
+        },
+        {
+            "point": {
+                "lng": 117.195763,
+                "lat": 39.161284
+            },
+            "address": "天津市河北区天纬路40号",
+            "title": "大悲禅院",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>"
+            ],
+            "phoneNumber": "(022)26261769",
+            "averagePlayTime": 1,
+            "popularity": 4
+        },
+        {
+            "point": {
+                "lng": 117.101021,
+                "lat": 39.14468
+            },
+            "address": "外环线7号桥北",
+            "title": "天津热带植物观光园",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>",
+                "植物园"
+            ],
+            "phoneNumber": "(022)27948011",
+            "averagePlayTime": 1,
+            "popularity": 4
+        },
+
+        {
+            "point": {
+                "lng": 117.18813,
+                "lat": 39.098637
+            },
+            "address": "天津市河西区卫津南路1号",
+            "title": "天塔湖景区",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>",
+                "风景区/旅游区"
+            ],
+            "phoneNumber": "(022)23343557",
+            "averagePlayTime": 1,
+            "popularity": 3
+        },
+
+        {
+            "point": {
+                "lng": 117.190983,
+                "lat": 39.152724
+            },
+            "address": "大胡同估衣街64号谦祥益文苑内",
+            "title": "天津相声俱乐部",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>",
+                "展览馆/纪念馆"
+            ],
+            "phoneNumber": "(022)27053206",
+            "averagePlayTime": 1,
+            "popularity": 2
+        },
+        {
+            "point": {
+                "lng": 117.208901,
+                "lat": 39.13073
+            },
+            "address": "和平区赤峰道72号(近和平路商业街)",
+            "title": "瓷房子",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>"
+            ],
+            "phoneNumber": "(022)27123366",
+            "averagePlayTime": 1,
+            "popularity": 3
+        },
+        {
+            "point": {
+                "lng": 117.198832,
+                "lat": 39.149638
+            },
+            "address": "古文化街宫北大街79号(近大胡同商业区)",
+            "title": "天津市古文化街旅游区(津门故里)",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>",
+                "文物古迹"
+            ],
+            "phoneNumber": "(022)27339666",
+            "averagePlayTime": 2,
+            "popularity": 5
+        },
+        {
+            "point": {
+                "lng": 117.204936,
+                "lat": 39.137147
+            },
+            "address": "始于三岔口，止于大光明桥",
+            "title": "海河风景线",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>"
+            ],
+            "averagePlayTime": 1,
+            "popularity": 3
+        },
+        {
+            "point": {
+                "lng": 117.200692,
+                "lat": 39.110526
+            },
+            "address": "常德道与贵州路交口东北边",
+            "title": "五大道风情旅游区",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>",
+                "风景区/旅游区"
+            ],
+            "averagePlayTime": 2,
+            "popularity": 4
+        },
+        {
+            "point": {
+                "lng": 117.481279,
+                "lat": 39.192409
+            },
+            "address": "天津市东丽区东丽湖旅游度假区东丽之光大道2号",
+            "title": "天津欢乐谷",
+            "tags": [
+                "生活服务"
+            ],
+            "phoneNumber": "022-84977847",
+            "averagePlayTime": 2,
+            "popularity": 5
+        }
+    ]
+}

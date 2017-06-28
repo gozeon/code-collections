@@ -1,0 +1,31 @@
+{
+  "name": "gago-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/fs-extra": "^3.0.2",
+    "express": "^4.15.2",
+    "gulp": "^3.9.1",
+    "gulp-sequence": "^0.4.6",
+    "gulp-tslint": "^8.0.0",
+    "gulp-typescript": "^3.1.6",
+    "tslint": "^5.1.0",
+    "typescript": "^2.2.2"
+  },
+  "dependencies": {
+    "@types/express": "^4.0.35",
+    "body-parser": "^1.17.1",
+    "co": "^4.6.0",
+    "fs-extra": "^3.0.1",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
+    "urllib": "^2.22.0"
+  }
+}

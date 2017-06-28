@@ -1,0 +1,84 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+#control {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    z-index: 1;
+    background: #fff;
+    padding: 5px 8px;
+    border-radius: 5px;
+}
+
+#inputStart,
+#inputEnd,
+#day,
+#hour {
+    margin-left: 15px;
+    width: 150px;
+}
+
+.tangram-suggestion-main {
+    position: absolute;
+    z-index: 10;
+}
+
+#searchEnd {
+    margin-bottom: 10px;
+}
+
+#searchResultPanelStart,
+#searchResultPanelEnd {
+    border: 1px solid #C0C0C0;
+    width: 150px;
+    height: auto;
+    display: none;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#btn,
+#poi {
+    margin-top: 10px;
+    padding: 3px 7px;
+}
+
+#prompt {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    height: 40px;
+    width: 160px;
+    z-index: 100;
+    background: #fff;
+    border-radius: 8px;
+    color: #000;
+    line-height: 40px;
+    padding-left: 8px;
+    font-size: 14px;
+    display: none;
+}
+
+#route-result {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 270px;
+    z-index: 3;
+    height: 100%;
+    overflow: auto;
+}

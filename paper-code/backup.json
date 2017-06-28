@@ -1,0 +1,173 @@
+{
+    "data": [{
+            "point": {
+                "lng": 117.286958,
+                "lat": 40.100119
+            },
+            "address": "天津市官庄镇砖瓦窑村",
+            "title": "盘山风景名胜区",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>",
+                "风景区/旅游区"
+            ],
+            "phoneNumber": "(022)29821719",
+            "averagePlayTime": 2,
+            "popularity": 5
+        },
+        {
+            "point": {
+                "lng": 117.815028,
+                "lat": 39.162205
+            },
+            "address": "汉北路269号",
+            "title": "滨海航母主题公园",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>"
+            ],
+            "phoneNumber": "022-67288899",
+            "averagePlayTime": 1,
+            "popularity": 2
+        },
+        {
+            "point": {
+                "lng": 117.44821,
+                "lat": 40.246643
+            },
+            "address": "下营镇黄崖关村",
+            "title": "黄崖关长城",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>",
+                "文物古迹"
+            ],
+            "phoneNumber": "(022)22718106",
+            "averagePlayTime": 1,
+            "popularity": 2
+        },
+        {
+            "point": {
+                "lng": 117.547861,
+                "lat": 40.192761
+            },
+            "address": "天津市蓟县蓟县下营镇船舱峪村北",
+            "title": "梨木台",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>"
+            ],
+            "phoneNumber": "(022)22711571",
+            "averagePlayTime": 1,
+            "popularity": 1
+        },
+        {
+            "point": {
+                "lng": 117.632545,
+                "lat": 38.853769
+            },
+            "address": "天津市滨海新区海滨大道",
+            "title": "天津海滨旅游度假区",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>",
+                "风景区/旅游区"
+            ],
+            "phoneNumber": "022-25873828",
+            "averagePlayTime": 1,
+            "popularity": 3
+        },
+        {
+            "point": {
+                "lng": 117.410073,
+                "lat": 40.050992
+            },
+            "address": "天津市蓟县城内武定街41号",
+            "title": "蓟州区独乐寺",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>",
+                "文物古迹"
+            ],
+            "phoneNumber": "(022)29142904",
+            "averagePlayTime": 1,
+            "popularity": 2
+        },
+        {
+            "point": {
+                "lng": 117.092549,
+                "lat": 38.974235
+            },
+            "address": "天津市静海区团泊新城西区健康产业园",
+            "title": "萨马兰奇纪念馆",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>"
+            ],
+            "phoneNumber": "(022)59597299",
+            "averagePlayTime": 1,
+            "popularity": 2
+        },
+        {
+            "point": {
+                "lng": 117.468307,
+                "lat": 39.024412
+            },
+            "address": "双桥河镇宝成新村海河二道闸南",
+            "title": "天津宝成博物苑景区",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>",
+                "博物馆"
+            ],
+            "phoneNumber": "022-88698325",
+            "averagePlayTime": 1,
+            "popularity": 1
+        },
+        {
+            "point": {
+                "lng": 117.179669,
+                "lat": 38.9013
+            },
+            "address": "天津市静海区团泊镇新城东区",
+            "title": "光合谷旅游度假区",
+            "phoneNumber": "(022)68110000",
+            "averagePlayTime": 1,
+            "popularity": 1
+        },
+        {
+            "point": {
+                "lng": 117.021111,
+                "lat": 39.399395
+            },
+            "address": "东蒲洼街道凯旋王国",
+            "title": "凯旋王国",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>"
+            ],
+            "phoneNumber": "022-29588888",
+            "averagePlayTime": 2,
+            "popularity": 3
+        },
+        {
+            "point": {
+                "lng": 117.6689,
+                "lat": 39.01517
+            },
+            "address": "天津市滨海新区滨河南路响螺湾商务区61号(近海门大桥)",
+            "title": "天津海昌极地海洋世界",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>"
+            ],
+            "phoneNumber": "(022)66227777",
+            "averagePlayTime": 1,
+            "popularity": 3
+        },
+        {
+            "point": {
+                "lng": 117.716281,
+                "lat": 38.98334
+            },
+            "address": "滨海新区东炮台路1号(天津大道与海滨大道交口)",
+            "title": "大沽口炮台遗址",
+            "tags": [
+                "旅游<font color=\"#c60a00\">景点</font>"
+            ],
+            "phoneNumber": "022-25888544",
+            "averagePlayTime": 1,
+            "popularity": 3
+        }
+    ]
+}
