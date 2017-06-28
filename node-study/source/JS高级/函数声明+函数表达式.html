@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+/*	函数声明，函数表达式
+	JS被称为披着c外衣的Lisp语言，
+	Lisp是一种强大的函数式语言
+	函数可以赋值给变量，可以作为参数来传递*/
+
+	function t1(){
+
+	}
+	t2 = function() {
+
+	}
+	/*这两种方式，效果不同的
+	t1是函数声明，虽然全局内也得到一个t1变量，值是function
+	而t2只是一个赋值过程---值是谁？值是右侧的表达式的返回结果，即函数
+
+	就是说function(){}在js看来，就和3*2，6/3一样，是个表达式，返回一个结果
+
+	因此，t1 t2两种方式在词法分析时，有着明确区别
+	前者，在词法分析阶段，就发挥作用，
+	否则，在执行阶段，才发挥作用*/
+	
+	(function(window,undefined){})(window);
+	这是jquery的最外侧代码
+	(function(window,undefined){}) //内侧表达式，返回值是函数，包在小括号里，当成表达式来执行
+	(function(window,undefined){}) () //立即调用
+	// 而内层函数又没有起名字，称为匿名函数，
+	//这种手法，匿名函数，立即执行，不污染全局，称为立即执行匿名函数表达式
+
+	/*思路：为什么传window,而又不会传undefined?
+	答：穿window是为了速度
+	function(){
+		function(){
+			function(){
+				document.getElementByid...//这个documen将会沿作用域层层上找，直到最外层
+			}
+		}
+	}
+	jquery就是为了加快内部查找全局变量的速度，而直接把window以参数形式传进来
+	这样windo就在jquery内部的 AO上
+
+	不传undefined是为了安全
+	因为在IE，火狐低版本中，undefined竟然可以重新赋值,如.undefined = 3;
+
+	声明undefined局部变量(名字是undefined而已)，同时，又不传参，值自然是undefined
+	防止了外界对unfined的污染*/
+
+	// 作用域链就是指 函数由内到外，首先的AD链 叫做作用域链
+	</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#div1{
+			width: 100px;
+			height: 100px;
+			background-color: #FF0000;
+			filter: alpha(opacity:30);
+			opacity: 0.3;
+		}
+	</style>
+</head>
+<body>
+	<div id="div1"></div>
+	<script>
+		//透明度
+		window.onload=function(){
+			var aDiv = document.getElementById('div1');
+			aDiv.onmouseover=function(){
+				stratMove(100);
+			}
+			aDiv.onmouseout=function(){
+				stratMove(30);
+			}
+		}
+		var timer=null;
+		var alpha=30;
+		function stratMove(iTarget){
+			var aDiv = document.getElementById('div1');
+			timer=setInterval(function(){
+				var iSpeed=0;
+				if (alpha<iTarget) {
+					iSpeed=1;
+				}else {
+					iSpeed=-1;
+				}
+				if(alpha==iTarget){
+					clearInterval(timer);
+				}else{
+					alpha+=iSpeed;
+					aDiv.style.filter='alpha(opacity:'+alpha+')';
+					aDiv.style.opacity=alpha/100;
+					document.title=alpha;
+				}
+			},30);
+		}
+	</script>
+</body>
+</html>

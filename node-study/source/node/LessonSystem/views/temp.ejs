@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/favicon.ico">
+
+    <title>首页</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/css/jumbotron.css" rel="stylesheet">
+
+</head>
+
+<body>
+<% include header.ejs %>
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+  <div style="height:50px;"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-lg-offset-4">
+        <div class="alert alert-<%if(bool){%>success<%}else{%>waining<%}%>" role="alert"><%=msg%></div>
+        <a href="/" class="btn btn-default btn-md active" role="button">返回首页</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:50px;"></div>
+  <footer>
+      <div class="row col-lg-2 col-lg-offset-5 ">
+          <p>&copy; Create By Goze</p>
+      </div>
+  </footer>
+  <script src="/js/jquery-1.11.3.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>静态方法</title>
+	<script type="text/javascript">
+		/*
+		js面向对象中的静态方法
+		不需要new一个对象，而是直接用'.' 声明和调用
+		 */
+		Math.random();   //直接调用静态方法
+		// $.ajax  也是一样
+
+		var Test=function(){
+			this.ss=function(){
+				alert('hello world');
+			}
+		}
+		Test.tt = function(){
+			alert('添加了一个静态方法tt()');
+		}
+
+		var test = new Test();
+		test.ss();   // 调用ss方法，必须new一个对象出来
+		console.log(test);  //没有tt()方法
+
+		Test.tt();  //静态方法直接调用
+
+		//一切事物皆对象 ，函数也是对象
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

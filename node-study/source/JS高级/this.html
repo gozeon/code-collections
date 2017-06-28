@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script>
+/*
+*js中函数的4种调用方式
+*/
+/*
+1. 作为普通函数来调用时，
+	this的值指向 window
+	准确的说，this为null，但被解释成window
+	在ECMASCRIPT5标准中，如果this为null，则解释称undefined */
+function t(){
+	this.x = 333; //相当于window.x
+}
+t();
+alert(window.x);
+/*
+2. 作为对象的方法来调用
+	this指向方法的调用者，即该对象
+*/
+var obj = {
+	xx:999,
+	yy:888,
+	t:function(){
+		alert(this.xx); //指向当前对象
+	}
+}
+obj.t();
+
+var dog = {xx:'wangwang'};
+dog.t = obj.t;
+dog.t(); //wangwang
+/*
+作为方法调用时，
+this指向其调用那一刻的调用者，即母体对象
+不管被调用函数，声明时属于方法，还是函数
+*/
+show = function() {
+	alert('show '+this.xx);
+}
+dog.t = show;
+dog.t(); //show wangwang  this指向dog
+
+/*
+	3. 函数作为构造函数调用时
+	js中没有类的概念，创建对象是用构造函数来完成，或者直接用json格式()来写对象
+*/
+/*
+	new Dog发生了以下几个步骤
+	a：系统创建空对象{}，(空对象construcor属性指向Dog函数，先别管)
+	b：吧函数的this---指向---该空对象
+	c：执行该函数
+	d：返回该对象
+*/
+function Dog(name,age){
+	this.name = name;
+	this.age = age;
+	this.bark = function(){
+		alert('i am '+ this.name+'!');
+	}
+}
+var dogg = new Dog('huzi',2);
+//Pig对象，因为函数作为构造函数运行时，return的值是忽略的，还是返回对象
+dogg.bark();  // i am huzi
+
+function Pig(){
+	this.age = 99;
+	return 'abc';
+}
+var pig = new Pig();
+console.log(pig); //pig对象
+
+/*
+	4. 函数通过call，apply调用
+	语法格式：函数.call(对象，参数1，参数2....参数N)；
+*/
+function tt(num){
+	alert('我的真实年龄是'+this.age);
+	alert('但我一般告诉别人我'+(this.age+num));
+}
+var human = {name:'lisi',age:28};
+human.tt=tt;
+human.tt(-10); //this指向了human，但是human多了一个方法
+
+//不把tt赋值给human的属性，也能把this指向human
+var wangwu = {name:'wangwu',age:30};
+tt.call(wangwu,5);
+
+/*
+解释：
+函数.call(对象，参数1，参数2..参数N)；
+
+运行如下：
+a：fn函数中的this---指向---对象obj
+b：运行fn(参数1，参数2..参数N);
+*/
+</script>
+</head>
+<body>
+</body>
+</html>

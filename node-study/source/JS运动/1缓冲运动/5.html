@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#div1{
+			width: 100px;
+			height: 100px;
+			background-color: #FCCECE;
+			position: absolute;
+			left: 500px;
+		}
+	</style>
+</head>
+<body>
+	<script>
+	//缓冲运动 ，速度越来越慢
+		var timer = null;
+
+		function startMove(iTarget){
+			
+			var oDiv = document.getElementById('div1');
+
+			clearInterval(timer);
+			timer=setInterval(function(){
+				var iSpeed=(iTarget-oDiv.offsetLeft)/8;  //小数有问题
+/*				if (iSpeed>0) {
+					iSpeed=Math.ceil(iSpeed); //向上取整
+				}else{
+					iSpeed=Math.floor(iSpeed); //向下取整
+				}*/
+				//简化if else语句  
+				iSpeed=iSpeed>0?Math.ceil(iSpeed):Math.floor(iSpeed);
+				if(oDiv.offsetLeft == iTarget){
+					clearInterval(timer);
+				}else{
+					oDiv.style.left = oDiv.offsetLeft+iSpeed+'px';
+					document.title=iSpeed;
+				}
+			},30);
+		}
+	</script>
+	<input type="button" onclick="startMove(300)" value="ss">
+	<div id="div1"></div>
+
+</body>
+</html>

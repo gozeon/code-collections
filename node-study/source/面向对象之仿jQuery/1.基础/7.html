@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="text" name="" id="txt1">
+	<input type="button" name="" value="读取文字" id="btn1">
+	<input type="button" name="" value="设置文字" id="btn2">
+	<script type="text/javascript" src="Goze.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('#btn1').click(function(){
+				alert($('#txt1').attr('value'));
+			});
+			$('#btn2').click(function(){
+				$('#txt1').attr('value','sss');
+			});
+		})
+	</script>
+</body>
+</html>

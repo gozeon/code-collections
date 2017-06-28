@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#tab{width: 400px;margin: 0 auto;border: 1px solid red;}
+		.link{background-color: #D7FA92;}
+		.box div{width: 400px;height: 300px;background-color: #F8A5D2;display: none;}
+	</style>
+</head>
+<body>
+	<div id="tab">
+		<div class="btn">
+			<input type="button" value="111" class="link">
+			<input type="button" value="222">
+			<input type="button" value="333">
+		</div>
+		
+		<div class="box">
+			<div style="display:block">11111</div>
+			<div>22222</div>
+			<div>33333</div>
+		</div>
+		
+	</div>
+
+	<script type="text/javascript" src="Goze.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('.btn').find('input').click(function(){
+				$('.btn').find('input').attr('className','');
+				$(this).attr('className','link');
+				$('.box').find('div').hide();
+				$('.box').find('div').eq($(this).index()).show();
+			});
+		})
+	</script>
+</body>
+</html>

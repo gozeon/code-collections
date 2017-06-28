@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>关于多态</title>
+	<script>
+		/*
+			1. 多态不是"神奇的效果",而是在静态语言相对动态语言，类型不灵活的一个体现
+			2. 由上，在灵活的动态语言中，谈不上"多态"的概念
+		*/
+		/*
+		例子：在java中
+
+			class Dog(){
+				void bark(){
+				}
+			}
+			class jingba(){
+				void bark(){
+					System.out.println('汪汪');
+				}
+			}
+			class hashiqi(){
+				void bark(){
+					System.out.println('呜呜');
+				}
+			}
+			// 同样的bark方法，但是内容不同
+		 */
+		function Dog () {
+			this.leg = 4;
+			this.bark = null; 
+		}
+		function Hashiqi() {
+			this.bark = function(){
+				alert('wuwu');
+			}
+		}
+		function Jingba(){
+			this.bark = function(){
+				alert('wangwang');
+			}
+		}
+		Hashiqi.prototype = Jingba.prototype = new Dog();
+
+		var h = new Hashiqi();
+		var j = new Jingba();
+
+		function test(dog){
+			dog.bark();
+		}
+		test(h);
+		test(j);
+
+		//传进来狗对象，叫声却不同   --  因为传的是狗的不同子类
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

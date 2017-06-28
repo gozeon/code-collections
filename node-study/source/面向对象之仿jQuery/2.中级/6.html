@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		div{width: 100px; height: 100px;background:#F607AB;filter: alpha(opacity:30);opacity: 0.3;position: absolute;}
+	</style>
+</head>
+<body>
+	<button>运动</button>
+	<div></div>
+
+	<script type="text/javascript" src="Goze.js"></script>
+	<script type="text/javascript" src="Goze插件之animate.js"></script>
+	<script type="text/javascript">
+		$('button').toggle(
+			function(){
+				$('div').animate({'top':'100','left':'200','height':'300','border-radius':'50','opacity':'100'});
+			},function(){
+				$('div').animate({'left':'400','top':'400','height':'100','border-radius':'0','opacity':'30'});
+			}
+		);
+	</script>
+</body>
+</html>

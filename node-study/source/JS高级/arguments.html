@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<script type="text/javascript">
+	/*
+	函数运行的时候，函数内部能引起的变量有  AO  argumens   this
+
+	1. arguments 是什么
+	答：是一个对象，是一个长得像数组的对象
+
+	2. arguments内容是什么
+	答：arguments是函数运行时的实参列表
+
+	3. arguments收集的“所有”实参，即使没有与之相对应的参数
+	4. arguments可以获取函数运行时，收到的实参个数(在多态里可以用到)
+
+	5.arguments.callee 属性代表"当前运行的函数
+	*/
+	(function (d,e,f){
+		console.log(arguments);  //对象
+		console.log(arguments[0]); //hello  -->长得像数组
+		console.log(arguments[2]); // haha
+		//在此函数内，无法使用d,e,f形参来取得‘haha’，因为么有与之相应的形参数
+		//但是我们可以用arguments来获取任意多个的实参数
+		console.log(arguments[3]);  //haha
+		arguments[0] = 'china';
+		console.log(d);  //china //形参与对应的argumens，其实是相互映射的，互相影响
+		console.log(arguments.length);
+		console.log(arguments.callee);
+	})('hello','world','!','haha');
+
+	//求1-n的和  匿名函数，递归
+	alert((function(n){
+		if(n<=1){
+			return 1;
+		}else {
+			return n + arguments.callee(n-1);
+		}
+	})(100));
+
+	// 函数运行其内，关键的三个对象
+	// AO   --》本函数AO上没有其属性，则属性去外层函数的AO上找，知道全局变量，叫做作用域链
+	// argumens ----》每个函数有自己的callee，但不向外层接着着argumens的相关属性，即，不形成链
+	// this
+	</script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>原型冒充+复制继承</title>
+	<script>
+	/*
+		js语法非常灵活
+		不仅乐意用原型继承，还有其他办法
+		如，原型冒充。或复制继承
+	*/
+	
+	//原型冒充
+	function cat(leg,tail){
+		this.leg = leg;
+		this.tail = tail;
+		
+		this.climb = function(){
+			alert('我会爬树');
+		}
+	}
+	function tiger(leg,tail,color){
+		// 把要继承猫的语句，拿来执行一遍
+		this.parent = cat;   //把父类构造函数引入到一个parent属性上
+		this.parent.apply(this,arguments);
+		delete this.parent;
+		this.color = color;
+	}
+	
+	var tt  = new tiger();
+	console.log(tt);   //老虎有爬树的方法
+	tt.climb();
+	/*
+		过程：
+		在用tiger造对象是，用tiger的语句影响一个空对象{}
+		在此过程，tiger影响空对象前，先由cat函数实施影响
+		
+		因此，最终得到的对象，是由cat和tiger两者共同作用过的对象
+	*/
+	
+	//复制继承
+	/* 把父对象的所有属性，复制到自身对象上*/
+	function Cat(leg,tail){
+		this.leg = leg;
+		this.tail = tail;
+		
+		this.climb = function(){
+			alert('我会爬树');
+		}
+	}
+	function Tiger(color){	
+		this.color = color;
+		this.extend = function(parent){
+			for(var key in parent){
+				// console.log(key);
+				this[key]=parent[key];
+			}
+		}
+	}
+	
+	var ti = new Tiger('yellow'); 
+	console.log(ti);  //不会爬树
+	ti.extend(new Cat(4,1));
+	console.log(ti);  // 会了
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

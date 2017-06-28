@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		div{
+			width: 100px;
+			height: 100px;
+			background-color: #F679F0;
+		}
+	</style>
+</head>
+<body>
+	<input type="button" name="" value="toggle之显示隐藏" id="btn1">
+	<div id="div1"></div>
+
+	<script type="text/javascript" src="Goze.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('input').toggle(
+				function(){
+					$('#div1').hide();
+				},
+				function(){
+					$('#div1').show();
+				}	
+			);
+		});
+	</script>
+</body>
+</html>

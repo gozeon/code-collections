@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#box{
+			width: 200px;
+			height: 200px;
+			background-color: #FF92BA;
+			position: relative;
+		}
+	</style>
+</head>
+<body>
+	<div id="box"></div>
+	<script type="text/javascript" src="app.js">
+	</script>
+	<script>
+		var oDiv = document.getElementById('box');
+		oDiv.onmouseover=function(){
+			startMove(oDiv,{left:200,top:200},function(){
+				startMove(oDiv,{top:0,left:0});
+			});
+		}
+	</script>
+</body>
+</html>

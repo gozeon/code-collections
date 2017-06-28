@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>对象的特点	</title>
+</head>
+<body>
+	<script>
+	//js面向对象
+	/*
+	在js中，有对象，没有类(但有构造函数)。
+	因此，有了说js是基于对象，非面向对象
+	其实js的面向对象非常灵活，比起静态语法来，达到异想天开的效果
+
+	在很多语言中，类--->对象
+	而在js中，对象不依赖于类的存在。
+	*/
+	/*
+	js的对象只是一个“属性字典”，就想php中的关联数组
+	因此，我们可以直接造对象，不要类
+	*/
+	var ori  = {};//这就是个对象
+	var c = {cell:1};
+	var chick = {
+		leg:2,
+		song:function(){alert("sss");}
+	}
+	console.log(ori,c,chick);
+	chick.song();
+	/*通过上面的例子，可以看出，js中的对象，不依赖于类而存在，可以直接生成*/
+	/*k:v,k:v  这种格式声明的对象，称为json格式的对象*/
+	/*js的对象的属性，也可以任意增添和删除的*/
+	chick.wine = 2 ; //增加翅膀
+	console.log(chick.wine);
+
+	//删除唱歌的方法
+	delete chick.song;
+	console.log(chick);
+	/*
+	总结：
+	js中的对象，就是一组“属性与值得集合”
+	属性可以任意增减
+	方法和属性不必区分
+	*/
+
+	// 与c++，java，php不同，这三种语言想构建好类，再创建对象，其缺点是
+	// 所有对象都是一个类模板，类变了，所有对象的方法就变了，不灵活。
+	</script>
+</body>
+</html>

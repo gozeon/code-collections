@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<!-- 	词法分析
+	1：先分析参数
+	2：再分析变量声明
+	3：分析函数声明
+
+	一个函数能使用的局部变量，就从上面的3步分析而来
+
+	具体步骤：
+	0：函数运行前的一瞬间，生成Active Object(活动对象)，简称AO；
+	1：
+		1.1 把声明的参数，形成AO的属性，值全是undefined
+		1.2 接受实参，形成AO相应的属性的值
+	2：分析变量声明，如var age；
+		如果AO上还没有age属性，则添加AO属性，值是undefined
+		如果AO上已经有age属性，则不做任何影响
+	3：分析函数声明，如 function foo(),
+		则把函数赋给AO.foo属性
+		注：如果此前foo属性已存在，则被无情的覆盖了 -->
+	<script type="text/javascript">
+		function t1(age) {
+			alert(age);
+		}
+		t1(5);  //5
+		t1();   //undefined
+/*		词法分析过程：
+		AO{age:undefined}
+		运行过程:
+		t(5) --> AO.age=5;alert(AO.age); //5
+		t() ---> AO.age没得到赋值，还是undefined*/
+		
+		function t2(age){
+			var age = 99;
+			alert(age);
+		}
+		t2(5);
+/*		词法分析过程：
+		0: 形成AO-{}
+		1: 
+			1.1 分析形参 AO = {age:undefined}
+			1.2 接受形参 AO = {age:5}
+		2: 分析var age,幻想AO已有age属性，不做任何影响
+
+		执行过程：
+		AO.age = 99;
+		alert(age);*/
+
+		function t3(gtreet){
+			var greet = 'hello';  //把这句变成 var greet；
+			alert(greet);
+			function greet(){
+			}
+
+			alert(greet);
+		}
+		t3(null); //hello  hello
+
+/*		词法分析过程：
+		0: AO={}
+		1: 
+			1.1 分析参数 AO = {greet：undefined}
+			1.2 接受形参 AO = {greet:null}
+		2：分析greet变量声明，AO已经有greet属性，因此不做任何影响
+		3：分析greet函数声明，AO.greet = function{},将壶盖成函数
+		执行过程：
+		greet='hello';
+		alert(greet);
+		alert(greet);*/
+
+		function a(b){
+			alert(b);
+			function b(){
+				alert(b);
+			}
+			b();
+		}
+		a(1);
+/*		词法分析过程：
+		0: AO-{}
+		1: 分析参数 AO={b:undefined}
+			接受参数 AO={b:1}
+		2: 分析var声明，此函数没有var
+		3：分析函数声明，AO={b:function(){alert(b);}}
+		执行过程：
+		alert(b);  //function
+		b();  //→作用域寻找到a函数中的b，即function,alert()出来*/
+
+		function a2(b){
+			alert(b);
+			b = function(){
+				alert(b);
+			}
+			b();
+		}
+		a2(1);
+		/*词法分析过程：
+		0：AO = {}
+		1: 分析参数 AO = {b:undefined}  --> {b:1}
+		2: 分析var声明，没有 
+		3: 分析函数声明,没有！
+			b = function(){}，
+				注：是一个赋值过程，是一个函数表达式的返回值赋给b变量
+				注：b=function(){}，是一个赋值过程，在执行期才有用
+		执行过程：
+		alert(b);  //1
+		b=function(){
+			alert(b);
+		}
+		b();   //function*/
+
+		// http://liyafeng.cn/js_function_analysis/
+	</script>
+</body>
+</html>

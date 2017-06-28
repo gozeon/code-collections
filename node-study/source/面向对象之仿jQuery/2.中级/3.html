@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="button" value="sss">
+
+	<script type="text/javascript" src="Goze.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('input').hover(function(){document.title='in'},function(){document.title='out'}).css({'background':'#F794CE','width':'300px','height':'300px'}).click(function(){alert('链式成功')});
+		});
+
+		
+		//链式操作原理
+/*		function aaa(str){
+			alert(str);
+			return aaa;
+		}
+		aaa('sss')('aaa')('bbb');*/
+	</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		div{
+			width: 200px;
+			height: 200px;
+			background-color: #92FACD;
+			position: absolute;
+			left: 0;
+		}
+	</style>
+</head>
+<body>
+	<button onclick="ss()">加速运动</button>
+	<div id="box"></div>
+	<script type="text/javascript" src="app.js"></script>
+	<script type="text/javascript">
+		function ss(){
+			var oDiv=document.getElementById('box');
+			startMove(oDiv);
+		}
+	</script>
+</body>
+</html>

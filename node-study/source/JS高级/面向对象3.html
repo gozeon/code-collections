@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>原型继承</title>
+  <script>
+  // js没有类的概念
+  // js的继承，不是通过类的继承来实现的，
+  // 而是通过"原型"的概念来实现的
+
+  // 这个构造函数用来制造对象，
+  function Tiger() {
+    this.bark = function(){
+      alert('我是百兽之王');
+    }
+  }
+  var hu = new Tiger();
+  // 以java为例，应该让tiger继承cat类，
+  // 但js中要--照猫画虎
+  // 我们明确的对“tiger函数”置顶没用每个具体的“cat对象”做老虎的原型，创建“老虎对象”
+  function cat() {
+    this.climb = function(){
+      alert('我会爬树');
+    }
+  }
+  var bosi = new cat();
+  // hu.climb(); 老虎不会爬树
+
+  //开始继承
+  Tiger.prototype = new cat();
+  var hnhu = new Tiger();
+  hnhu.climb();
+  console.log(hnhu);  //并没有会爬树的方法
+
+  /*过程
+    1. 构造空对象hnhu{}
+    2. hnhu.bark = function() {}
+    3. hnhu._proto_ = tiger.prototype(即cat对象)  //这是继承关键
+
+    就是说--js中，每个对象，都有一个_proto_指向其原型对象
+    原型对象也是对象，也有_proto_
+  */
+  
+  function Dog(){
+	this.bark = function(){
+		alert('汪汪');
+	}
+  }
+  function peter(){
+	this.fire = function(){
+		alert('第一斗犬');
+	}
+  }
+  //原型继承
+  peter.prototype = new Dog();
+  var huzi = new peter();
+  
+  huzi.bark();
+  
+  function zangao(){
+	this.eat = function(){
+		alert('会吃，会吹');
+	}
+  }
+  zangao.prototype = new Dog();
+  zangao.prototype.bark = function(){alert('呜呜')}  //
+  
+  var za = new zangao();
+  
+  za.bark();
+  </script>
+</head>
+<body>
+
+</body>
+</html>

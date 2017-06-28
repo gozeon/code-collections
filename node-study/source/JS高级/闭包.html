@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script>
+//闭包
+
+function t1(){
+	var age = 20;
+	function t2(){
+		alert(age);
+	}
+	return t2;
+}
+var tmp = t1();
+var age = 99;
+tmp(); //20
+/*
+1. 在大部分的语言中,t1被调用执行，则申请内存
+并把其局部变量，push入栈！
+t1函数执行完毕，内部的局部变量，随着函数的退出而销毁
+因此，age = 20 的局部变量，已经消失了
+
+但是在js中，age = 20 这个变量，却被t2捕捉，
+即使t1执行完毕，通过t2，依然能访问该变量
+
+这种情况---返回的函数，并非孤立的函数，甚至把周围的变量环境，
+形成了一封闭的“环境包”，共同返回，所以叫“闭包”
+
+--- 一句话概括 -- 函数的作用域取决于声明时，而不取决于调用时
+*/
+function closure(){
+	var sister = '大桃花';
+	var me = function(){
+		alert(sister);
+	}
+	return me;
+}
+function place(){
+	var sister = '大福晋';
+	var girl = closure();
+	girl();
+}
+place(); //大桃花
+
+//闭包计数器
+/*多个人共同开发js程序，需要一个全局的计数器
+	多个人的函数共同用一个计数器，计数器一直增长
+	解决办法：
+	1. 设立一个全局变量 
+	window.cnt = 0;
+	调用 ++window.cnt
+	缺点：污染了全局变量
+	其次，引入了多人的js程序，别人的程序里，也有一个window.cnt='hello';
+	该计数器就损坏了，所以尽量避免使用全局变量
+	2. 闭包维护一个别人污染不到的变量，做计数器
+*/
+function counter(){
+	var cnt = 0; //但counter执行完毕后,除了返回的cnter函数，谁也别想碰到cnt
+	cnter = function(){
+		return ++cnt;
+	}
+	return cnter
+}
+var inc = counter();
+alert(inc());
+alert(inc());
+alert(inc());
+//将计数器简化
+var cnt = (function(){
+	var cnt=0;
+	return function(){
+		return ++cnt;
+	}
+})()
+alert(cnt());
+alert(cnt());
+alert(cnt());
+//继续简化  cnt依然是全局变量
+/*如何避免全局污染或冲突
+1:同意放在一个全局对象上，如jquery->$
+2:每人用自己的命名空间
+*/
+$={};
+$.cnt = (function(){
+	var cnt=0;
+	return function(){
+		return ++cnt;
+	}
+})()
+alert($.cnt());
+alert($.cnt());
+alert($.cnt());
+
+//个人命名空间，在团队开发中也很常见
+//其实就是把自己的变量，函数，都放在一个对象里
+var Goze = {};//跟团队说清，这是我的空间，别人就不要用了，一般用姓名
+Goze.cnt = (function(){
+	var cnt=0;
+	return function(){
+		return ++cnt;
+	}
+})()
+alert(Goze.cnt());
+alert(Goze.cnt());
+</script>
+</head>
+<body>
+<div></div>
+</body>
+</html>

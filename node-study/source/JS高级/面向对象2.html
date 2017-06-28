@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>私有属性和封装</title>
+  <script>
+    // 用构造函数来创建对象
+    function Dog() {
+      this.leg = 4;
+      this.bark = function(){
+        alert("汪汪");
+      }
+    }
+    var huzi = new Dog();
+    huzi.bark();
+    // 此处我们并没有完成面向对象的“封装”
+    // 所谓的封装--就要封闭一部分，外界无法访问，
+    // 开房一部分，通过开放部分间接访问私有部分。
+    //
+    // 接下来--js私有属性
+    // 用闭包来完成js面向对象之私有属性
+    // 让bf不能外界访问
+
+    function Girl(name,bf) {
+      this.name = name;
+
+      var seret = bf;
+      // 通过showlove做接口，来读取私有属性seret
+      this.showlove = function(){
+        return seret;
+      }
+      //移情别恋
+      this.movelove = function(){
+        seret = '薛潘';
+      }
+    }
+    var girl = new Girl('林黛玉','贾宝玉');
+    alert(girl.name+'喜欢'+girl.showlove());
+    girl.movelove();
+    alert(girl.name+'喜欢'+girl.showlove());
+    /*
+        这是通过闭包来完成js面向对象的私有属性与封装
+    */
+  </script>
+</head>
+<body>
+</body>
+</html>

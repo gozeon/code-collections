@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		#div1{
+			width: 100px;
+			height: 100px;
+			background-color: #AB5F5F;
+			left: 0px;
+			top: 50px;
+			position: absolute;
+		}
+	</style>
+	<script type="text/javascript">
+		//停
+/*		var timer = null;
+
+		function startMove(){
+			
+			var oDiv = document.getElementById('div1');
+
+			timer=setInterval(function(){
+				if(oDiv.offsetLeft == 300){clearInterval(timer);}
+				oDiv.style.left = oDiv.offsetLeft+10+'px';
+			},30);
+		}*/
+		//优化速度
+/*		var timer = null;
+
+		function startMove(){
+			
+			var oDiv = document.getElementById('div1');
+
+			timer=setInterval(function(){
+				var iSpeed=7;
+				if(oDiv.offsetLeft == 300){clearInterval(timer);}
+				oDiv.style.left = oDiv.offsetLeft+iSpeed+'px';
+			},30);
+		}*/
+		//速度有问题，修改if条件
+/*		var timer = null;
+
+		function startMove(){
+			
+			var oDiv = document.getElementById('div1');
+
+			timer=setInterval(function(){
+				var iSpeed=7;
+				if(oDiv.offsetLeft >= 300){
+					clearInterval(timer);
+				}else{
+					oDiv.style.left = oDiv.offsetLeft+iSpeed+'px';
+				}
+			},30);
+		} */
+		//运动过程中，多次点击会造成加速度--点击一次会开一个定时器
+		//解决方法 关了再开
+/*		var timer = null;
+
+		function startMove(){
+			
+			var oDiv = document.getElementById('div1');
+
+			clearInterval(timer);
+			timer=setInterval(function(){
+				var iSpeed=1;
+				if(oDiv.offsetLeft >= 300){
+					clearInterval(timer);
+				}else{
+					oDiv.style.left = oDiv.offsetLeft+iSpeed+'px';
+				}
+			},30);
+		} */
+		//优化
+		//iSpeed 速度
+		//iTarget 目标位置
+/*		var timer = null;
+
+		function startMove(iSpeed,iTarget){
+			
+			var oDiv = document.getElementById('div1');
+
+			clearInterval(timer);
+			timer=setInterval(function(){
+				if(oDiv.offsetLeft >= iTarget){
+					clearInterval(timer);
+				}else{
+					oDiv.style.left = oDiv.offsetLeft+iSpeed+'px';
+				}
+			},30);
+		}*/
+		//去掉速度参数，将目标的正负值来判断方向
+		var timer = null;
+
+		function startMove(iTarget){
+			
+			var oDiv = document.getElementById('div1');
+
+			clearInterval(timer);
+			timer=setInterval(function(){
+				var iSpeed=0;
+				if (oDiv.offsetLeft<iTarget) {
+					iSpeed=10;
+				}else {
+					iSpeed=-10;
+				}
+				if(oDiv.offsetLeft >= iTarget){
+					clearInterval(timer);
+				}else{
+					oDiv.style.left = oDiv.offsetLeft+iSpeed+'px';
+				}
+			},30);
+		}
+	</script>
+</head>
+<body>
+	<input type="button" id="btn1" value="开始运动" onclick="startMove(400)">
+	<div id="div1"></div>
+	
+</body>
+</html>

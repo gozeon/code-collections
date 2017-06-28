@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/favicon.ico">
+    <title>聊天室</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/css/jumbotron.css" rel="stylesheet">
+    <style type="text/css">
+        .box{
+            border: 1px solid #FB9FDA;
+            border-radius: 5px;
+            box-shadow: 1px 1px #F7CCEA;
+            height: 400px;
+        }
+        .talk{
+            margin-top: 20px;
+            height: 330px;
+            overflow: auto;
+        }
+        .talk .word li{
+
+            list-style-type: none;
+            padding: 5px 0;
+        }
+        span{
+            color: #A8E8FE;
+            padding: 0 3px;
+        }
+        canvas{
+            width: 100%;
+            height: 99%;
+            box-shadow: 1px 1px 1px 1px #D1CDCD;
+        }
+        .argu{
+            margin-top: 30px;
+            margin-left: 40px;
+        }
+    </style>
+</head>
+
+<body>
+<% include header.ejs %>
+
+<div class="container">
+    <!-- Example row of columns -->
+    <h1>欢迎<span id="user"><%=name%></span>来到临时聊天室</h1>
+    <h1></h1>
+    <div class="row">
+        <div class="col-lg-5 box">
+            <div class="talk">
+                <ul class="word">
+                    
+                </ul>
+            </div>
+            <div class="message">
+                <input type="text" id="content" class="form-control" placeholder="按回车发送">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="argu">
+                <input type="radio" name="color" value="black" ><span style="color: black;">黑色</span> <br/>
+                <input type="radio" name="color" value="red" ><span style="color: red;">红色</span> <br/>
+                <input type="radio" name="color" value="yellow" ><span style="color: yellow;">黄色</span> <br/>
+                <input type="radio" name="color" value="blue" ><span style="color: blue;">蓝色</span> <br/>
+                <input type="radio" name="color" value="grey" ><span style="color: grey;">灰色</span> <br/>
+                <input type="radio" name="color" value="white" ><span style="color: black;">橡皮擦</span> <br/>
+            </div>
+        </div>
+        <div class="col-lg-5 box">
+            <canvas id="canvas"></canvas>
+        </div>
+    </div> 
+    
+</div>
+
+<hr>
+
+<footer>
+    <div class="row col-lg-2 col-lg-offset-5 ">
+        <p>&copy; Create By Goze</p>
+    </div>
+</footer>
+</div>
+<!-- /container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/js/jquery-1.11.3.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+    //聊天
+    var socket = io();
+    $('#content').keydown(function(e){
+        if(e.keyCode == 13){
+            socket.emit('words',{
+                "content" : $('#content').val(),
+                "name" : $('#user').html(),
+                "date" : new Date()
+            });
+            $(this).val('');
+        }
+    });
+
+    socket.on('words',function(msg){
+        $('.word').prepend("<li><b>"+msg.name+"</b> : "+msg.content+"</li>"+"<span><b>时间：</b>"+msg.date+"</span><hr/>");
+    });
+    //聊天结束
+    var ctx = $("#canvas").get(0).getContext("2d");
+    function handler(e){
+        ctx.beginPath();
+        ctx.arc(e.pageX,e.pageY,3,0,Math.PI*2,true);
+        ctx.fillStyle = "red";
+        ctx.fill();
+
+        //发送
+        socket.emit('paint',{
+            "x" : e.pageX,
+            "y" : e.pageY,
+            "color" : "red"
+        });
+    };
+    $("#canvas").mousedown(function(e){
+        $("#canvas").bind('mousemove',handler(e));
+    });
+    $("#canvas").mousedown(function(e){
+        $("#canvas").unbind('mousemove');
+    });
+    //接收
+    socket.on("paint",function(msg){
+        ctx.beginPath();
+        ctx.arc(msg.x,msg.y,3,0,Math.PI*2,true);
+        ctx.fillStyle = msg.color;
+        ctx.fill();
+        console.log(msg);
+    });
+</script>
+</body>
+</html>

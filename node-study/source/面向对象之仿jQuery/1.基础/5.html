@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		div{
+			width: 100px;
+			height: 100px;
+			background-color: #B458DA;
+		}
+	</style>
+</head>
+<body>
+	<div id="div1"></div>
+	<script type="text/javascript" src="Goze.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('#div1').hover(function(){
+				$(this).css('background','#5CFCBA');
+			},function(){
+				alert($(this).css('width'));
+			});
+		});
+	</script>
+</body>
+</html>
