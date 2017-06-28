@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>饼状图的制作</title>
+    <script src="../d3.js"></script>
+</head>
+<body>
+<script>
+    // 布局不是要直接绘图，而是为了得到绘图所需的数据。
+    var width = 400;
+    var height = 400;
+    var dataset = [ 30 , 10 , 43 , 55 , 13 ];
+
+    var svg = d3.select("body")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    var pie = d3.layout.pie();
+
+    var piedata = pie(dataset);
+
+    var outerRadius = 150;	//外半径
+    var innerRadius = 0;	//内半径，为0则中间没有空白
+
+    var arc = d3.svg.arc()	//弧生成器
+      .innerRadius(innerRadius)	//设置内半径
+      .outerRadius(outerRadius);	//设置外半径
+
+    var color = d3.scale.category10();
+
+    var arcs = svg.selectAll("g")
+      .data(piedata)
+      .enter()
+      .append("g")
+      .attr("transform","translate("+ (width/2) +","+ (width/2) +")");
+
+    arcs.append("path")
+      .attr("fill",function(d,i){
+        return color(i);
+      })
+      .attr("d",function(d){
+        return arc(d);
+      });
+
+    arcs.append("text")
+      .attr("transform",function(d){
+        return "translate(" + arc.centroid(d) + ")";
+      })
+      .attr("text-anchor","middle")
+      .text(function(d){
+        return d.data;
+      });
+</script>
+</body>
+</html>

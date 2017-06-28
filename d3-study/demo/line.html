@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+
+<body>
+    <script>
+        const data = [];
+        const now = (new Date()).valueOf();
+        for (let i = 0; i < 100; i++) {
+            data.push({
+                date: new Date(now + i * 1000 * 60 * 60 * 24),
+                value: Math.random() * 100
+            });
+        }
+        console.log(data[0]);
+        const xScale = d3.scaleTime()
+            .range([0, 960])
+            .domain(d3.extent(data, d => d.date));
+
+        const yScale = d3.scaleLinear()
+            .range([500, 0])
+            .domain(d3.extent(data, d => d.value));
+
+        const line = d3.line()
+            .x(d => xScale(d.date))
+            .y(d => yScale(d.value));
+
+        const svg = d3
+            .select("body")
+            .append("svg")
+            .attr("width", 960)
+            .attr("height", 500)
+            .append('path')
+            .attr('stroke', 'hotpink')
+            .attr('stroke-width', 1.5)
+            .attr('fill', 'none')
+            .attr('d', line(data));
+    </script>
+</body>
+
+</html>
