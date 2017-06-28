@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="1.css" id="linkCss">
+</head>
+<body>
+	<button id="btn">切换css样式表</button>
+
+	<script type="text/javascript">
+		window.onload = function(){
+			var linkCss = document.getElementById("linkCss");
+			var btn = document.getElementById("btn");
+			btn.onclick = function(){
+				linkCss.href="2.css";
+			}
+		}
+	</script>
+</body>
+</html>

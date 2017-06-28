@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transition生成器</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/preview.css">
+     
+     
+     <script type="text/javascript" src="js/jquery-2.2.3.js"></script>
+     <script type="text/javascript" src="js/preview.js"></script>
+     <script type="text/javascript" src="js/btn.js"></script>
+     <script>
+
+     </script>
+</head>
+<body onload="">
+    <!--输入模块-->
+    <div class="editArea">
+        <header>
+        <h1>CSS3动画可视化编辑器-Transition</h1>
+        </header>
+        <section>
+            <form action="">
+                <!--过渡所需时间-->
+                <label  oninput="outputTime.value=parseInt(time.value)">
+                    transition-duration(s)：
+                    <input id="time" type="range" name ="time" value="5" min="1" max="10">
+                    <output name="outputTime">5</output><em>s</em>
+                </label><br>
+                <!--贝塞尔四个取值-->
+                <label oninput="cbx1.value=parseFloat(x1.value)">transition-timing-function:
+                    <input id="x1" type="range" name ="x1" step="0.01" min="0" max="1">
+                    
+                </label>
+                <label oninput="cby1.value=parseFloat(y1.value)">
+                    <input id="y1" type="range" name ="y1" step="0.01" min="0" max="1">
+                    
+                </label>
+                <label oninput="cbx2.value=parseFloat(x2.value)">
+                    <input id="x2" type="range" name ="x2" step="0.01"  min="0" max="1">
+                    
+                </label>
+                <label oninput="cby2.value=parseFloat(y2.value)">
+                    <input id="y2" type="range" name ="y2" step="0.01"  min="0" max="1">
+                </label>
+                <p>cubic-bezier(
+                <output  class="xy1" name="cbx1">x1</output>,
+                <output  class="xy1" name="cby1">y1</output>,
+                <output  class="xy2" name="cbx2">x2</output>,
+                <output  class="xy2" name="cby2">y2</output> )
+                <input type="button" onclick="btn_view()" value="Preview" class="btnStyle">
+                <input type="button" onclick="btn_output()" value="Output" class="btnStyle">
+                <!--
+                <button onclick="btn_view()">Preview</button>
+                <button onclick="btn_output()">Output</button></P>
+                -->
+                </form>
+            </section>
+     </div>
+     <!--演示模块-->
+     <div class="preview">
+         <div id="view" class=""></div>
+     </div>
+     <!--输出模块-->
+     <div class="output">
+        <header>
+            <h2>常用示例<em>(鼠标悬停演示)</em>：</h2>
+        </header>
+        <div id="linear">linear</div><br>
+        <div id="ease">ease</div><br>
+        <div id="ease-in">ease-in</div><br>
+        <div id="ease-out">ease-out</div><br>
+        <div id="ease-in-out">ease-in-out</div>
+     </div>
+
+</body>
+</html>

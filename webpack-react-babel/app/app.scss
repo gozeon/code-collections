@@ -1,0 +1,23 @@
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .bg_img {
+    width: 600px;
+    height: 180px;
+    background-image: url("../images/logo.jpeg");
+    background-origin: content-box;
+    background-position: center;
+    //background-repeat: no-repeat;
+    //background-size: 20px 120px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,34 @@
+Media
+    CSS3媒体查询！media属性就是媒体查询的属性
+
+    <link rel="stylesheet" href="1.css" media="(min-width:800px)">
+    屏幕>800px 用1.css
+
+    <link rel="stylesheet" href="2.css" media="(max-width:799px) and (min-width:600px)">
+    799px>屏幕>600px 用2.css
+
+    <link rel="stylesheet" href="3.css" media="(max-width:599px)">
+    屏幕<599px 用3.css
+
+    还可以内嵌式使用
+        <style type="text/css">
+        @media(min-width: 800px){
+            div{
+                width: 400px;
+                height: 400px;
+                background-color: #98FCF1;
+            }
+        }
+        @media(max-width: 799px){
+            div{
+                width: 200px;
+                height: 400px;
+                background-color: #E7F276;
+            }
+        }
+    </style>
+
+
+   ！ ie10以上兼容，js能兼容到ie10一下
+
+媒体查询条件：media="screen and..."             --> 表示需要有屏幕设备。。

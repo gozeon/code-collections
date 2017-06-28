@@ -1,0 +1,140 @@
+a,b,big,body,dd,del,div,dl,dt,em,font,form,h1,h2,h3,h4,h5,h6,html,i,iframe,img,ins,label,li,ol,p,pre,small,span,strong,u,ul{margin:0;padding:0}
+
+body{ font-family:"微软雅黑", "宋体"}
+a{ text-decoration:none;}
+img{ border:none;}
+ul,ol{ list-style:none;}
+
+.common_title{ width:1100px; margin:0 auto; background:url(../images/title_bg.png) repeat-x center 10px; text-align:center; }
+.common_title h2{ font-size:20px; color:#333; font-weight:100; background:#f2f4f6; display:inline-block; padding:0 20px;}/*设置背景色，覆盖图片*/
+.common_title p{ font-size:12px; color:#00b3e1; text-transform:uppercase; line-height:1em; margin:10px 0;}/*text-transform:uppercase全大写*/
+.common_title i{ width:50px; height:1px; display:inline-block; background:#00b3e1} /*inline-block可继承父元素的居中*/
+
+
+
+
+/*头部区域*/
+.header{ width:1100px; height:106px; margin:0 auto; position:relative;}
+.hd_logo{ position:absolute; top:16px;left:0}
+
+.hd_tel{ position:absolute; top:16px;right:0; font-size:12px;color:#888; background:url(../images/icon_bg.png) no-repeat left 8px; padding-left:35px;}
+
+.hd_tel p{ font-size:20px; color:#00b3e1; font-weight:900; line-height:1em;}
+
+
+.hd_nav{  height:50px; position:absolute; bottom:0;right:0}
+.hd_nav li{ float:left; position:relative;}
+.hd_nav li a{ display:block; line-height:50px; padding:0 24px; font-size:14px; color:#333;}
+.hd_nav li i{ display:block; width:0%; height:3px; background:#00b3e1; position:absolute; bottom:0; left:50%; transition:0.3s;}
+
+.hd_nav li.on a,.hd_nav li:hover a{color:#00b3e1}
+.hd_nav li.on i,.hd_nav li:hover i{ left:0; width:100%;}
+
+/*头部区域 end*/
+
+
+
+/*海报区域*/
+.banner{ width:100%; height:500px; background:url(../images/banner1.jpg) no-repeat center}
+/*海报区域 end*/
+
+
+/*关于我们区域*/
+.about{ width:1100px; height:180px; margin:95px auto;}
+.about .box{ width:534px; height:180px; border:1px solid #eee; position:relative; transition:0.3s;}
+.about .box:hover{ background:#00408f; border:1px solid #00408f;}
+.about .box_l{ float:left;}
+.about .box_r{ float:right;}
+.about .box i{ display:block; width:72px; height:72px;  position:absolute; top:50px; left:50px; background:url(../images/icon_bg.png) no-repeat}
+.about .box_l i{ background-position:left -29px;}
+.about .box_l:hover i{background-position:left -101px;}
+.about .box_r i{ background-position:left -173px;}
+.about .box_r:hover i{background-position:left -245px;}
+
+.about .box h2{ position:absolute; top:50px; left:180px; font-size:18px; color:#666; font-weight:100}
+.about .box p{ position:absolute; top:80px; left:180px; font-size:14px; color:#aaa; width:320px;}
+.about .box:hover h2{ color:#fff;}
+.about .box:hover p{ color:#a1aec8;}
+/*关于我们区域 end*/
+
+
+/*产品区域*/
+.pro{ width:100%; height:630px; background:#f2f4f6; overflow:hidden}
+.pro_title{ margin-top:75px; margin-bottom:35px;}
+.pro_con{ width:1180px; height:300px; margin:0 auto;}
+
+.pro_con .btn{ width:40px; height:300px; float:left; cursor:pointer;}
+.pro_con .btn i{ display:block; width:28px; height:46px; background:url(../images/icon_bg.png) no-repeat;  margin-top:127px;}
+.pro_con .btn_l i{ background-position:0 -317px;}
+.pro_con .btn_r i{ background-position:-28px -317px; margin-left:12px;}
+
+
+.pro_con .out{ width:1100px; height:300px;  float:left; overflow:hidden;}
+.pro_con .out ul{ width:5000px;}
+.pro_con .out li{ float:left; margin-right:9px;}
+
+.pro_more{ width:226px; height:48px; border:1px solid #202524; display:block; margin:0 auto; text-align:center; line-height:48px; font-size:14px; color:#202524; position:relative; transition:0.3s; margin-top:45px;}
+.pro_more:hover{ background:#00b3e1; color:#fff; border:1px solid #00b3e1}
+
+.pro_more i{ display:block; width:6px; height:11px; background:url(../images/more_bg.png) no-repeat;  position:absolute; top:18px;left:160px; transition:left 0.3s}
+.pro_more:hover i{ background-position:left -11px; left:180px;}
+
+
+/*产品区域 end*/
+
+
+
+/*新闻区域*/
+.news{ width:1100px; height:445px; margin:90px auto;}
+.news_title{}
+.news_title h2{ background:#fff;}
+
+.news_con{ width:1100px; height:340px;  margin-top:40px;}
+.news_main{ width:660px; height:340px; background:#0CF; float:left;}
+.news_main_left{ width:160px; padding-left:20px; height:340px; background:#3f434c; float:left;}
+.news_main_left .img{ margin-top:25px;}
+.news_main_left h2{ font-size:20px; color:#fff; font-weight:100; margin:20px 0 25px;}
+.news_main_left .btn{ width:150px; height:90px; margin-bottom:10px; position:relative; transition:0.3s; cursor:pointer;}
+
+
+.news_main_left .btn:hover,.news_main_left .btn.on{ width:160px;}
+
+
+.news_main_left .btn_t{ background:#00b3e1;}
+.news_main_left .btn_b{ background:#00408f;}
+.news_main_left .btn img{ position:absolute; top:30px; left:20px;}
+.news_main_left .btn h3{ position:absolute; top:25px; left:60px; font-size:16px; font-weight:100; color:#fff;}
+.news_main_left .btn h3 span{ font-size:12px; color:#a3dbf0; display:block;}
+
+
+
+.news_main_right{ width:479px; height:338px; background:#fff; float:left; border:1px solid #d0d0d0; border-left:none; overflow:hidden;}
+.news_main_right .box{ border-left:3px solid #00b3e1; width:439px; height:308px; padding:30px 12px 0 25px;}
+.news_main_right .box h4 a{ color:#00b3e1; font-size:14px;}
+.news_main_right .box p{ font-size:12px;color:#666; line-height:1.6em; margin-top:20px;}
+.news_main_right .box p a{color:#00b3e1;}
+.news_main_right .box .list{ margin-top:20px;}
+.news_main_right .box .list h4{ line-height:3em;}
+.news_main_right .box .list h4 a{ color:#3f434c;}
+.news_main_right .box .list h4 span{ float:right; font-size:12px; color:#9e9fa3;}
+.news_main_right .box_more{ width:106px; height:28px; border:1px solid #00b3e1; display:block; color:#00b3e1; text-align:center; line-height:28px; float:right; margin-top:10px; font-size:14px;}
+
+
+.news_main_right .box_b{ border-left:3px solid #00408f;}
+.news_main_right .box_b h4 a{ color:#00408f;}
+.news_main_right .box_b .box_more{ border:1px solid #00408f; color:#00408f}
+
+.news .video{width:420px; height:340px; float:right;}
+.news .video .text{ text-align:center; border:1px solid #eee; border-top:none; height:65px;}
+.news .video .text h4{ font-size:16px; color:#3f434c; font-weight:100; padding-top:15px;}
+.news .video .text h4 span{ display:block; text-transform:uppercase; font-size:12px; color:#b0b1b4;}
+/*新闻区域 end*/
+
+
+/*底部区域*/
+.footer{ width:100%; height:250px; background:#00b3e1;}
+/*底部区域 end*/
+
+
+
+

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
+<script>
+    /**
+$(".btn").on("click",function(){ 
+
+    //通过判断按钮btn有没有active这个class名判断是否已经点击过 
+
+    if($(this).hasClass("active")){ 
+
+    //如果有了active，假设已经点击过了 
+
+    //执行你的代码 
+
+    //把active去掉 
+
+    $(this).removeClass("active"); 
+
+    }else{ 
+
+    //没有active，假设还没有点击过 
+
+    //执行你的代码 
+
+    $(this).addClass("active"); 
+
+    } 
+
+}) 
+     */
+    /*
+ $(document).ready(function(){
+     $("#bb").on("click",function(){
+         if($("p").hasClass("active")){ 
+             $("body").css("background-color","red");
+             $("p").removeClass("active");
+         }
+         else{
+             $("body").css("background-color","orange");
+             $("p").addClass("active");
+         }
+          
+     }) 
+});*/
+/**
+ * function hasClass(ele,cls) {
+  return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+}
+ 
+function addClass(ele,cls) {
+  if (!this.hasClass(ele,cls)) ele.className += " "+cls;
+}
+ 
+function removeClass(ele,cls) {
+  if (hasClass(ele,cls)) {
+    var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+    ele.className=ele.className.replace(reg,' ');
+  }
+}
+ 
+//call the functions
+addClass(document.getElementById("test"), "test");
+removeClass(document.getElementById("test"), "test")
+if(hasClass(document.getElementById("test"), "test")){//do something};
+ */
+function addClass(obj, cls){
+    var obj_class = obj.className,//获取 class 内容.
+    blank = (obj_class != '') ? ' ' : '';//判断获取到的 class 是否为空, 如果不为空在前面加个'空格'.
+    added = obj_class + blank + cls;//组合原来的 class 和需要添加的 class.
+    obj.className = added;//替换原来的 class.
+}
+ 
+function removeClass(obj, cls){
+    var obj_class = ' '+obj.className+' ';//获取 class 内容, 并在首尾各加一个空格. ex) 'abc        bcd' -> ' abc        bcd '
+    obj_class = obj_class.replace(/(\s+)/gi, ' '),//将多余的空字符替换成一个空格. ex) ' abc        bcd ' -> ' abc bcd '
+    removed = obj_class.replace(' '+cls+' ', ' ');//在原来的 class 替换掉首尾加了空格的 class. ex) ' abc bcd ' -> 'bcd '
+    removed = removed.replace(/(^\s+)|(\s+$)/g, '');//去掉首尾空格. ex) 'bcd ' -> 'bcd'
+    obj.className = removed;//替换原来的 class.
+}
+ 
+function hasClass(obj, cls){
+    var obj_class = obj.className,//获取 class 内容.
+    obj_class_lst = obj_class.split(/\s+/);//通过split空字符将cls转换成数组.
+    x = 0;
+    for(x in obj_class_lst) {
+        if(obj_class_lst[x] == cls) {//循环数组, 判断是否包含cls
+            return true;
+        }
+    }
+    return false;
+}
+function btn_color() {
+    var o = "orange";
+    var r = "red";
+    if(hasClass(document.getElementById("pp"), "test")){
+        document.getElementById("dd").style.color=r;
+        removeClass(document.getElementById("pp"), "test")
+    }else{
+        document.getElementById("dd").style.color=o;
+        addClass(document.getElementById("pp"), "test");
+    }
+}
+</script>
+<style>
+
+</style>
+</head>
+<body id="dd">
+
+<button onclick="btn_color()">click</button>
+<p id="pp" class="">sdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+
+<p></p>
+
+</body>
+</html>

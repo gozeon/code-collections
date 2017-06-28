@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		window.onresize=function(){
+			var h = document.documentElement.clientHeight;
+			var w = document.documentElement.clientWidth;
+			document.title=h+","+w;
+		}
+		// document.documentElement.clientHeight; 兼容IE6的写法
+		// window对象的事件：onload加载完成 onresize 调整尺寸 onscroll 滚动滚轮
+	</script>
+</body>
+</html>

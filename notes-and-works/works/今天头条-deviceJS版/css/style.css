@@ -1,0 +1,433 @@
+*{
+	margin: 0;
+	padding: 0;
+	font-family: Arial,​Helvetica,​"Hiragin...osoft YaHei",​sans-serif;
+}
+a{
+	text-decoration: none;
+}
+li{
+	list-style-type: none;
+}
+/********************************头部**************************************/
+.header{
+	width: 1349px;
+	height: 58px;
+	box-shadow: 0 1px 4px 0 rgba(0,0,0,.12);
+}
+.header div{
+	float: left;
+}
+.header .logo{
+	position: relative;
+	left: 145px;
+	width: 128px;
+	height: 58px;
+	line-height: 58px;
+}
+.header a img{
+	position: relative;
+	vertical-align: middle;
+	width: 108px;
+	height: 27px;
+}
+.header a:hover{
+	cursor: auto;
+}
+.search{
+	position: relative;
+	left: 148px;
+	width: 600px;
+	height: 32px;
+	margin-top: 15px;
+	background-color: #F5F6F7;
+	border: 1px solid #e9e9e9;
+}
+.search .input_group{
+	position: relative;
+	left: 20px;
+}
+.search .input_group input{
+	outline:none;
+	border: 0;
+	background-color: #F5F6F7;
+	width: 540px;
+	height: 32px;
+}
+.btn_sublime{
+	position: relative;
+	left: 20px;
+	width: 32px;
+	height: 32px;
+
+}
+.btn_sublime button{
+	outline:none;
+	cursor: pointer;
+	width: 32px;
+	height: 32px;
+	background-color: transparent;
+	background: url(http://s3b.pstatp.com/toutiao/resource/toutiao_web/static/style/image/newindex/search_ic_home_ce3b2c9.png?__sprite) no-repeat;
+	background-position: center;
+	border: 0;
+}
+/*.btn_sublime  i{
+	text-align: center;
+	width: 17px;
+	height: 16px;
+	background: url(http://s3b.pstatp.com/toutiao/resource/toutiao_web/static/style/image/newindex/search_ic_home_ce3b2c9.png?__sprite) no-repeat;
+}*/
+.header .nav{
+	float: right;
+	margin-right: 145px;
+	margin-top: 30px;
+}
+.header .nav a{
+	text-decoration: none;
+	color: #0E0D0D;
+}
+.header .nav a:hover{
+	color: #7E7979;
+}
+/********************************右侧大盒子**************************************/
+.rightbigbox{
+	float:right;
+	width:932px;
+}
+/********************************内容**************************************/
+
+.content{
+	width: 1060px;
+	height: 3000px;
+	margin: 20px auto;
+	/*border: 1px solid #FA6F6F;*/
+}
+/********************************左nav**************************************/
+.left-nav{
+	/*position: fixed;*/
+	float: left;
+	width: 128px;
+	height: 542px;
+	/*background-color: #F6FD76;*/
+}
+.left-nav li{
+	width: 90px;
+	height: 36px;
+	/*background-color: #F3B950;*/
+	list-style-type: none;
+	margin-bottom: 10px;
+	text-align: center;
+	border-radius: 22px;
+}
+.left-nav li:first-child{
+	background-color: #f1f2f3;
+}
+.left-nav li:hover {
+	background-color: #f1f2f3;
+}
+.left-nav li a{
+	text-decoration: none;
+	color: #000;
+	line-height: 36px;
+}
+
+.left-nav .sspan{
+	/*background-image: url("http://s3.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/recommand_channel_cb0189a.svg"), none;*/
+    background-position: left center;
+    background-repeat: no-repeat;
+    display: inline-block;
+    line-height: 26px;
+    padding-left: 34px;
+    vertical-align: middle;
+}
+.cicon0{
+	background-image: url("http://s3.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/recommand_channel_cb0189a.svg"), none;
+}
+.cicon1{
+	background-image: url("http://s3b.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/hot_channel_47bfa83.svg"), none;
+}
+.cicon2{
+	background-image: url("http://s3.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/video_channel_5444f9f.svg"), none;
+}
+.cicon2::after{
+	background-image: url("http://s3a.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/hot_f94cedc.svg"), none;
+    background-repeat: no-repeat;
+    content: "";
+    display: block;
+    height: 11px;
+    left: 35px;
+    top: -25px;
+    position: relative;
+    width: 25px;
+}
+.cicon3{
+	background-image: url("http://s3.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/image_channel_30da635.svg"), none;
+}
+.cicon4{
+	background-image: url("http://s3b.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/joke_channel_eb50b75.svg"), none;
+}
+.cicon4::after{
+	background-image: url("http://s3.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/newlabel_4d2e134.svg"), none;
+    background-repeat: no-repeat;
+    content: "";
+    display: block;
+    height: 11px;
+    left: 35px;
+    top: -25px;
+    position: relative;
+    width: 25px;
+}
+.cicon5{
+	background-image: url("http://s3.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/social_channel_1a2697a.svg"), none;
+}
+.cicon6{
+	background-image: url("http://s3a.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/entertainment_channel_1c98fe6.svg"), none;
+}
+.cicon7{
+	background-image: url("http://s3b.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/technology_channel_c97aa7b.svg"), none;
+}
+.cicon8{
+	background-image: url("http://s3a.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/car_channel_b05f164.svg"), none;
+}
+
+.cicon9{
+	background-image: url("http://s3a.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/sports_channel_ab5b212.svg"), none;
+}
+.cicon10{
+	background-image: url("http://s3b.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/finance_channel_d05b4fe.svg"), none;
+}
+.cicon11{
+	background-image: url("http://s3b.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/funny_channel_ca5636a.svg"), none;
+}
+.cicon12{
+	background-image: url("http://s3a.pstatp.com/toutiao/resource/toutiao_web/static/style/image/svg/more_channel_991fae7.svg"), none;
+}
+/********************************右边广告*************************************/
+.right-ad{
+	float: right;
+	width: 300px;
+	/*height: 1500px;*/
+	/*background-color: #F79696;*/
+}
+.ad{
+	width: 300px;
+	height: 300px;
+	margin-bottom: 100px;
+}
+.ad img{
+	height: 300px;
+	width: 300px;
+}
+
+#right-ad{
+	/*border: 1px solid #070404;*/
+	position: relative;
+	height: 630px;
+	/*background-color: #F8B3B3;*/
+	/*margin-top: -*/
+}
+#right-ad .firendlink{
+	margin-top: 150px;
+	height: 200px;
+	line-height: 32px;
+}
+#right-ad .firendlink span{
+	border-right: 1px solid #EAE0E0;
+	padding-right: 10px;
+	font-size: 14px;
+}
+#right-ad .padmes{
+	margin-top: 52px;
+	height: 168px;
+	background-color: #f5f6f7;
+}
+/********************************中间内容*************************************/
+.main{
+	float: left;
+	width: 600px;
+	height: 1000px;
+}
+.main ul li{
+	list-style-type: none;
+	width: 600px;
+	height: 117px;
+	border-bottom: 1px solid #f5f6f7;
+
+	/*border-bottom: 1px solid #248BF3;*/
+	/*background-color: #93EC7D;*/
+}
+.firstli{
+	/*background-color: #64EAE9;*/
+	height: 165px;
+	padding: 16px 0;
+}
+.li-header{
+	height: 22px;
+	margin-bottom: 4px;
+}
+.li-header a{
+	text-decoration: none;
+	color: #222;
+	font-size: 18px;
+	font-weight: 700;
+}
+.li-img{
+	position: relative;
+	margin: 10px 0;
+	width: 100%;
+	height: 110px;
+}
+.li-img a{
+	border: 1px solid #e8e8e8;
+    float: left;
+    height: 108px;
+    margin-right: 6px;
+    width: 194px;
+}
+.li-img a img{
+	width: 100%;
+	height: 100%;
+}
+.li-img span{
+	background: rgba(0, 0, 0, 0.5) none repeat scroll 0 0;
+    border-radius: 10px;
+    color: #fafafa;
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 6px;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    text-align: center;
+}
+.li-footer{
+	width: 100%;
+	clear: both;
+	height: 14px;
+	color: #999;
+    font-size: 12px;
+    height: 14px;
+    line-height: 14px;
+	/*background-color: #F78F8F;*/
+}
+.li-footer a{
+	color: #999;
+    font-size: 12px;
+    text-decoration: none;
+}
+.li-footer .span2{
+	background-image: url(../image/1.png);
+	/*background-image: url("//s3a.pstatp.com/toutiao/resource/toutiao_web/static/style/image/newindex/dislike_normal_6e79811.png");*/
+    /*background-position: center center;*/
+    background-repeat: no-repeat;
+    cursor: pointer;
+    float: right;
+    height: 12px;
+    width: 18px;
+}
+
+.li-box{
+	width: 100%;
+	height: 64px;
+	padding: 16px 0;
+}
+.box-left{
+	float: left;
+	height: 82px;
+	width: 126px;
+	border: 1px solid #F69797;
+}
+.box-left img{
+	height: 100%;
+	width: 100%;	
+}
+.box-right{
+	float: right;
+	height: 84px;
+	width: 456px;
+	/*background-color: #67FCB2;*/
+	
+}
+.box-right .box-right-top{
+	height: 21px;
+	margin-bottom: 4px;
+	/*background-color: #F99F9F;*/
+	line-height: 21px;
+	overflow: hidden;
+}
+.box-right-top a{
+	font-size: 18px;
+	font-weight: 700;
+	color: #222;
+}
+.box-right .box-right-mid{
+	height: 36px;
+	margin-bottom: 8px;
+	/*background-color: #ABFEF3;*/
+	overflow: hidden;
+	line-height: 18px;
+}
+.box-right-mid a{
+	color: #4f5157;
+	font-size: 12px;
+	font-weight: 400;
+}
+.box-right .box-right-bot{
+	height: 14px;
+/*	background-color: #378FC9;*/
+	width: 100%;
+	color: #999;
+    font-size: 12px;
+    height: 14px;
+    line-height: 14px;
+}
+.box-right-bot a{
+	color: #999;
+    font-size: 12px;
+}
+.box-right-bot .span2{
+	background-image: url(../image/1.png);
+	/*background-image: url("//s3a.pstatp.com/toutiao/resource/toutiao_web/static/style/image/newindex/dislike_normal_6e79811.png");*/
+    /*background-position: center center;*/
+    background-repeat: no-repeat;
+    cursor: pointer;
+    float: right;
+    height: 12px;
+    width: 18px;
+}
+/********************************ToolTip**************************************/
+
+.right-nav{
+	position: fixed;
+	right: 83px;
+	bottom: 40px;
+	width: 46px;
+	height: 83px;
+	/*background-color: #F78A8A;*/
+	/*border: 1px solid #e9e9e9;*/
+	border-radius: 22px;
+	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.18);
+}
+.right-nav li{
+	list-style-type: none;
+}
+.right-nav a{
+	display: block;
+	height: 41px;
+}
+.atop {
+	height: 41px;
+	background-color: #F9BDBD;
+	border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    border-bottom: 1px solid #e9e9e9;
+    background: url(http://s3a.pstatp.com/toutiao/resource/toutiao_web/static/style/image/newindex/nrefresh_1def494.png?__sprite%22) no-repeat scroll 13px 14px;
+}
+.abot {
+	height: 41px;
+	background-color: #5DF08F;
+	border-bottom-left-radius: 22px;
+    border-bottom-right-radius: 22px;
+    background: url(http://s3.pstatp.com/toutiao/resource/toutiao_web/static/style/image/newindex/top_04f6ce0.png) no-repeat scroll 13px 14px;
+}

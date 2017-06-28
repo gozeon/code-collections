@@ -1,0 +1,73 @@
+* {
+	margin: 0px;
+	padding: 0px;
+}
+a {
+	display: inline-block;
+	text-decoration: none;
+	color: #505050;
+}
+
+.header-bar{
+	width: 100%;
+	height: 80px;
+}
+	.header{
+		width: 100%;
+		height: 44px;
+		background-color: #D43D3D;
+	}
+
+		.header-left{
+			float: left;
+		}
+
+		.header-right{
+			float: right;
+		}
+		.header-right a,.header-left a{
+			width: 50px;
+			height: 44px;
+		}
+		.header-middle{
+			width: 115px;
+			height: 44px;
+			margin: 0 auto;
+		}
+			.header-middle a:first-child{
+				float: left;
+				height: 44px;
+				width: 87px;
+			}
+			.header-middle a:last-chlid{
+				float: right;
+				height: 44px;				
+				width: 28px;
+			}
+	.bar{
+		/*width: 100%;*/
+		height: 36px;
+		background-color: #F4F5F6;	
+	}
+/*		.bar-left,.bar-right{
+			display: inline;
+		}*/
+		.bar .bar-left{
+			height: 36px;
+			float: left;
+			height: 36px;
+			background-color: #FF6565;
+/*			white-space: nowrap;
+			nowrap： 强制在同一行内显示所有文本，合并文本间的多余空白，直到文本结束或者遭遇br对象。*/ 
+		}
+		.bar .bar-right {
+			/*background-color: #931212;*/
+			float: right;
+			width: 50px;
+			height: 36px;
+		}
+			.bar-right a img{
+				width: 50px;
+				height: 36px;
+			}
+	

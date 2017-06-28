@@ -1,0 +1,27 @@
+{
+  "name": "Typescript-Study",
+  "version": "1.0.0",
+  "description": "### 基础 ```bash   npm install -g typescript   tsc ./basics.ts ``` basics.js 文件为编译后的文件，可进行对比",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gozeon/Typescript-Study.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gozeon/Typescript-Study/issues"
+  },
+  "homepage": "https://github.com/Gozeon/Typescript-Study#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-tslint": "^7.1.0",
+    "gulp-typescript": "^3.1.5",
+    "tslint": "^4.5.1",
+    "typescript": "^2.2.1"
+  }
+}

@@ -1,0 +1,3 @@
+min-width属性、max-width属性
+当盒子的宽度是百分比来指定的话，很多时候要设置最小的宽度和最大的宽度。
+min-width、max-width两个属性  --  IE7开始兼容

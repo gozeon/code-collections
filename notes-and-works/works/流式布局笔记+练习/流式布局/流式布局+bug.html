@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		div{
+			width: 80%;
+			height: 400px;
+			background-color: #F7ABAB;
+			margin: 0 auto;
+		}
+		p:first-child{
+			width: 50%;
+			height: 200px;
+			background-color: #8EF0B6;
+			float: left;
+			border: 2px solid #FBB16C;   
+			/*加上border时，由于宽度不够，第二个p元素会自动换行*/
+			box-sizing: border-box;   //可添加边框
+		}
+		p:last-child{
+			width: 50%;
+			height: 200px;
+			background-color: #D7F36D;
+			float: left;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<p></p>
+		<p></p>
+	</div>
+</body>
+</html>

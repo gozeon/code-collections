@@ -1,0 +1,12 @@
+视口
+    苹果主导的这些手机厂商，为了使用户获得完整的web体验（就是让用户在手机屏幕上，也能看见完整的PC网页），绝大部分设备都会欺骗浏览器返回一个数值较大的“视口”（viewport），告诉浏览器，别以为我身子小，但是我想以980ox宽度来显示这个网页。分辨率和视口没有关系，都是980，太大了 ，所以要约束视口。
+
+约束视口  ->视口变为了320
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport">
+	一个 id和 name为viewport的meta元标记，就表示现在要约束视口了。具体规则写在 content中，每个约束规则用逗号隔开。
+	width=device-width ->  命令视口的宽度。变为设备的宽(以1024*768屏幕为标准 一般320~380不等)
+	initial-scale=1.0  ->  命令视口默认的缩放等级为1
+	minimum-scale=1.0  ->  命令视口最小缩放等级1
+	maximum-scale=1.0  ->  命令视口最大缩放等级1
+	user-scalable=no   ->  不允许用户缩放
+

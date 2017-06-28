@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport">
+	<link rel="stylesheet" href="1.css" id="mylink">
+</head>
+<body>
+	<script type="text/javascript">
+		// 不要用onload！
+		changeCSS();
+		window.onresize=changeCSS;
+		function changeCSS(){
+			var w = document.documentElement.clientWidth;
+			if (w<600) {
+				document.getElementById("mylink").href="2.css";
+			}else {
+				document.getElementById("mylink").href="1.css";
+			}
+			
+		}
+	</script>
+</body>
+</html>

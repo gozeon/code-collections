@@ -1,0 +1,28 @@
+1.认识百分比
+流式布局么就是用百分比设置宽度的布局形式。
+目标宽度 / 上下文宽度 = 值
+
+只要是在子元素css中，出现百分比的数值：width，padding，margin，一定指的是父元素的width值得那些百分比。（参考标准是父元素的width）
+百分比数值，只能出现在width，padding，margin上，边框的宽度没有百分比！
+
+2.box-sizing属性
+这个属性是CSS3新增的属性，IE8开始兼容。这个属性用来规定，css中出现的width值，是谁的宽度.
+
+语法：
+box-sizing：content-box | border-box
+
+默认值：content-box
+
+适用于：所有接受 <' width '> 和 <' height '> 的元素
+
+继承性：无
+
+动画性：否
+
+计算值：指定值
+取值：
+content-box： padding和border不被包含在定义的width和height之内。对象的实际宽度等于设置的width值和border、padding之和，即 ( Element width = width + border + padding ) 
+此属性表现为标准模式下的盒模型。 
+border-box： padding和border被包含在定义的width和height之内。对象的实际宽度就等于设置的width值，即使定义有border和padding也不会改变对象的实际宽度，即 ( Element width = width ) 
+此属性表现为怪异模式下的盒模型。
+
