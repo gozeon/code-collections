@@ -1,0 +1,14 @@
+{
+  "name": "gago-create-node",
+  "version": "1.0.2",
+  "bin": {
+    "gago-create-node": "./bin/gago-create-node.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "co": "^4.6.0",
+    "commander": "^2.9.0",
+    "fs-extra": "^2.1.2"
+  }
+}
