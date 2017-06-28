@@ -1,0 +1,32 @@
+.tabs {
+    margin: -35px 0 0;
+}
+
+.tabs .tab-list {
+    padding: 0;
+    list-style: none;
+    border: 0;
+}
+
+.tabs .tab-list .tab {
+    border: none;
+    cursor: pointer;
+    color: #aaa;
+    padding: 6px 12px;
+    border-bottom: 4px solid transparent;
+}
+
+.tabs .tab-list .tab svg {
+    margin: 0 6px 5px 0;
+}
+
+.tabs .tab-list .tab:focus {
+    border-color: #b6bf00;
+    box-shadow: none;
+}
+
+.tabs .tab-list .tab-select {
+    color: #fff;
+    border-color: #b6bf00;
+    background: none;
+}

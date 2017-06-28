@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es5",
+    "jsx": "react",
+    "baseUrl": "./",
+    "sourceMap": true,
+    "importHelpers": true,
+    "lib": [
+      "dom",
+      "es5",
+      "es6",
+      "es7"
+    ]
+  }
+}

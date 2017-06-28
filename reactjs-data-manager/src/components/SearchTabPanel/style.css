@@ -1,0 +1,46 @@
+.search-tab-panel {
+    padding: 0 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.search-tab-panel .select-time {
+    margin-left: 10px;
+    padding: 2px 5px;
+    color: #ffffff;
+    border-bottom: 1px solid #fff;
+}
+
+.search-tab-panel .select-time svg {
+    margin: 0 6px 3px 5px;
+}
+
+.date-picker-footer {
+    color: #69c8ff;
+    text-align: center;
+}
+
+.btn {
+    display: flex;
+    width: 420px;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    border-radius: 6px;
+    border: 0;
+    background: #b6bf00;
+    padding: 6px 10px;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    color: #ffffff;
+    vertical-align: middle;
+    outline: 0;
+}
+.btn-loading {
+    cursor: progress;
+    background: #ffffff;
+
+}
