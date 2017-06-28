@@ -1,0 +1,29 @@
+{
+  "name": "toolbox-node-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "fs-extra": "^2.1.2",
+    "gen-id": "^0.1.1",
+    "mongodb": "^2.2.25",
+    "sphericalmercator": "^1.0.5",
+    "urllib": "^2.21.2",
+    "uuid": "^3.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://git.azure.gagogroup.cn/goze/toolbox-node-js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "connect-timeout": "^1.8.0"
+  }
+}

@@ -1,0 +1,403 @@
+FROMAT: 1A
+HOST: http://42.159.145.230
+
+# Group V1
+
+## 新建任务 [/v1/task]
+
+### 新建一个任务 [POST]
+
++ Request (application/json)
+
+    + Body
+
+            {
+              "taskName": "A区-农事-某某-2017",  (string, required)
+              "taskColumns": [
+                {
+                  "displayName": "地块名称"，
+                  "name": "landName"，
+                  "type": "string" (stirng, number, date)
+                },
+                {
+                  "displayName": "地块数量"，
+                  "name": "landNums"，
+                  "type": "number"
+                }
+              ]
+            }
+
++ Response 200 (application/json)
+
+      + Body
+
+            {
+              "taskId": 231312
+            }
+
+## 获取任务详情 [/v1/task/:task_id]
+
+### 根据任务id获取任务详情 [GET]
+
++ Response 200 (application/json)
+
+      + Body 
+
+            {
+              "data": [
+                {
+                  "_id": "58ff78433a282f1b4317e79f",
+                  "taskId": 1633738552,
+                  "landName": "A区-小麦",
+                  "landNums": 12,
+                  "polygon": [
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ],
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ],
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ],
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ],
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ]
+                  ],
+                  "landId": "3523333211"
+                },
+                {
+                  "_id": "58ff78443a282f1b4317e7a0",
+                  "taskId": 1633738552,
+                  "landName": "A区-小麦",
+                  "landNums": 12,
+                  "polygon": [
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ],
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ],
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ],
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ],
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ]
+                  ],
+                  "landId": "5219533317"
+                },
+                {
+                  "_id": "58ff78453a282f1b4317e7a1",
+                  "taskId": 1633738552,
+                  "landName": "A区-小麦",
+                  "landNums": 12,
+                  "polygon": [
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ],
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ],
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ],
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ],
+                    [
+                      125.06767272949219,
+                      43.76315996157263
+                    ]
+                  ],
+                  "landId": "8356627514"
+                }
+              ]
+            }
+
+## 获取所有任务 [/v1/tasks]
+
+### 获取历史操作的所有任务 [GET]
+
++ Response 200 (application/json)
+
+      + Body
+
+            {
+              "tasks": [
+                {
+                  "taskName": "A区-农事-某某-2017",
+                  "taskId": "1633738552",
+                  "createAt": "2017-04-25T16:24:17.119Z"
+                },
+                {
+                  "taskName": "A区-农事-某某-2017",
+                  "taskId": "1633738552",
+                  "createAt": "2017-04-25T16:24:17.119Z"
+                }
+              ]
+            }
+
+## 自动识别地块 [/v1/identify_land{?lon,lat,zoom}]
+
+### 根据经纬度和阈值，自动识别地块 [GET]
+
++ Parameters
+
+    + lon: 125.06 (number) - 经度
+    + lat: 40.06 (number) - 纬度
+    + zoom: 4 (number)
+
++ Response 200 (application/json)
+
+      + Body
+
+            {
+              "data": [
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ],
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ],
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ],
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ],
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ]
+              ]
+            }
+
+## 获取任务配置 [/v1/task_columns{?task_id}]
+
+### 根据任务ID 获取任务配置 [GET]
+
++ Parameters
+
+    + task_id: 12313 (number) - 任务ID
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+              "taskColumns": [
+                {
+                  "displayName": "地块名称"，
+                  "name": "landName"，
+                  "type": "string" (stirng, number, date)
+                },
+                {
+                  "displayName": "地块数量"，
+                  "name": "landNums"，
+                  "type": "number"
+                }
+              ]
+            }
+
+## 新建地块 [/v1/land]
+
+### 将画好的地块和配置信息保存起来 [POST]
+
++ Request (application/json)
+
+    + Body
+
+            {
+              "taskId": 12313
+              "landName": "A区-小麦",
+              "landNums": 12,
+              "polygon": [
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ],
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ],
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ],
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ],
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ]
+              ]
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+              "landId": 123123
+            }
+
+## 获取geojson [/v1/geojson{?task_id}]
+
+### 根据taskID获取所有land的geojson [GET]
+
++ Parameters
+
+    + task_id: 12313 (number) - 任务ID
+
++ Response 200 (application/json)
+
+    + Body
+
+
+
+# Group V2
+
+## 新建任务 [/v2/task]
+
+### 新建一个任务 [POST]
+
++ Request (application/json)
+
+      + Body
+
+            {
+              "taskName": 'dsa',
+              "taskContent": {
+                geojson: "标准格式"
+              }
+            }
++ Response 200 (application/json)
+
+      + Body
+
+            {
+              "taskId": 1231331
+            }
+
+## 获取任务详情 [/v2/task/:task_id]
+
+### 根据任务id获取任务详情 [GET]
+
++ Response 200 (application/json)
+
+      + Body 
+
+            {
+              "taskName": "A区-农事-某某-2017",
+              "taskContent": {
+                标准geojson
+              },
+              "taskId": "1448551132",
+              "createAt": "2017-04-24T07:49:56.848Z"
+            }
+
+## 获取所有任务 [/v2/tasks]
+
+### 获取历史操作的所有任务 [GET]
+
++ Response 200 (application/json)
+
+      + Body
+
+            {
+              "tasks": [
+                  {
+                  "taskName": "A区-农事-某某-2017",
+                  "taskId": "1448551132",
+                  "createAt": "2017-04-24T07:49:56.848Z"
+                  },
+                  {
+                    "taskName": "A区-农事-某某-2017",
+                    "taskId": "3783421443",
+                    "createAt": "2017-04-24T07:49:57.564Z"
+                  },
+                  {
+                    "taskName": "A区-农事-某某-2017",
+                    "taskId": "9546359542",
+                    "createAt": "2017-04-24T07:49:55.314Z"
+                  }
+              ]
+            }
+
+## 自动识别地块 [/v2/identify_land{?lon,lat,zoom}]
+
+### 根据经纬度和阈值，自动识别地块 [GET]
+
++ Parameters
+
+    + lon: 125.06 (number) - 经度
+    + lat: 40.06 (number) - 纬度
+    + zoom: 4 (number)
+
++ Response 200 (application/json)
+
+      + Body
+
+            {
+              "data": [
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ],
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ],
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ],
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ],
+                [
+                  125.06767272949219,
+                  43.76315996157263
+                ]
+              ]
+            }
+
+## 获取geojson [/v2/geojson{?task_id}]
+
+### 根据taskID获取所有land的geojson [GET]
+
++ Parameters
+
+    + task_id: 12313 (number) - 任务ID
+
++ Response 200 (application/json)
+
+    + Body
