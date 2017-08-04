@@ -67,3 +67,36 @@ function arrToJsonNull(arr) {
 
 console.log(arrToJsonNull(['a', 'b', 'c'])) // {"a":{"b":{"c":null}}}
 // console.log(arrToJsonNull(['a'])) // {"a":null}
+
+/**
+ * deep map Object
+ * @param {Function} f 
+ * @param {Object} obj 
+ */
+var deepMap = function (f, obj) {
+  return Object.keys(obj).reduce(function (acc, k) {
+    if ({}.toString.call(obj[k]) == '[object Object]') {
+      acc[k] = deepMap(f, obj[k])
+    } else {
+      acc[k] = f(obj[k], k)
+    }
+    return acc
+  }, {})
+}
+
+var add1 = function (val, key) {
+  console.log(key, val);
+  return val*2;
+}
+
+var o = {
+  a: 1,
+  b: {
+    c: 2,
+    d: {
+      e: 3
+    }
+  }
+}
+
+console.log(deepMap(add1, o)) // { a: 2, b: { c: 4, d: { e: 6 } } }
