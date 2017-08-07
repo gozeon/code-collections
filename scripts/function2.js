@@ -378,3 +378,53 @@ console.log(JSON.stringify(aType[0]));
 // }
 
 // console.log(JSON.stringify(deepMap(function (x) { return x }, data)))
+
+
+/**
+ * return []
+ * @param {*} files 
+ */
+function formatFiles(files) {
+  const addChildren = files.map(x => {
+    delete x.id;
+    delete x.mode;
+    x['aPath'] = x['path'].split('/');
+    x['children'] = [];
+
+    return x;
+  })
+
+  let count = 0;
+
+  addChildren.forEach(x => {
+    if (x['aPath'].length > count) {
+      count = x['aPath'].length;
+    }
+  })
+
+  let aType = [];
+
+  for (let i = 0; i < count; i++) {
+    let tmp = [];
+    for (let j = 0; j < addChildren.length; j++) {
+      if (addChildren[j].aPath.length == i + 1) {
+        tmp.push(addChildren[j]);
+      }
+    }
+    aType[i] = tmp;
+  }
+
+  for (let i = aType.length - 1; i > 0; i--) {
+    for (let j = 0; j < aType[i].length; j++) {
+      let sPath1 = aType[i][j].aPath.slice(0, -1).join('');
+      for (let k = 0; k < aType[i - 1].length; k++) {
+        let sPath2 = aType[i - 1][k].aPath.join('');
+        if (sPath1 == sPath2 && aType[i]) {
+          aType[i - 1][k].children.push(aType[i][j]);
+        }
+      }
+    }
+  }
+
+  return aType[0];
+}
