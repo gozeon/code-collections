@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "outDir": "./dist/",
+    "declaration": true,
+    "declarationDir": "./definitions/",
+    "target": "es5",
+    "lib": ["es2015", "dom"],
+    "experimentalDecorators": true,
+    "sourceMap": true
+  }
+}

@@ -1,0 +1,13 @@
+*.log
+.vscode/
+.idea/
+
+node_modules/
+example/
+scripts/
+src/
+
+/index.html
+/tscofig.json
+/webpack.config.js
+/webpack.config.test.js
