@@ -1,0 +1,10 @@
+node_modules/
+*.log
+.vscode/
+.idea/
+src/
+.gitignore
+webpack.config.js
+scripts/
+CHANGELOG.md
+/export/

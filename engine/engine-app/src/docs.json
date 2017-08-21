@@ -1,0 +1,75 @@
+[
+  {
+    "name": "Map",
+    "children": [
+      {
+        "name": "Map.setCenter(lon, lat, zoom)",
+        "data": {
+          "description": "Sets center",
+          "arguments": [
+            {
+              "name": "lon",
+              "type": "number",
+              "description": "Longitude"
+            },
+            {
+              "name": "lat",
+              "type": "number",
+              "description": "Latitude"
+            },
+            {
+              "name": "zoom",
+              "type": "Zoom level",
+              "description": "Latitude"
+            }
+          ],
+          "returns": "ui.Map"
+        }
+      },
+      {
+        "name": "Map.addLayer(ggObject: GGObject, visParams?: ImageVisualizationParameters)",
+        "data": {
+          "description": "Adds layer to map",
+          "arguments": [
+            {
+              "name": "ggObject",
+              "type": "GGObject",
+              "description": "Subclass of GGObject"
+            },
+            {
+              "name": "visParams",
+              "type": "ImageVisualizationParameters | VectorVisualizationParameters",
+              "description": "mageVisualizationParameters"
+            }
+          ],
+          "returns": "Map.Layer"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Image",
+    "children":[
+      {
+        "name": "normalizedDifference"
+      },
+      {
+        "name": "getDownloadUrl"
+      }
+    ]
+  },
+  {
+    "name": "print(var_args)",
+    "data": {
+      "description": "Prints the arguments to the console.",
+      "arguments": [
+        {
+          "name": "var_args",
+          "type": "(VarArgs<Object>)",
+          "description": "The objects to print."
+        }
+      ],
+      "returns": "void"
+    }
+  }
+]

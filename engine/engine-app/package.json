@@ -1,0 +1,48 @@
+{
+  "name": "engine-app",
+  "version": "0.5.4",
+  "scripts": {
+    "dev": "NODE_ENV=dev ./node_modules/.bin/webpack-dev-server --watch",
+    "build": "npm run clean && NODE_ENV=prod  ./node_modules/.bin/webpack",
+    "build-dev": "npm run clean && NODE_ENV=dev  ./node_modules/.bin/webpack",
+    "clean": "rm -f public/*.*",
+    "publish-major": "node ./scripts/verify.js && npm run build && node ./scripts/publish.js major",
+    "publish-minor": "node ./scripts/verify.js && npm run build && node ./scripts/publish.js minor",
+    "publish-patch": "node ./scripts/verify.js && npm run build && node ./scripts/publish.js patch",
+    "update-api": "node ./scripts/verify.js && npm run clean && node ./scripts/update.js",
+    "update-ui": "node ./scripts/verify.js && npm run clean && node ./scripts/update-ui.js",
+    "changelog": "./node_modules/.bin/conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+  },
+  "devDependencies": {
+    "@mapbox/mapbox-gl-draw": "^1.0.0",
+    "axios": "^0.16.2",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "conventional-changelog-cli": "^1.3.2",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.28.4",
+    "html-webpack-plugin": "^2.29.0",
+    "jquery": "^3.2.1",
+    "json-formatter-js": "^2.2.0",
+    "json-loader": "^0.5.4",
+    "mapbox-gl": "^0.39.1",
+    "md5": "^2.2.1",
+    "style-loader": "^0.18.2",
+    "ts-loader": "^2.3.2",
+    "typescript": "^2.4.2",
+    "uglifyjs-webpack-plugin": "^0.4.6",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.5.1",
+    "webpack-merge": "^4.1.0",
+    "webpack-notifier": "^1.5.0"
+  },
+  "dependencies": {
+    "engine-api": "^1.1.2",
+    "engine-ui": "0.0.7"
+  }
+}

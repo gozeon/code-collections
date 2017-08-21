@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>GAGO Engine</title>
+
+  <link rel="stylesheet" href="/css/jqtree.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="/css/font-awesome.css" rel="stylesheet">
+
+  <script src="/js/lib/jquery.js"></script>
+  <script src="/js/lib/tree.jquery.js"></script>
+  <script src="/js/lib/ace/ace.js"></script>
+  <script src="/js/lib/ace/ext-language_tools.js"></script>
+</head>
+
+<body>
+  <div class="main">
+    <div class="header">
+      <span style="font-weight: bolder;">Gago Engine</span>
+      <div>
+        <span id="displayName"></span>
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+        <span class="sign-out" id="signOut">Sign out</span>
+      </div>
+    </div>
+    <div class="top" id="top">
+      <div id="left" class="directory">
+        <div class="head">
+          <ul class="directory-ul" id="directoryUL">
+            <li class="directory-ul-actived">Scripts</li>
+            <li>Docs</li>
+          </ul>
+        </div>
+        <div id="directoryContent">
+          <div class="content" id="scripts" style="padding: 8px 5px;">
+          </div>
+          <div class="content" id="docs" style="padding: 8px 5px;display: none;">
+            <div id="docTree"></div>
+          </div>
+        </div>
+      </div>
+      <div class="handle-vertical"><img src="/images/vertical_handle.png" alt="handle" id="handle1"></div>
+      <div id="middle" class="editor">
+        <div class="head btn-head">
+          <span id="editorHead">New Script</span>
+          <div>
+            <button id="submitBtn">Run</button>
+            <button id="saveBtn">Save</button>
+            <button id="exportBtn">Export</button>
+          </div>
+        </div>
+        <div id="features"></div>
+        <code id="editor" class="content">// 这里可以写你的代码</code>
+      </div>
+      <div class="handle-vertical"><img src="/images/vertical_handle.png" alt="handle" id="handle2"></div>
+      <div id="right" class="console">
+        <div class="head">
+          <span>Console</span>
+        </div>
+        <div class="content" style="padding: 10px;">
+          <div id="error">
+          </div>
+          <div id="print"></div>
+          <div id="spinkit">
+            <div class="sk-fading-circle">
+              <div class="sk-circle1 sk-circle"></div>
+              <div class="sk-circle2 sk-circle"></div>
+              <div class="sk-circle3 sk-circle"></div>
+              <div class="sk-circle4 sk-circle"></div>
+              <div class="sk-circle5 sk-circle"></div>
+              <div class="sk-circle6 sk-circle"></div>
+              <div class="sk-circle7 sk-circle"></div>
+              <div class="sk-circle8 sk-circle"></div>
+              <div class="sk-circle9 sk-circle"></div>
+              <div class="sk-circle10 sk-circle"></div>
+              <div class="sk-circle11 sk-circle"></div>
+              <div class="sk-circle12 sk-circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="handle"><img src="/images/handle.png" alt="handle" id="handle3"></div>
+
+    <div id="map" class="bottom">
+      <div class="layer-bar" id="layerBar">
+        <span class="layer-bar-btn">Layer</span>
+        <div class="layer-bar-list" id="layerBarList">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="doc-popup" id="docTemplate" style="min-width: 300px;">
+    <div style="display:flex;padding: 6px;flex-direction: row;justify-content: space-between; font-weight: bold; color: #ffffff; background: #4784ed;">
+      <span id="name" style="margin-right: 20px;"></span>
+      <i class="fa fa-times" aria-hidden="true" style="cursor: pointer;" id="close"></i>
+    </div>
+    <div>
+      <p style="padding: 10px 10px;" id="descripttion"></p>
+      <h3 style="padding: 10px 10px;">Arguments:</h3>
+      <div id="arguments"></div>
+      <h3 style="padding: 10px 10px;">Returns: <span id="returns"></span></h3>
+    </div>
+  </div>
+  <div class="model" id="model">
+    <div class="model-content">
+      <h4></h4>
+      <p>Please enter a name for the <span></span>:</p>
+      <input type="text" value="Untitled"> <br />
+      <div id="modeMsg"></div>
+      <button class="yes">确定</button>
+      <button class="no">取消</button>
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </div>
+  </div>
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+  </div>
+  <div class="login" id="login">
+    <div class="login-content">
+      <h3>Sign In</h3>
+      <div class="input">
+        <input type="text" placeholder="name" id="username" required>
+      </div>
+      <div class="input">
+        <input type="password" placeholder="password" id="password" required>
+      </div>
+      <div id="loginMsg"></div>
+      <div>
+        <button class="login-btn" id="loginBtn">登录</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+node_modules/
+*.log
+.vscode/
+.idea/
+public/export.*.js
+public/export.*.js.map
+public/export.html
+public/index.*.js
+public/index.*.js.map
+public/index.html
