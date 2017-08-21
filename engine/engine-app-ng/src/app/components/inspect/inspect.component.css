@@ -1,0 +1,6 @@
+.console {
+  flex: 1;
+  display: flex;
+  background: cadetblue;
+  overflow: auto;
+}

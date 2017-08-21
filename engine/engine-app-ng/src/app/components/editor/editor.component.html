@@ -1,0 +1,11 @@
+<div class="main">
+  <div class="head">
+    <span>{{_editorContent.name}}</span>
+    <div class="btn-group">
+      <button>Run</button>
+      <button [disabled]="!editorContent.path">Save</button>
+      <button>Export</button>
+    </div>
+  </div>
+  <div id="editor"></div>
+</div>

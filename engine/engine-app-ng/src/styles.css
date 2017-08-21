@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~font-awesome/css/font-awesome.css';
+@import '~mapbox-gl/dist/mapbox-gl.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  transition: all .2 linear;
+}
+
+.head {
+  padding: 4px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 19px;
+  background: #4d90fe;
+  padding-bottom: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 22px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100%;
+}

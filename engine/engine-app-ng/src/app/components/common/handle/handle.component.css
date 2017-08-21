@@ -1,0 +1,26 @@
+.horizontal,
+.vertical {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f1f1f1;
+}
+
+.horizontal {
+  border-top: 1px solid #dcdcdc;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.vertical {
+  height: 100%;
+  border-left: 1px solid #dcdcdc;
+  border-right: 1px solid #dcdcdc;
+}
+
+.horizontal img {
+  cursor: ns-resize;
+}
+
+.vertical img {
+  cursor: ew-resize;
+}

@@ -1,0 +1,16 @@
+ #editor {
+   flex: 1;
+   display: flex;
+ }
+
+ .head {
+   justify-content: space-between;
+ }
+
+ .btn-group {
+   display: flex;
+ }
+
+ button {
+   padding: 2px 3px;
+ }

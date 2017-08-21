@@ -1,0 +1,11 @@
+<div class="playground">
+  <div class="top" id="top">
+    <app-directory class="dir" id="left" (seleteNode)="setEditor($event)"></app-directory>
+    <app-handle status="vertical" domId="handle1"></app-handle>
+    <app-editor [editorContent]="editorContent" class="editor" id="middle"></app-editor>
+    <app-handle status="vertical" domId="handle2"></app-handle>
+    <app-inspect class="inspect" id="right"></app-inspect>
+  </div>
+  <app-handle status="horizontal" domId="handle3"></app-handle>
+  <app-map class="map"></app-map>
+</div>

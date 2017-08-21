@@ -1,0 +1,6 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
+  <input type="text" placeholder="用户名" [formControl]="loginForm.controls['username']" />
+  <input type="password" placeholder="密码" [formControl]="loginForm.controls['password']" />
+  <button type="Submit">Submit</button>
+</form>
+<div *ngIf="isError">用户名或密码有错误。</div>
