@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+	<form id="form1">
+		<input type="file" id="imgInp" />
+		<img src="#" id="blah" alt="your image">
+	</form>
+	<hr>
+	<form>
+		<input type="file" id="files" multiple />
+		<img id="image" />
+	</form>
+	<script>
+		// https://stackoverflow.com/questions/23916566/html5-input-type-file-accept-image-capture-camera-display-as-image-rat
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					$('#blah').attr('src', e.target.result);
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		};
+		$("#imgInp").change(function () {
+			readURL(this);
+		});
+
+		// https://stackoverflow.com/questions/14069421/show-an-image-preview-before-upload
+		document.getElementById("files").onchange = function () {
+			var reader = new FileReader();
+
+			reader.onload = function (e) {
+				// get loaded data and render thumbnail.
+				document.getElementById("image").src = e.target.result;
+			};
+
+			// read the image file as a data URL.
+			reader.readAsDataURL(this.files[0]);
+		};
+
+		// http://www.cnblogs.com/tugenhua0707/p/4605593.html
+	</script>
+</body>
+
+</html>
