@@ -2,11 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const zlip = require('zlib');
 const process = require('process');
-const chalk = require('chalk');
-
-const error = chalk.bold.red;
-const warning = chalk.keyword('orange');
-const success = chalk.bold.cyan;
 
 // node gzip.js path
 
@@ -14,13 +9,13 @@ if (process.argv[2]) {
   const TARGET_PATH = path.join(process.cwd(), process.argv[2]);
 
   if (fs.existsSync(TARGET_PATH)) {
-    loop(TARGET_PATH).then(console.log(success('GZip Done!')));
+    loop(TARGET_PATH).then(success('GZip Done!'));
   } else {
-    console.log(error('Please enter the correct file path!'));
+    warning('Please enter the correct file path!');
     return;
   }
 } else {
-  console.log(error('Please enter the correct file path!'));
+  warning('Please enter the correct file path!');
   return;
 }
 
@@ -51,4 +46,12 @@ function gzip(path) {
   const input = fs.createReadStream(path);
   const output = fs.createWriteStream(path + '.gz');
   input.pipe(zlip.createGzip()).pipe(output);
+}
+
+function success(msg) {
+  console.log('\x1b[36m%s\x1b[0m', msg);
+}
+
+function warning(msg) {
+  console.log('\x1b[31m', msg);
 }
