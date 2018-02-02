@@ -1,0 +1,178 @@
+<!-- https://medium.com/@_jh3y/how-to-create-the-ripple-effect-from-google-material-design-c6f993e1d39 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ripple</title>
+  <style>
+    .bg--red {
+      background-color: #e74c3c;
+    }
+
+    .tx--red {
+      color: #e74c3c;
+    }
+
+    .bg--blue {
+      background-color: #00f;
+    }
+
+    .tx--blue {
+      color: #00f;
+    }
+
+    .bg--green {
+      background-color: #2ecc71;
+    }
+
+    .tx--green {
+      color: #2ecc71;
+    }
+
+    .bg--white {
+      background-color: #fff;
+    }
+
+    .tx--white {
+      color: #fff;
+    }
+
+    body {
+      color: #777;
+      text-align: center;
+      padding: 0 0 0 0;
+      margin: 0 0 0 0;
+    }
+
+    button {
+      border: none;
+      padding: 20px;
+      margin: 10px;
+      font-size: 14px;
+      outline: 0;
+      box-shadow: 0px 2px 4px 0px #000;
+      border-radius: 4px;
+    }
+
+    button:active {
+      box-shadow: 0px 2px 6px 0px #000;
+    }
+
+    [ripple] {
+      position: relative;
+      overflow: hidden;
+    }
+
+    [ripple] .ripple--container {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    [ripple] .ripple--container span {
+      transform: scale(0);
+      border-radius: 100%;
+      position: absolute;
+      opacity: 0.75;
+      background-color: #fff;
+      animation: ripple 1000ms;
+    }
+
+    @-moz-keyframes ripple {
+      to {
+        opacity: 0;
+        transform: scale(2);
+      }
+    }
+
+    @-webkit-keyframes ripple {
+      to {
+        opacity: 0;
+        transform: scale(2);
+      }
+    }
+
+    @-o-keyframes ripple {
+      to {
+        opacity: 0;
+        transform: scale(2);
+      }
+    }
+
+    @keyframes ripple {
+      to {
+        opacity: 0;
+        transform: scale(2);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ripple</h1>
+  </header>
+  <div class="content">
+    <button class="bg--red tx--white" ripple="ripple">Fail</button>
+    <button class="bg--blue tx--white" ripple="ripple">Info</button>
+    <button class="bg--green tx--white" ripple="ripple">Save</button>
+  </div>
+
+  <script>
+    (function () {
+      var cleanUp, debounce, i, len, ripple, rippleContainer, ripples, showRipple;
+
+      debounce = function (func, delay) {
+        var inDebounce;
+        inDebounce = undefined;
+        return function () {
+          var args, context;
+          context = this;
+          args = arguments;
+          clearTimeout(inDebounce);
+          return inDebounce = setTimeout(function () {
+            return func.apply(context, args);
+          }, delay);
+        };
+      };
+
+      showRipple = function (e) {
+        var pos, ripple, rippler, size, style, x, y;
+        ripple = this;
+        rippler = document.createElement('span');
+        size = ripple.offsetWidth;
+        pos = ripple.getBoundingClientRect();
+        x = e.pageX - pos.left - (size / 2);
+        y = e.pageY - pos.top - (size / 2);
+        style = 'top:' + y + 'px; left: ' + x + 'px; height: ' + size + 'px; width: ' + size + 'px;';
+        ripple.rippleContainer.appendChild(rippler);
+        return rippler.setAttribute('style', style);
+      };
+
+      cleanUp = function () {
+        while (this.rippleContainer.firstChild) {
+          this.rippleContainer.removeChild(this.rippleContainer.firstChild);
+        }
+      };
+
+      ripples = document.querySelectorAll('[ripple]');
+
+      for (i = 0, len = ripples.length; i < len; i++) {
+        ripple = ripples[i];
+        rippleContainer = document.createElement('div');
+        rippleContainer.className = 'ripple--container';
+        ripple.addEventListener('mousedown', showRipple);
+        ripple.addEventListener('mouseup', debounce(cleanUp, 2000));
+        ripple.rippleContainer = rippleContainer;
+        ripple.appendChild(rippleContainer);
+      }
+    }());
+  </script>
+</body>
+
+</html>
