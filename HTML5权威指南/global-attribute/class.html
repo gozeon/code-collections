@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Example</title>
+	<style type="text/css">
+		.class2 {
+			background-color: grey;
+			color: white;
+			padding: 5px;
+			margin: 2px;
+		}
+		.class1 {
+			font-size: x-large;
+		}
+	</style>
+</head>
+<body>
+	<a class="class1 class2" href="">test1</a>
+	<p></p>
+	<a class="class2 otherclass" href="">test2</a>
+	<script type="text/javascript">
+		var elems = document.getElementsByClassName('otherclass');
+		for (i = 0; i < elems.length; i++) {
+			var x = elems[i];
+			x.style.border = "thin solid black";
+			x.style.backgroundColor = 'white';
+			x.style.color = 'black';
+		}
+	</script>
+</body>
+</html>
