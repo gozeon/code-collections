@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="author" content="goze" />
+	<meta name="description" content="form reset example" />
+	<title>Document</title>
+</head>
+<body>
+	<form id="voteform">
+		<p>
+			<label for="fave">
+				Fruit: <input type="text" id="fave" name="fava" />
+			</label>
+		</p>
+	</form>
+
+	<p>
+		<label for="name">
+			Name: <input type="text" id="name" name="name" form="voteform" />
+		</label>
+	</p>
+
+	<button form="voteform" type="submit">Submit Vote</button>
+	<button form="voteform" type="reset">Reset</button>
+</body>
+</html>
