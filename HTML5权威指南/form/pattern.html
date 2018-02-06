@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="author" content="goze" />
+	<meta name="description" content="input pattern" />
+	<title>Document</title>
+</head>
+
+<body>
+	<form>
+		<p>
+			<label for="name">
+				Name:
+				<input type="text" name="name" id="name" pattern="[A-Za-z]{3}" />
+			</label>
+		</p>
+		<p>
+			<label for="email">
+				Email:
+				<input type="email" placeholder="user@example.com" required pattern=".*@gmail.com" id="email" name="email" />
+			</label>
+		</p>
+
+		<button type="Submit">Submit</button>
+		<input type="submit" value="Save" formnovalidate />
+	</form>
+</body>
+
+</html>
