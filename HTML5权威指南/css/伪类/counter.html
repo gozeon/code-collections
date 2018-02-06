@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
+		body {
+			counter-reset: paracount;
+		}
+
+		p:before {
+			content: counter(paracount) ". ";
+			counter-increment: paracount;
+		}
+	</style>
+</head>
+
+<body>
+	<a href="http://devdocs.io/css/css_lists_and_counters/using_css_counters">reference</a>
+	<p>This is one line.</p>
+	<p>This is two line.</p>
+	<p>This is three line.</p>
+</body>
+
+</html>
