@@ -17,4 +17,8 @@ float.h
 -
 ctype.h
 -
+stdlib.h
+-
+time.h
+-
 

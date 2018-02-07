@@ -3,6 +3,8 @@
 #include <limits.h>
 #include <float.h>
 #include <ctype.h>
+#include <stdlib.h>
+#include <time.h>
 
 void limitDemo() {
     printf("Variables of type char store values form %d to %d\n", CHAR_MIN, CHAR_MAX);
@@ -116,12 +118,23 @@ void convert() {
 //    }
 }
 
+void mathRandom() {
+    int s = rand(); // 每次执行都会随机产生相同的数字
+    srand(time(NULL)); // 重新初始化序列数
+    int v = rand();
+    int a = rand();
+    printf("%d %d %d", s, v, a);
+}
+
 int main() {
 //    limitDemo();
 //    size();
 //    charDemo();
 //    enumeration();
-    convert();
+//    convert();
+
+    mathRandom();
+
 
     return 0;
 }
