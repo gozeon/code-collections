@@ -76,11 +76,25 @@ void enumeration() {
     printf("\n");
 }
 
+void convertUppercaseToLowercase() {
+    char letter = 0;
+    printf("Enter an uppercase letter: ");
+    scanf("%c", &letter);
+
+    if (letter >= 'A' && letter <= 'Z') {
+        letter = letter - 'A' + 'a';
+        printf("Your entered an uppercase %c\n", letter);
+    } else {
+        printf("Try using the shift key! I want a capital letter.\n");
+    }
+}
+
 int main() {
-    limitDemo();
-    size();
-    charDemo();
-    enumeration();
+//    limitDemo();
+//    size();
+//    charDemo();
+//    enumeration();
+    convertUppercaseToLowercase();
 
     return 0;
 }
