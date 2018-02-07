@@ -2,6 +2,7 @@
 #include <math.h>
 #include <limits.h>
 #include <float.h>
+#include <ctype.h>
 
 void limitDemo() {
     printf("Variables of type char store values form %d to %d\n", CHAR_MIN, CHAR_MAX);
@@ -76,17 +77,43 @@ void enumeration() {
     printf("\n");
 }
 
-void convertUppercaseToLowercase() {
+void convert() {
     char letter = 0;
-    printf("Enter an uppercase letter: ");
+    printf("Enter an letter: ");
     scanf("%c", &letter);
-
-    if (letter >= 'A' && letter <= 'Z') {
-        letter = letter - 'A' + 'a';
-        printf("Your entered an uppercase %c\n", letter);
+    if (isalpha(letter)) {
+        if (isupper(letter)) {
+            printf("upper: %c\n", letter);
+            printf("lower: %c\n", tolower(letter));
+        } else if (islower(letter)) {
+            printf("upper: %c\n", toupper(letter));
+            printf("lower: %c\n", letter);
+        }
+        printf("ASCII: %d", letter);
     } else {
-        printf("Try using the shift key! I want a capital letter.\n");
+        printf("You didn't enter letter");
     }
+
+//    char letter = 0;
+//    printf("Enter an letter: ");
+//    scanf("%c", &letter);
+//
+//    if (letter >= 'A') {
+//        if (letter <= 'Z') {
+//            printf("%c\n", tolower(letter));
+//            letter = letter + 'A' - 'a';
+//
+//        } else {
+//            if (letter >= 'a') {
+//                if (letter <= 'z') {
+//                    printf("%c\n", toupper(letter));
+//                    printf("You entered an uppercase %c\n", letter);
+//                }
+//            }
+//        }
+//    } else {
+//        printf("You didn't enter letter");
+//    }
 }
 
 int main() {
@@ -94,7 +121,7 @@ int main() {
 //    size();
 //    charDemo();
 //    enumeration();
-    convertUppercaseToLowercase();
+    convert();
 
     return 0;
 }
