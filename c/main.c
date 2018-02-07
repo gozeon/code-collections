@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
 
 void limitDemo() {
     printf("Variables of type char store values form %d to %d\n", CHAR_MIN, CHAR_MAX);
@@ -118,12 +119,35 @@ void convert() {
 //    }
 }
 
-void mathRandom() {
-    int s = rand(); // 每次执行都会随机产生相同的数字
-    srand(time(NULL)); // 重新初始化序列数
-    int v = rand();
-    int a = rand();
-    printf("%d %d %d", s, v, a);
+//void mathRandom() {
+//    int s = rand(); // 每次执行都会随机产生相同的数字
+//    srand(time(NULL)); // 重新初始化序列数
+//    int v = rand();
+//    int a = rand();
+//    printf("%d %d %d", s, v, a);
+//}
+
+/**
+ * 延时
+ * @param delay 秒
+ */
+void delay(int delay) {
+
+    clock_t start_time = clock();
+
+    for (; clock() - start_time < delay * CLOCKS_PER_SEC;);
+
+}
+
+void sumTime() {
+    clock_t start, end;
+    start = clock();
+    for (int i = 0; i < 10; ++i) {
+        delay(1);
+        printf("%d\n", i);
+    }
+    end = clock();
+    printf("time second: %f", (double) (end - start) / CLOCKS_PER_SEC);
 }
 
 int main() {
@@ -132,9 +156,8 @@ int main() {
 //    charDemo();
 //    enumeration();
 //    convert();
-
-    mathRandom();
-
+//    mathRandom();
+    sumTime();
 
     return 0;
 }
