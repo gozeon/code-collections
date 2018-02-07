@@ -39,12 +39,39 @@ void size() {
 void charDemo() {
     char first = 'a';
     char second = 40;
-    printf("%d - %c - %c - %c", first, second, first + 2, second + 37);
+    printf("%d - %c - %c - %c\n", first, second, first + 2, second + 37);
     printf("\n");
 }
 
 void enumeration() {
+    enum Weekday {
+        Monday,
+        Tuesday,
+        Wednesday,
+        Thursday,
+        Friday,
+        Saturday,
+        Sunday
+    };
 
+    enum Color {
+        red = 2,
+        orange,
+        yellow,
+        green = 4,
+        blue,
+    };
+
+    enum Weekday today = Wednesday;
+    enum Weekday tomorrow = today + 1;
+
+    printf("today: %d\n", today);
+    printf("tomorrow: %d\n", tomorrow);
+
+    enum Color r = red;
+    enum Color o = red + 1;
+    enum Color b = blue;
+    printf("red: %d\norange: %d\nblue: %d\n", r, o, b);
 
     printf("\n");
 }
