@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <string.h>
 
 void limitDemo() {
     printf("Variables of type char store values form %d to %d\n", CHAR_MIN, CHAR_MAX);
@@ -150,6 +151,49 @@ void sumTime() {
     printf("time second: %f", (double) (end - start) / CLOCKS_PER_SEC);
 }
 
+void stringLength() {
+	char str[][70] = {
+    	"Computers do what you tell them to do, not what you want them to do.",
+    	"abcd",
+    	"e",
+    };
+
+    unsigned int strCount = sizeof(str)/sizeof(str[0]);
+
+    for(unsigned int i = 0; i < strCount; ++i) {
+    	printf("The string:\n  \"%s\"\n contains %lu characters.\n", str[i], strlen(str[i]));
+    }
+}
+
+void stringCopy() {
+    char source[] = "plearse copy this line";
+    char destination[50];
+    
+    strcpy(destination, source);
+    printf("source: %s\n", destination);
+    printf("destination: %s\n", destination);
+}
+
+void stringContact() {
+    char str1[50] = "To be, or not to be, ";
+    char str2[] = "that is the question";
+    char result[50];
+    strcat(result, str1);
+    strcat(result, str2);
+    printf("str1: %s\n", str1);
+    printf("str2: %s\n", str2);
+    printf("result: %s\n", result);
+}
+
+void stringSearch() {
+    char str[55] ="This is a string for testing";
+    char *p;
+    p = strchr(str,'i');
+    printf ("Character i is found at position %ld\n", p - str + 1);
+    printf ("%s\n", p);
+    printf ("%s\n", ++p);
+}
+
 int main() {
 //    limitDemo();
 //    size();
@@ -157,7 +201,11 @@ int main() {
 //    enumeration();
 //    convert();
 //    mathRandom();
-    sumTime();
+//    sumTime();
+//    stringLength();
+//    stringCopy();
+//    stringContact();
+    stringSearch();
 
     return 0;
 }
