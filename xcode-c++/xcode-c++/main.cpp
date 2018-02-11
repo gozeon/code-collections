@@ -1,4 +1,3 @@
-//
 //  main.cpp
 //  xcode-c++
 //
@@ -230,6 +229,122 @@ void containerLibraryArray() {
     }
 }
 
+void myFirstPointer() {
+    int firstvalue, secondvalue;
+    int * mypointer;
+    
+    mypointer = &firstvalue;
+    *mypointer = 10;
+    mypointer = &secondvalue;
+    *mypointer = 20;
+    std::cout << "firstvalue is " << firstvalue << std::endl;
+    std::cout << "secondvalue is " << secondvalue << std::endl;
+}
+
+void morePointers() {
+    int firstvalue = 5, secondvalue = 15;
+    int *p1, *p2;
+    
+    p1 = &firstvalue;
+    p2 = &secondvalue;
+    *p1 = 10;  // firstvalue = 10
+    *p2 = *p1; // secondvalue = 10
+    p1 = p2;   // p1 = &secondvalue
+    *p1 = 20;  // secondvalue = 20
+    
+    std::cout << "firstvalue is " << firstvalue << std::endl;
+    std::cout << "secondvalue is " << secondvalue << std::endl;
+}
+
+void pointerArray () {
+    int numbers[5];
+    int *p;
+    
+    p = numbers;
+    *p = 10;
+    p++;
+    *p = 20;
+    p = &numbers[2];
+    *p = 30;
+    p = numbers + 3;
+    *p = 40;
+    p = numbers;
+    *(p + 4) = 50;
+    
+    for (int n = 0; n < 4; n++) {
+        std::cout << numbers[n] << std::endl;
+    }
+}
+
+void increment_all(int *start, int *stop) {
+    int *current = start;
+    
+    while (current != stop) {
+        ++(*current);
+        ++current;
+         std::cout << current << std::endl;
+    }
+}
+
+void print_all(const int *start, const int *stop) {
+    const int *current = start;
+    while (current != stop) {
+        std::cout << *current << std::endl;
+        ++current;
+    }
+}
+
+void pointerAsArgument() {
+    int number[] = {10, 20, 30};
+    increment_all(number, number + 3);
+    print_all(number, number + 3);
+}
+
+void increase(void* data, int psize) {
+    if(psize == sizeof(char)) {
+        char* pchar;
+        pchar = (char*)data;
+        ++(*pchar);
+    } else {
+        int* pint;
+        pint = (int*)data;
+        ++(*pint);
+    }
+}
+
+void voidPointer() {
+    char a = 'x';
+    int b{1602};
+    increase(&a, sizeof(a));
+    increase(&b, sizeof(b));
+    std::cout << a << ", " << b << std::endl;
+}
+
+int addition(int a, int b) {
+    return (a + b);
+}
+
+int subtraction(int a, int b) {
+    return (a - b);
+}
+
+int operation(int x, int y, int (*functocall)(int, int)) {
+    int g;
+    g = (*functocall)(x, y);
+    return (g);
+}
+
+void pointerToFunctions() {
+    int m, n;
+    int (*minus)(int, int) = subtraction;
+    
+    m = operation (7, 5, addition);
+    n = operation (20 ,m, minus);
+    
+    std::cout << m << ", " << n << std::endl;
+    
+}
+
 int main(int argc, const char * argv[]) {
 //    introduction();
 //    declarationOfVariables();
@@ -245,7 +360,13 @@ int main(int argc, const char * argv[]) {
 //    multidimensionalArray();
 //    pseudoMultidimensionalArray();
 //    languageBuildInArray();
-    containerLibraryArray();
+//    containerLibraryArray();
+//    myFirstPointer();
+//    morePointers();
+//    pointerArray();
+//    pointerAsArgument();
+//    voidPointer();
+    pointerToFunctions();
     
     return 0;
 }
