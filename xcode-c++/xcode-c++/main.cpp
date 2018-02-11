@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <array>
 
 void introduction() {
     int a, b, sum;
@@ -171,6 +172,64 @@ void namespaceDemo() {
     std::cout << bar::pi << std::endl;
 }
 
+void multidimensionalArray() {
+    int jimmy [3][5];
+    int n, m;
+    for (n = 0; n < 3; n++) {
+        for (m = 0 ; m < 5; m++) {
+            jimmy[n][m] = (n + 1) * (m + 1);
+        }
+    }
+    
+    for(n = 0; n < 3; n++) {
+        for (m = 0; m < 5; m++) {
+            std::cout << jimmy[n][m] << ' ';
+        }
+        std::cout << std::endl;
+    }
+}
+
+void pseudoMultidimensionalArray() {
+    int jimmy [3 * 5];
+    int n, m;
+    for (n = 0; n < 3; n++) {
+        for(m = 0; m < 5; m ++) {
+            jimmy[n * 5 + m] = (n + 1) * (m + 1);
+        }
+    }
+    
+    for(n = 0; n < 3; n++) {
+        for (m = 0; m < 5; m++) {
+            std::cout << jimmy[n * 5 + m] << ' ';
+        }
+        std::cout << std::endl;
+    }
+}
+
+void languageBuildInArray() {
+    int myarray[3] = {10, 20, 30};
+    
+    for (int i = 0; i < 3; ++i) {
+        ++myarray[i];
+    }
+    
+    for (int elem: myarray) {
+        std::cout << elem << std::endl;
+    }
+}
+
+void containerLibraryArray() {
+    std::array<int, 3> myarray {10, 20, 30};
+    
+    for (int i = 0; i < myarray.size(); ++i) {
+        ++myarray[i];
+    }
+    
+    for (int elem : myarray) {
+        std::cout << elem << std::endl;
+    }
+}
+
 int main(int argc, const char * argv[]) {
 //    introduction();
 //    declarationOfVariables();
@@ -182,7 +241,11 @@ int main(int argc, const char * argv[]) {
 //    Recusivity();
 //    overloadedDome();
 //    templateDemo();
-    namespaceDemo();
-
+//    namespaceDemo();
+//    multidimensionalArray();
+//    pseudoMultidimensionalArray();
+//    languageBuildInArray();
+    containerLibraryArray();
+    
     return 0;
 }
