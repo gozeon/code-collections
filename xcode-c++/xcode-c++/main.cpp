@@ -356,6 +356,11 @@ struct movies_a {
     int year;
 } films [3];
 
+struct movies_p {
+    std::string title;
+    int year;
+};
+
 void printmovie(movies_t movie);
 
 void exampleAboutStructures() {
@@ -393,6 +398,23 @@ void arrayOfStructures() {
     }
 }
 
+void pointersToStructures() {
+    std::string mystr;
+    movies_p amovie;
+    movies_p * pmovie;
+    pmovie = &amovie;
+    
+    std::cout << "Enter title: ";
+    std::getline(std::cin, pmovie -> title);
+    std::cout << "Enter year: ";
+    std::getline(std::cin, mystr);
+    (std::stringstream)mystr >> pmovie -> year;
+    
+    std::cout << "\nYou have entered: \n";
+    std::cout << pmovie -> title;
+    std::cout << "(" << pmovie -> year << ")\n";
+}
+
 void printmovie(movies_t movie) {
     std::cout << movie.title;
     std::cout << "(" << movie.year << ")" << std::endl;
@@ -421,7 +443,7 @@ int main(int argc, const char * argv[]) {
 //    voidPointer();
 //    pointerToFunctions();
 //    exampleAboutStructures();
-    arrayOfStructures();
-
+//    arrayOfStructures();
+    pointersToStructures();
     return 0;
 }
