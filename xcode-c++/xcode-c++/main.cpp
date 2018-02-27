@@ -420,6 +420,112 @@ void printmovie(movies_t movie) {
     std::cout << "(" << movie.year << ")" << std::endl;
 }
 
+class Rectangle {
+    int width, height;
+public:
+    void set_values(int, int);
+    int area() {
+        return width * height;
+    }
+};
+
+void Rectangle::set_values(int x, int y) {
+    width = x;
+    height = y;
+}
+
+void classesExample() {
+    Rectangle rect;
+    rect.set_values(4, 6);
+    std::cout << "area: " << rect.area() << std::endl;
+}
+
+void oneClassTwoObjects() {
+    Rectangle rect, rectb;
+    rect.set_values(3, 4);
+    rectb.set_values(5, 6);
+    
+    std::cout << "rect area: " << rect.area() << std::endl;
+    std::cout << "rectb area: " << rectb.area() << std::endl;
+}
+
+class RectangleC {
+    int width, height;
+public:
+    RectangleC ();
+    RectangleC (int, int);
+    int area() {return (width * height);}
+};
+
+RectangleC::RectangleC () {
+    width = 5;
+    height  =6;
+}
+
+RectangleC::RectangleC (int a, int b) {
+    width = a;
+    height = b;
+}
+
+void classConstructor() {
+    RectangleC rect(3, 4);
+    RectangleC rectb(5, 6);
+    
+    std::cout << "rect area: " << rect.area() << std::endl;
+    std::cout << "rectb area: " << rectb.area() << std::endl;
+}
+
+void overloadingClassConstructors() {
+    RectangleC rect (3, 4);
+    RectangleC rectb;
+    
+    std::cout << "rect area: " << rect.area() << std::endl;
+    std::cout << "rectb area: " << rectb.area() << std::endl;
+}
+
+class Circle {
+    double radius;
+public:
+    Circle(double r): radius(r) {}
+    double area() {return radius * radius * 3.14159265;}
+};
+
+class Cylinder {
+    Circle base;
+    double height;
+public:
+    Cylinder(double r, double h): base(r), height(h){}
+    double volume() {return base.area() * height;}
+};
+
+void memberIntialization() {
+    Cylinder foo( 10, 20);
+    std::cout << "foo's volume: " << foo.volume() << std::endl;
+}
+
+class RectangleP {
+    int width, height;
+public:
+    RectangleP(int x, int y) : width(x), height(y) {}
+    int area(void) { return width * height; }
+};
+
+void pointerToClassesExampole() {
+    RectangleP obj (3, 4);
+    RectangleP * foo, * bar, * baz;
+    foo = &obj;
+    bar = new RectangleP (5 ,6);
+    baz = new RectangleP[2] { {2, 5}, {3 ,6} };
+    
+    std::cout << "obj's area: " << obj.area() << std::endl;
+    std::cout << "*foo's area: " << foo -> area() << std::endl;
+    std::cout << "*bar's area: " << bar -> area() << std::endl;
+    std::cout << "baz[0]'s area: " << baz[0].area() << std::endl;
+    std::cout << "baz[1]'s area: " << baz[1].area() << std::endl;
+    
+    delete bar;
+    delete [] baz;
+}
 int main(int argc, const char * argv[]) {
 //    introduction();
 //    declarationOfVariables();
@@ -444,6 +550,13 @@ int main(int argc, const char * argv[]) {
 //    pointerToFunctions();
 //    exampleAboutStructures();
 //    arrayOfStructures();
-    pointersToStructures();
+//    pointersToStructures();
+//    classesExample();
+//    oneClassTwoObjects();
+//    classConstructor();
+//    overloadingClassConstructors();
+//    memberIntialization();
+    pointerToClassesExampole();
+    
     return 0;
 }
