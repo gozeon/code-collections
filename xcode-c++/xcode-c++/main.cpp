@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 #include <array>
+#include <fstream>
 
 void introduction() {
     int a, b, sum;
@@ -526,6 +527,46 @@ void pointerToClassesExampole() {
     delete bar;
     delete [] baz;
 }
+
+class CVector {
+public:
+    int x, y;
+    CVector () {};
+    CVector (int a, int b) : x(a), y(b) {}
+    CVector operator + (const CVector&);
+};
+
+CVector CVector::operator+(const CVector& param) {
+    CVector temp;
+    temp.x = x + param.x;
+    temp.y = y + param.y;
+    
+    return temp;
+}
+
+void overloadingOperatorsExample() {
+    CVector foo (3, 1);
+    CVector bar (1, 2);
+    CVector result;
+    result = foo + bar;
+    std::cout << result.x << "," << result.y << std::endl;
+}
+
+void basicFileOperations () {
+    std::ofstream myfile ("a.txt");
+    std::string line;
+    
+    if(myfile.is_open()) {
+        while ( std::getline(myfile, line) ) {
+            std::cout << line << "\n";
+        }
+        
+        myfile.close();
+    } else {
+        std::cout << "Unable to opne file";
+    }
+}
+
 int main(int argc, const char * argv[]) {
 //    introduction();
 //    declarationOfVariables();
@@ -556,7 +597,9 @@ int main(int argc, const char * argv[]) {
 //    classConstructor();
 //    overloadingClassConstructors();
 //    memberIntialization();
-    pointerToClassesExampole();
+//    pointerToClassesExampole();
+//    overloadingOperatorsExample();
+    basicFileOperations();
     
     return 0;
 }
