@@ -1,0 +1,14 @@
+<p>
+  该订单已超过直接退款时间，需要财务人工转账
+</p>
+<p>
+  请核对转账账号：
+</p>
+
+<mat-form-field>
+  <input matInput type="text" [(ngModel)]="data.account"/>
+</mat-form-field>
+
+<div class="push-top-lg">
+  <button mat-button color="accent" class="push-right" (click)="submit()">确定</button>
+</div>

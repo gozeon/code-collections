@@ -1,0 +1,16 @@
+<mat-card class="push-sm pad">
+  <div layout="row" layout-align="center center">
+    <img mat-card-avatar [attr.src]="avatar" [style.width.px]="70" [style.height.px]="70"/>
+  </div>
+  <div layout="column" layout-align="center center" class="push-top">
+    <div style="width: 200px;">
+      <span class="push-top">姓名：{{ user.username }}</span>
+    </div>
+    <div style="width: 200px;">
+      <span class="push-top">邮箱：{{ user.email }}</span>
+    </div>
+    <div style="width: 200px;">
+      <span class="push-top">电话：{{ user.phone }}</span>
+    </div>
+  </div>
+</mat-card>

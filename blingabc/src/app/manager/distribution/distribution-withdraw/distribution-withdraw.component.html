@@ -1,0 +1,66 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button> 提现数据
+</mat-toolbar>
+
+<mat-card class="push-sm pad-sm">
+  <div>
+    <button mat-raised-button color="accent" class="push-right" (click)="export()">导出报税表</button>
+
+    <label class="fileContainer push-right" style="border-radius: 1px; margin-top: 13px;">
+      导入银行卡转账记录
+      <input type="file" (change)="importFile($event)"/>
+    </label>
+
+    <button mat-raised-button color="accent" class="push-right" (click)="reset()">重置</button>
+
+    <md2-datepicker type="month" format="MM/y" [(ngModel)]="time"
+                    [ngModelOptions]="{standalone: true}"
+                    touchUi="true" openOnFocus (change)="filter()"></md2-datepicker>
+    <mat-form-field>
+      <mat-select placeholder="类型" class="push-right" (change)="filter()" [(ngModel)]="type">
+        <mat-option [value]="''">所有</mat-option>
+        <mat-option [value]="12">提现到微信</mat-option>
+        <mat-option [value]="13">转账到银行</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="text" placeholder="账单编号" (input)="filter()" [(ngModel)]="search.businessCode"/>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="text" placeholder="姓名" (input)="filter()" [(ngModel)]="search.teacherName"/>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="text" placeholder="邮箱" (input)="filter()" [(ngModel)]="search.teacherEmail"/>
+    </mat-form-field>
+
+  </div>
+
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData">
+
+    <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+      <span class="table-span-btn" (click)="delete(row.id)">删除</span>
+    </ng-template>
+
+  </td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+    <span td-paging-bar-label hide-xs>Row per page: </span>
+    <mat-form-field>
+      <mat-select [(ngModel)]="pageSize">
+        <mat-option *ngFor="let size of [2,30,100,200,500,1000]" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+  </td-paging-bar>
+</mat-card>

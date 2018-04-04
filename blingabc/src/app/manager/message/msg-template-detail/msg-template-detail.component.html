@@ -1,0 +1,26 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle><mat-icon>menu</mat-icon></button> 模板详情
+</mat-toolbar>
+<mat-card class="push-sm">
+  <mat-card-content>
+    <mat-radio-group layout="row" layout-wrap layout-margin>
+      <div flex>类型</div> 
+      <mat-radio-button flex value="1" checked="checked">密码发送</mat-radio-button>
+      <mat-radio-button flex value="2">通知上课</mat-radio-button>
+      <mat-radio-button flex value="3">用户召回</mat-radio-button>
+      <mat-radio-button flex value="4">其他</mat-radio-button>
+    </mat-radio-group>
+    <mat-divider></mat-divider>
+    <td-dynamic-forms [elements]="textElements">
+    </td-dynamic-forms>
+    <div layout="row" layout-wrap layout-align="end center">
+        <div class="push-right-mat"><button mat-raised-button type="reset" flex>取消</button></div>
+        <div><button mat-raised-button color="primary" type="submit" flex >提交</button></div>
+      </div>
+  </mat-card-content>
+ 
+  <!-- <mat-card-actions layout="row" layout-wrap layout-align="end center">
+      <div class="push-right-mat"><button mat-raised-button >取消</button></div>
+      <div><button mat-raised-button color="accent">确认发送</button></div>
+  </mat-card-actions> -->
+</mat-card>

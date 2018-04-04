@@ -1,0 +1,257 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="['/main/teacher/foreign']" tdLayoutManageListOpen>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  Teachers' list
+</mat-toolbar>
+<mat-card class="push-sm">
+  <mat-card-title>
+    <span class="mat-title">Add Teacher</span>
+  </mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div layout="row" layout-wrap layout-align="start end">
+        <img mat-card-avatar [attr.src]="file.avatar" [style.width.px]="70" [style.height.px]="70" class="push-right"/>
+        <input type="file" accept="image/*" (change)="chooseIamge($event, 'avatar')"/>
+      </div>
+
+      <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">Basic Info</div>
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="First Name" [formControl]="form.get('firstName')"/>
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="Middle Name" [formControl]="form.get('middleName')"/>
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="Last Name" [formControl]="form.get('lastName')"/>
+        </mat-form-field>
+      </div>
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="Email Address" [formControl]="form.get('email')"/>
+        </mat-form-field>
+        <mat-radio-group [(ngModel)]="radio.sex" [ngModelOptions]="{standalone: true}" flex=30>
+          Gender:
+          <mat-radio-button value="1">Male</mat-radio-button>
+          <mat-radio-button value="0">Female</mat-radio-button>
+        </mat-radio-group>
+        <md2-datepicker type="date" format="y-MM-dd" [(ngModel)]="date.birth" [ngModelOptions]="{standalone: true}"
+                        placeholder="Date of birth( YYYY-MM-DD )"
+                        flex=30 touchUi="true"></md2-datepicker>
+      </div>
+      <div layout="row" layout-wrap layout-align="start center" layout-margin>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="Nickname" [(ngModel)]="nickname" [ngModelOptions]="{standalone: true}" />
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="Introduction" [(ngModel)]="introduction" [ngModelOptions]="{standalone: true}" />
+        </mat-form-field>
+      </div>
+
+      <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">Country/City</div>
+      <p>Please specify the location of your current residence, in other words, the location you will be teaching at.
+        This really
+        helps us to know where our teachers are, when would be best to contact our teachers accordingly, etc If you
+        cannot
+        find your city, please select a nearby city that is in the same time zone.</p>
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <mat-select placeholder="Country" [(ngModel)]="select.countryId" [ngModelOptions]="{standalone: true}"
+                      (change)="getStateByCountryId()">
+            <input type="text" class="select-input-search" (input)="filterCountries($event)" placeholder="search by name" />
+            <mat-option *ngFor="let item of countries" [value]="item.id">{{ item.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <mat-select placeholder="State" [(ngModel)]="select.stateId" [ngModelOptions]="{standalone: true}"
+                      (change)="getRegionByStateId()">
+            <input type="text" class="select-input-search" (input)="filterStates($event)" placeholder="search by name" />
+            <mat-option *ngFor="let item of states" [value]="item.id">{{ item.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <mat-select placeholder="City" [(ngModel)]="select.regionId" [ngModelOptions]="{standalone: true}">
+            <input type="text" class="select-input-search" (input)="filterRegions($event)" placeholder="search by name" />
+            <mat-option *ngFor="let item of regions" [value]="item.id">{{ item.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <mat-select placeholder="Nationality" [(ngModel)]="select.nationalityId"
+                      [ngModelOptions]="{standalone: true}">
+            <mat-option *ngFor="let item of nationalities" [value]="item.id">{{ item.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <i (click)="sameAs()" flex=30 class="table-span-btn">Same as Country/City</i>
+      </div>
+      <div layout="row" layout-wrap layout-align="start start" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <mat-select placeholder="Time Zone" [(ngModel)]="select.timeZone" [ngModelOptions]="{standalone: true}">
+            <input type="text" class="select-input-search" (input)="filterTimeZone($event)" placeholder="search by name" />
+            <mat-option *ngFor="let item of timeZones" [value]="item.id">{{ item.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div layout="row" layout-wrap layout-align="start start" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <mat-select placeholder="Area code" [(ngModel)]="select.globalCode" [ngModelOptions]="{standalone: true}">
+            <mat-option *ngFor="let item of areaCodes" [value]="item.id">{{ item.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field flex=30>
+          <input matInput type="number" [formControl]="form.get('phone')" placeholder="Mobile Number"/>
+        </mat-form-field>
+      </div>
+      <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">Skype</div>
+      <p>It is NOT your name ! It can be viewed correctly by clicking on your own Skype picture, and "accounts" is what
+        your
+        Skype ID is</p>
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="Skype ID" [formControl]="form.get('skypeId')"/>
+        </mat-form-field>
+      </div>
+
+      <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">Qualification</div>
+      <div class="bgc-grey-100" *ngFor="let i of educations">
+        <div layout="row" layout-wrap layout-align="start start" layout-margin layout-wrap>
+          <mat-form-field flex=30>
+            <mat-select placeholder="Highest level of education" [(ngModel)]="i.name"
+                        [ngModelOptions]="{standalone: true}">
+              <mat-option *ngFor="let item of educationSelections" [value]="item.code">{{ item.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div layout="row" layout-wrap layout-align="start start" layout-margin layout-wrap>
+          <mat-form-field flex=30>
+            <mat-select placeholder="Which university have you ever studied in?" [(ngModel)]="i.universityId"
+                        [ngModelOptions]="{standalone: true}" (change)="i.otherUniversityName = ''">
+              <mat-option *ngFor="let item of universities" [value]="item.id">{{ item.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div flex=30 *ngIf="i.universityId === 0">
+            <mat-form-field>
+              <input matInput type="text" placeholder="Other University Name" [(ngModel)]="i.otherUniversityName"
+                     [ngModelOptions]="{standalone: true}"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div layout="row" layout-wrap layout-align="start start" layout-margin layout-wrap>
+          <mat-form-field flex=30>
+            <input matInput type="text" placeholder="What major is your degree in?" [(ngModel)]="i.major"
+                   [ngModelOptions]="{standalone: true}"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <button type="button" mat-mini-fab color="accent" (click)="addQualificationGroup()"
+                matTooltip="Click here to add more" class="push-right">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button *ngIf="educations.length > 1" type="button" mat-mini-fab color="primary"
+                (click)="removeQualificationGroup()" matTooltip="Click here to remove one">
+          <mat-icon>remove</mat-icon>
+        </button>
+      </div>
+
+      <div layout="column" layout-align="start start" layout-margin layout-wrap>
+        <h3>Certificate</h3>
+        <mat-checkbox *ngFor="let item of certificates" [(ngModel)]="item.certificate"
+                      [ngModelOptions]="{standalone: true}" [value]="item.code" (change)="checkBoxChange(item)">
+          {{item.content}}
+        </mat-checkbox>
+      </div>
+      <div layout="row" layout-wrap layout-align="start start" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <mat-select placeholder="Teaching Experience" [(ngModel)]="select.teachingExperience"
+                      [ngModelOptions]="{standalone: true}">
+            <mat-option *ngFor="let item of experiences" [value]="item.code">{{ item.content }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">Bank Account</div>
+      <div layout="row" layout-wrap layout-align="start start" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="Bank Name" [formControl]="form.get('bankName')"/>
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="Account Number" [formControl]="form.get('accountNumber')"/>
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="Paypal Account" [formControl]="form.get('paypalAccount')"/>
+        </mat-form-field>
+      </div>
+      <div layout="column" layout-align="start start" layout-margin layout-wrap>
+        <h3>ATM Card:
+          <small>Please upload scanned copies.The format must be .Jpg,the size must be lower than 2M.</small>
+        </h3>
+        <div layout="row" layout-wrap layout-align="start end">
+          <img mat-card-lg-image [attr.src]="file.atmCardImg" matTooltip="view" style="cursor: pointer;"
+               matTooltipPosition="after"
+               [style.width.px]="400" [style.height.px]="100" (click)="showImageExampleDialog($event)"/>
+          <input type="file" accept="image/*" class="push-left-sm push-right-sm" (change)="chooseIamge($event, 'atm')"/>
+        </div>
+
+        <h3>Please upload a picture of the front page of your valid passport</h3>
+        <div layout="row" layout-wrap layout-align="start end">
+          <img mat-card-lg-image [attr.src]="file.validIdImg" matTooltip="view" style="cursor: pointer;"
+               matTooltipPosition="after"
+               [style.width.px]="400" [style.height.px]="100" (click)="showImageExampleDialog($event)"/>
+          <input type="file" accept="image/*" class="push-left-sm push-right-sm"
+                 (change)="chooseIamge($event, 'valid')"/>
+        </div>
+      </div>
+
+      <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">Recruitment Result</div>
+      <div layout="row" layout-wrap layout-align="start start" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <mat-select placeholder="Source" [(ngModel)]="select.source" [ngModelOptions]="{standalone: true}">
+            <mat-option *ngFor="let item of sources" [value]="item.code">{{ item.content }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field flex=30>
+          <mat-select placeholder="Interview Score" [(ngModel)]="select.interviewScore"
+                      [ngModelOptions]="{standalone: true}">
+            <mat-option *ngFor="let item of scores" [value]="item">{{ item }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="Interviewer" [formControl]="form.get('interviewer')"/>
+        </mat-form-field>
+      </div>
+      <div layout="row" layout-wrap layout-align="start start" layout-margin layout-wrap>
+        <md2-datepicker type="date" format="y-MM-dd" placeholder="Interview Time" [(ngModel)]="date.interviewTime"
+                        [ngModelOptions]="{standalone: true}"
+                        flex=30 touchUi="true" openOnFocus></md2-datepicker>
+        <mat-form-field flex=30>
+          <mat-select placeholder="Teacher Level" [(ngModel)]="select.level" [ngModelOptions]="{standalone: true}">
+            <mat-option *ngFor="let item of levels" [value]="item.code">{{ item.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div layout="column" layout-align="start start" layout-margin layout-wrap>
+        <h3>Resume</h3>
+        <p>Only PDF format will be accepted</p>
+        <div layout="row" layout-align="start center">
+          <input type="file" accept="application/pdf" (change)="chooseIamge($event, 'resume')">
+          <mat-progress-spinner *ngIf="loading" color="accent" mode="indeterminate" [diameter]="20"
+                                [strokeWidth]="2"></mat-progress-spinner>
+        </div>
+      </div>
+
+      <mat-divider class="push-bottom-sm"></mat-divider>
+      <button type="submit" mat-button [disabled]="loading">确定</button>
+      <button mat-button [routerLink]="['/main/teacher/foreign']" tdLayoutManageListOpen>取消</button>
+
+    </form>
+  </mat-card-content>
+</mat-card>

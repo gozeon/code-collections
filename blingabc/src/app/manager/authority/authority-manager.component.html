@@ -1,0 +1,21 @@
+<td-layout>
+
+  <td-layout-manage-list opened="true" mode="side">
+    <div td-sidenav-content>
+      <mat-nav-list td-sidenav-content>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['staff']">
+          <mat-icon mat-list-icon>group</mat-icon>
+          员工管理
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['setting']">
+          <mat-icon mat-list-icon>star</mat-icon>
+          权限分组
+        </a>
+      </mat-nav-list>
+    </div>
+    <router-outlet></router-outlet>
+  </td-layout-manage-list>
+
+</td-layout>

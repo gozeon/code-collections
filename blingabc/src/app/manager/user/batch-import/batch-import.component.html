@@ -1,0 +1,33 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button> 用户导入
+</mat-toolbar>
+<mat-card class="push-sm">
+  <mat-card-content>
+    <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">批量添加用户</div>
+    <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+      <mat-form-field flex=30>
+        <mat-select placeholder="获客渠道1" [(ngModel)]="channel1" [ngModelOptions]="{standalone: true}" (change)="getChannel2()">
+          <mat-option *ngFor="let item of channels1" [value]="item.id">{{ item.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex=30>
+        <mat-select placeholder="获客渠道2" [(ngModel)]="channel2" [ngModelOptions]="{standalone: true}">
+          <mat-option *ngFor="let item of channels2" [value]="item.id">{{ item.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+      <div layout="row" layout-wrap layout-align="start center" flex=30>
+        <input type="file" (change)="chooseFile($event)" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+      </div>
+      <div flex=30>
+        <button type="submit" mat-raised-button color="accent" (click)="onSubmit()" mat-button>提交</button>
+      </div>
+      <div flex=30>
+        <a href="http://img.blingabc.com/f05897fd65cb47ceb571def61b742650.xlsx">下载模板</a>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

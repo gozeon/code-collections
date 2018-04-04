@@ -1,0 +1,92 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="['/main/sales/tracking']" tdLayoutManageListOpen>
+    <mat-icon>arrow_back</mat-icon>
+  </button> 订单详情
+</mat-toolbar>
+
+<mat-card class="push-sm">
+  <mat-card-content>
+    <div class="pad-sm push-top-sm push-bottom-sm bgc-grey-200" layout="row" layout-wrap layout-align="space-between center">
+      <div>订单详情</div>
+    </div>
+    <div layout="row" layout-wrap class="pad-sm">
+      <div flex=“33”>学生名：
+        <span>{{stuName}}</span>
+      </div>
+      <div flex=“33”>种子用户：
+        <span>{{isSeed}}</span>
+      </div>
+      <div flex=“33”>是否是新东方学员：
+        <span>{{isXdf}}</span>
+      </div>
+    </div>
+    <div layout="row" layout-wrap class="pad-sm">
+      <div flex=“33”>
+        <mat-form-field>
+          <mat-select placeholder="成单渠道" [(ngModel)]="order.orderChannel" (change)="CalculateMoneyByClassCode()">
+            <mat-option *ngFor="let type of channel" [value]="type.value">{{ type.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="pad-sm push-top-sm push-bottom-sm bgc-grey-200" layout="row" layout-wrap>已选班级</div>
+    <td-data-table [columns]="columns" [data]="stuList">
+    </td-data-table>
+
+    <div class="pad-sm push-top-sm push-bottom-sm bgc-grey-200">订单价格</div>
+    <div layout="row" layout-wrap  class="pad-sm">
+      <div flex>原价：
+        <span>{{totalPrice | number:'1.0-2'}}元</span>
+      </div>
+      <div flex>实际价格：
+        <span>{{price-radioPrice-couponPrice | number:'1.0-2'}} 元</span>
+      </div>
+    </div>
+    <section layout="row" layout-wrap layout-align="start center" class="pad-left-sm">
+      <mat-checkbox flex=20 class="push-top-mat" [(ngModel)]="checked1" (change)="checkedOne($event)"> 可用课程优惠：{{favorablePrice}}元</mat-checkbox>
+      <mat-checkbox felx=20 class="push-top-mat" [(ngModel)]="checked2" (change)="checkedTwo($event)">手填课程优惠</mat-checkbox>
+      <mat-form-field flex=20 class="push-left-sm">
+        <input matInput placeholder="手填课程优惠" [(ngModel)]="minusPrice" [disabled]="ischecked" (change)="handPrice()">
+      </mat-form-field>
+    </section>
+    <div class="push-sm">
+      <mat-form-field>
+        <mat-select placeholder="优惠券金额" [(ngModel)]="useCou" (change)="selectUse($event)">
+          <mat-option *ngFor="let type of useCouponCode" [value]="type.couponCode">{{ type.couponName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="pad-sm push-top-sm push-bottom-sm bgc-grey-200">发放优惠</div>
+    <mat-form-field  class="push-sm" >
+      <mat-select placeholder="可发送优惠券" [(ngModel)]="sendCou">
+        <mat-option *ngFor="let type of sendCouponCodes" [value]="type.code">{{ type.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="pad-sm push-top-sm push-bottom-sm bgc-grey-200">附加信息</div>
+    <!-- <button mat-raised-button type="button" color="primary" (click)="openAddressDialog()">寄送教材地址</button> -->
+    <div layout="row" layout-wrap class="pad-sm">
+      <mat-form-field flex>
+        <textarea matInput placeholder="订单说明" [(ngModel)]="order.remark"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div layout="row" layout-wrap layout-align="end center">
+      <div class="push-right-md">
+        <button mat-raised-button flex [routerLink]="['/main/sales/tracking']">取消</button>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" flex (click)="post()" [disabled]="isPost">提交</button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<!-- <section layout="row" layout-wrap layout-wrap class="pad-left-sm">
+    <mat-checkbox flex=20 class="push-top-mat" [(ngModel)]="checked1" (change)="checkedOne($event)"> 可用课程优惠：{{favorablePrice}}元</mat-checkbox>
+    <mat-checkbox felx=20 class="push-top-mat" [(ngModel)]="checked2" (change)="checkedTwo($event)">手填课程优惠</mat-checkbox>
+    <mat-input-container flex=20 class="push-top-xs push-left-sm">
+        <input matInput placeholder="手填课程优惠" [(ngModel)]="minusPrice" [disabled]="ischecked" (change)="handPrice()">
+      </mat-input-container>
+  </section> -->

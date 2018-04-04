@@ -1,0 +1,138 @@
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      选择班级
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <td-search-box #searchBox backIcon="arrow_back" placeholder="请输入班级id" (searchDebounce)="search($event)">
+  </td-search-box>
+  <mat-divider></mat-divider>
+  <div layout="row" layout-wrap layout-margin class="pad-top-md pad-bottom-sm md-body-1" layout-align="space-between center">
+    <mat-form-field flex>
+      <mat-select placeholder="课程类型" class="push-left" (change)="filter()" [(ngModel)]="selected.courseType">
+        <mat-option *ngFor="let type of types" [value]="type.code">{{ type.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field flex>
+      <mat-select placeholder="等级" class="push-left" (change)="filter()" [(ngModel)]="selected.level">
+        <mat-option *ngFor="let type of levels" [value]="type.code">{{ type.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field flex>
+      <mat-select placeholder="上课时间" class="push-left" (change)="filter()" [(ngModel)]="selected.schoolTimeId">
+        <mat-option *ngFor="let type of classTime" [value]="type.id">{{ type.schoolTimeTxt }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <!-- <mat-divider></mat-divider> -->
+  <div layout="row" layout-wrap layout-margin class="pad-top-mat pad-bottom-sm md-body-1" layout-align="space-between center">
+    <mat-form-field flex>
+      <mat-select placeholder="学季" class="push-left" (change)="filter()" [(ngModel)]="selected.term">
+        <mat-option *ngFor="let type of seasons" [value]="type.code">{{ type.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field flex>
+      <mat-select placeholder="开班到" class="push-left" (change)="filter()" [(ngModel)]="selected.distribution">
+        <mat-option *ngFor="let type of distribution" [value]="type.code">{{ type.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field flex>
+      <mat-select placeholder="分期" class="push-left" (change)="filter()" [(ngModel)]="selected.stage">
+        <!-- [(ngModel)]="selected.stages" -->
+        <mat-option *ngFor="let type of stages" [value]="type.code">{{ type.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-divider></mat-divider>
+  <!-- <td-data-table [columns]="columns" [data]="filteredData" [selectable]="true" (selectAll)="selectAllEvent($event)" (rowSelect)="selectEvent($event)">
+      <ng-template tdDataTableTemplate="edit" let-value="value" let-row="row" let-column="column">
+        <mat-checkbox></mat-checkbox>
+      </ng-template>
+    </td-data-table> -->
+  <table td-data-table>
+    <thead>
+      <tr td-data-table-column-row>
+        <th td-data-table-column>
+          操作
+        </th>
+        <th td-data-table-column *ngFor="let column of columns" [numeric]="column.numeric">
+          {{column.label}}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr td-data-table-row *ngFor="let row of filteredData">
+        <td td-data-table-cell>
+          <mat-icon class="tc-red-400" matTooltip="添加" (click)="addClass(row)">add</mat-icon>
+          <!-- <mat-icon color="accent"  matTooltip="查看详情" (click)="remove(row)">create</mat-icon> -->
+        </td>
+        <td td-data-table-cell *ngFor="let column of columns" [numeric]="column.numeric">
+          {{column.format ? column.format(row[column.name]) : row[column.name]}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="mat-padding" *ngIf="!filteredData.length" layout="row" layout-wrap layout-align="center center">
+    <h3>没有数据</h3>
+  </div>
+  <mat-divider></mat-divider>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+    <!-- <span td-paging-bar-label hide-xs>Row per page: </span>
+        <mat-select [(ngModel)]="pageSize">
+          <mat-option *ngFor="let size of [5,10,15,20]" [value]="size">
+            {{size}}
+          </mat-option>
+        </mat-select> -->
+    <!-- <span>{{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span></span> -->
+  </td-paging-bar>
+</mat-expansion-panel>
+
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      已选班级
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <!-- <pre>{{selectData | json}}</pre> -->
+  <table td-data-table>
+    <thead>
+      <tr td-data-table-column-row>
+        <th td-data-table-column>
+          操作
+        </th>
+        <th td-data-table-column *ngFor="let column of columns" [numeric]="column.numeric">
+          {{column.label}}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr td-data-table-row *ngFor="let row of selectData">
+        <td td-data-table-cell>
+          <mat-icon class="tc-red-400" matTooltip="删除" (click)="remove(row)">close</mat-icon>
+          <!-- <mat-icon color="accent"  matTooltip="查看详情" (click)="remove(row)">create</mat-icon> -->
+        </td>
+        <td td-data-table-cell *ngFor="let column of columns" [numeric]="column.numeric">
+          {{column.format ? column.format(row[column.name]) : row[column.name]}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- <td-data-table [columns]="columns" [data]="selectData" >
+      <ng-template tdDataTableTemplate="edit" let-value="value" let-row="row" let-column="column">
+
+      </ng-template>
+    </td-data-table> -->
+  <!-- <mat-divider></mat-divider> -->
+
+</mat-expansion-panel>
+<!-- <mat-card> -->
+<div layout="row" layout-wrap layout-align="end center" class="push-top-sm">
+  <div class="push-right-mat">
+    <button mat-raised-button mat-dialog-close flex>取消</button>
+  </div>
+  <div>
+    <button mat-raised-button color="primary" [mat-dialog-close]="selectData" [disabled]="!(selectData.length > 0)" flex>确定</button>
+  </div>
+</div>
+<!-- </mat-card> -->

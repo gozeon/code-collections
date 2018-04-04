@@ -1,0 +1,8 @@
+<div>
+  <md2-datepicker [(ngModel)]="date.startAt" type="date" format="y-MM-dd" openOnFocus placeholder="开始时间"></md2-datepicker>
+  <md2-datepicker [(ngModel)]="date.endAt" type="date" format="y-MM-dd" openOnFocus placeholder="结束时间"></md2-datepicker>
+  <div class="push-top-lg" layout="row" layout-align="end center">
+    <button mat-button color="accent" class="push-right-sm" (click)="onSubmit()">确定</button>
+    <button mat-button mat-dialog-close>取消</button>
+  </div>
+</div>

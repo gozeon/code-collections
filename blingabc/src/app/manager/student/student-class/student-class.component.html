@@ -1,0 +1,54 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button>
+  学生班级
+</mat-toolbar>
+<mat-card class="push-sm pad-sm">
+  <div layout="row" layout-align="start center" layout-wrap>
+    <mat-form-field class="push-right-sm">
+      <input matInput type="text" placeholder="搜索班级编码" [(ngModel)]="searchOptions.classCode" (input)="filter()"/>
+    </mat-form-field>
+    <mat-form-field class="push-right-sm">
+      <input matInput type="number" placeholder="搜索家长手机号" [(ngModel)]="searchOptions.parentMobile" (input)="filter()"/>
+    </mat-form-field>
+    <mat-form-field class="push-right-sm">
+      <input matInput type="text" placeholder="搜索课时外教名" [(ngModel)]="searchOptions.lessonForeignName"
+             (input)="filter()"/>
+    </mat-form-field>
+    <div>
+      <md2-datepicker type="date" format="y-MM-dd" openOnFocus placeholder="最近上课时期"
+                      [(ngModel)]="searchOptions.beginDate" (change)="filter()"></md2-datepicker>
+      <button mat-button color="accent" (click)="setDay(0)">今天</button>
+      <button mat-button color="accent" (click)="setDay(1)">明天</button>
+      <button mat-button color="accent" (click)="searchOptions.beginDate = undefined; filter();">不限</button>
+    </div>
+    <!--<mat-checkbox (change)="showMessage('接口不支持')">仅显示自己带的班</mat-checkbox>-->
+  </div>
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData">
+    <ng-template tdDataTableTemplate="stuId" let-value="value" let-row="row" let-column="column">
+      <span class="table-span-btn push-right-sm" (click)="goToDetail(row)">详情</span>
+      <!--<span *ngIf="row.classTeacherName" class="table-span-btn push-right-sm" (click)="showMessage('接口不支持')">助教</span>-->
+      <!--<span class="table-span-btn" (click)="showMessage('接口不支持')">旁听</span>-->
+    </ng-template>
+    <ng-template tdDataTableTemplate="lessonForeignName" let-value="value" let-row="row" let-column="column">
+      <span class="table-span-btn" [routerLink]="['/main/teacher/foreign/detail', row.lessonForeignId]">{{row.lessonForeignName}}</span>
+    </ng-template>
+  </td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+    <span td-paging-bar-label hide-xs>Row per page: </span>
+    <mat-form-field>
+      <mat-select [(ngModel)]="pageSize">
+        <mat-option *ngFor="let size of [2,30,100,200,500,1000]" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+  </td-paging-bar>
+</mat-card>

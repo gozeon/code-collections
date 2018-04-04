@@ -1,0 +1,14 @@
+<div class="pad-sm">
+  <div>
+    <span class="push-right-lg">课时名: {{ data.lessonName }}</span>
+    <span>课次: {{ data.lessonNum }}</span>
+  </div>
+  <div>
+    <span class="push-right-lg">学生: {{ data.enName }}</span>
+    <span>外教: {{ data.lessonForeignName }}</span>
+  </div>
+  <p>评语: {{ comment }}</p>
+  <div layout="row" layout-align="end center" class="push-top-lg">
+    <button mat-button color="accent" mat-dialog-close>确定</button>
+  </div>
+</div>

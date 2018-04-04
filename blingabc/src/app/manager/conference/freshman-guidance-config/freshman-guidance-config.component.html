@@ -1,0 +1,45 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button>
+  新生指导课推送
+</mat-toolbar>
+<mat-card class="push-sm pad-sm">
+  <div>
+    <button mat-raised-button color="accent" [routerLink]="['add']" class="push-right">添加</button>
+    <mat-form-field>
+      <mat-select placeholder="适用学季" class="push-right" (change)="filter()" [(ngModel)]="selected.term">
+        <mat-option *ngFor="let item of seasons" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="适用水平" (change)="filter()" [(ngModel)]="selected.stage">
+        <mat-option *ngFor="let item of stages" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData">
+    <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+      <span class="table-span-btn push-right" [routerLink]="['detail', row.id]"
+            tdLayoutManageListClose>编辑</span>
+      <span class="table-span-btn" (click)="delete(value)">删除</span>
+    </ng-template>
+
+  </td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+    <span td-paging-bar-label hide-xs>Row per page: </span>
+    <mat-form-field>
+      <mat-select [(ngModel)]="pageSize">
+        <mat-option *ngFor="let size of [2,30,100,200,500,1000]" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+  </td-paging-bar>
+</mat-card>

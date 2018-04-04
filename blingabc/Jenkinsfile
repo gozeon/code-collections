@@ -1,0 +1,17 @@
+node {
+  stage ('Checkout') {
+    git 'http://120.27.12.76/web/admin'
+  }
+
+  stage ('Install') {
+    sh 'npm install'
+  }
+
+  stage ('build') {
+    sh 'ng build --prod --aot=false'
+  }
+
+  stage ('deploy') {
+    sh 'scp -r dist/* root@192.168.2.170:/home/admin/admin/dist'
+  }
+}

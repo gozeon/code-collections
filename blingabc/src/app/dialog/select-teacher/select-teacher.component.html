@@ -1,0 +1,31 @@
+<mat-card-content>
+  <div layout="row" layout-wrap layout-align="start center" class="pad-left-sm pad-right-sm">
+    <span *ngIf="!searchBox.searchVisible" class="push-left-sm">
+      <span class="mat-title">选择授课老师</span>
+    </span>
+    <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="搜索外教名" (searchDebounce)="search($event)"
+      flex>
+    </td-search-box>
+  </div>
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData" [selectable]="true" (selectAll)="selectAllEvent($event)"
+    (rowSelect)="selectEvent($event)">
+    <ng-template tdDataTableTemplate="sex" let-value="value" let-row="row" let-column="column">
+      <span [ngSwitch]="value">
+        <span *ngSwitchCase="1">男</span>
+      <span *ngSwitchCase="0">女</span>
+      </span>
+    </ng-template>
+  </td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+    <span td-paging-bar-label hide-xs>Row per page:</span> {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
+  </td-paging-bar>
+</mat-card-content>
+<mat-divider></mat-divider>
+<mat-card-actions>
+  <button mat-button (click)="onNoClick()" [disabled]="selectData.length < 1">确定</button>
+  <button mat-button mat-dialog-close>取消</button>
+  <span *ngIf="selectData.length>0" hide-xs class="mat-subhead tc-grey-400">已选中{{selectData.length}}项</span>
+</mat-card-actions>

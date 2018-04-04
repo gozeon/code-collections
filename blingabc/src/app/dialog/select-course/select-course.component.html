@@ -1,0 +1,37 @@
+<mat-card-title>
+  选择课时
+</mat-card-title>
+<mat-card-content>
+  <div layout="row" layout-wrap layout-margin layout-align="space-between center">
+    <mat-icon *ngIf="selected.term || selected.level || selected.courseType" matTooltip="重置" color="accent" style="cursor: pointer;"
+      class="push-right" (click)="reset()">autorenew</mat-icon>
+    <mat-form-field flex>
+      <mat-select placeholder="适用学季" (change)="filter()" [(ngModel)]="selected.term">
+        <mat-option *ngFor="let season of seasons" [value]="season.value">{{ season.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field flex>
+      <mat-select placeholder="类型" (change)="filter()" [(ngModel)]="selected.courseType">
+        <mat-option *ngFor="let type of types" [value]="type.value">{{ type.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field flex>
+      <mat-select placeholder="适用水平" (change)="filter()" [(ngModel)]="selected.level">
+        <mat-option *ngFor="let level of levels" [value]="level.value">{{ level.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData" [selectable]="true" (selectAll)="selectAllEvent($event)"
+    (rowSelect)="selectEvent($event)">
+  </td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)"></td-paging-bar>
+</mat-card-content>
+<mat-divider></mat-divider>
+<mat-card-actions>
+  <button mat-button [mat-dialog-close]="selectData">确定</button>
+  <button mat-button mat-dialog-close>取消</button>
+  <span *ngIf="selectData.length>0" hide-xs class="mat-subhead tc-grey-400">已选中{{selectData.length}}个课时</span>
+</mat-card-actions>

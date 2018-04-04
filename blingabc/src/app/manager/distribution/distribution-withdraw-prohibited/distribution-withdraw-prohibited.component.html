@@ -1,0 +1,47 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button> 禁止提现教师
+</mat-toolbar>
+
+<mat-card class="push-sm pad-sm">
+  <div>
+    <button mat-raised-button color="accent" [routerLink]="['add']" class="push-right">添加</button>
+    <label class="fileContainer push-right" style="border-radius: 1px; margin-top: 13px;padding-left: 30px;padding-right: 30px;">
+      导入
+      <input type="file" (change)="importFile($event)"/>
+    </label>
+
+    <mat-form-field>
+      <input matInput type="text" placeholder="姓名" (input)="filter()" [(ngModel)]="search.name"/>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="text" placeholder="邮箱" (input)="filter()" [(ngModel)]="search.email"/>
+    </mat-form-field>
+  </div>
+
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData">
+
+    <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+      <span class="table-span-btn" (click)="delete(row.id)">删除</span>
+    </ng-template>
+
+  </td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+    <span td-paging-bar-label hide-xs>Row per page: </span>
+    <mat-form-field>
+      <mat-select [(ngModel)]="pageSize">
+        <mat-option *ngFor="let size of [2,30,100,200,500,1000]" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+  </td-paging-bar>
+</mat-card>

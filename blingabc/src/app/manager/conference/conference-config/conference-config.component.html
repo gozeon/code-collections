@@ -1,0 +1,36 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button> 发布会配置
+</mat-toolbar>
+<mat-card class="push-sm">
+  <mat-card-content>
+    <div>
+      <button mat-raised-button color="accent" [disabled]="!(selectData.length > 0)" (click)="cancelAll()">批量无效</button>
+      <span *ngIf="selectData.length>0" hide-xs class="mat-subhead tc-grey-400">已选中{{selectData.length}}个课时</span>
+    </div>
+    <td-data-table #dataTable [columns]="columns" [data]="filteredData" [selectable]="true" (selectAll)="selectAllEvent($event)"
+      (rowSelect)="selectEvent($event)">
+    </td-data-table>
+    <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+      <h3>No results to display.</h3>
+    </div>
+    <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+      <span td-paging-bar-label hide-xs>Row per page: </span>
+      <mat-form-field>
+        <mat-select [(ngModel)]="pageSize">
+          <mat-option *ngFor="let size of [2,30,100,200,500,1000]" [value]="size">
+            {{size}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+    </td-paging-bar>
+  </mat-card-content>
+</mat-card>
+
+<a mat-fab color="accent" class="mat-fab-bottom-right fixed" (click)="openAddConferenceDialog()">
+  <mat-icon>add</mat-icon>
+</a>

@@ -1,0 +1,102 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button> 班主任管理
+</mat-toolbar>
+
+<mat-card class="push-sm">
+  <mat-card-content>
+    <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">筛选班主任</div>
+    <form [formGroup]="form" (ngSubmit)="query()">
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="老师姓名" [formControl]="form.get('name')" />
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="老师编号" [formControl]="form.get('number')" />
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <input matInput type="number" placeholder="手机" [formControl]="form.get('phone')" />
+        </mat-form-field>
+      </div>
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <mat-select placeholder="在职状态" [(ngModel)]="select.jobStatus" [ngModelOptions]="{standalone: true}">
+            <mat-option [value]="">全部</mat-option>
+            <mat-option [value]="1">在职</mat-option>
+            <mat-option [value]="0">离职</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <mat-select placeholder="授课状态" [(ngModel)]="select.dutyStatus" [ngModelOptions]="{standalone: true}">
+            <mat-option [value]="">全部</mat-option>
+            <mat-option [value]="1">正常带班</mat-option>
+            <mat-option [value]="0">暂停带班</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div layout="row" layout-wrap layout-align="space-between center" flex=30>
+          <button type="submit" matTooltip="点击筛选" matTooltipPosition="after" mat-icon-button>
+            <mat-icon>search</mat-icon>
+          </button>
+          <mat-icon *ngIf="isShowReset" matTooltip="重置" matTooltipPosition="after" color="accent" style="cursor: pointer;" (click)="reset()">autorenew</mat-icon>
+        </div>
+      </div>
+    </form>
+
+    <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">班主任列表</div>
+    <div layout-margin>
+      <button mat-raised-button color="accent" [disabled]="!(selectData.length > 0)" (click)="restoreAll()">恢复带班</button>
+      <button mat-raised-button color="accent" [disabled]="!(selectData.length > 0)" (click)="pauseAll()">暂停带班</button>
+      <span *ngIf="selectData.length>0" hide-xs class="mat-subhead tc-grey-400">已选中{{selectData.length}}个课时</span>
+    </div>
+    <td-data-table #dataTable [columns]="columns" [data]="filteredData" [selectable]="true" (selectAll)="selectAllEvent($event)"
+      (rowSelect)="selectEvent($event)">
+      <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+        <span class="table-span-btn push-right-sm" [routerLink]="['detail', value]" tdLayoutManageListClose>查看详情</span>
+        <span [ngSwitch]="row.dutyStatus">
+          <span *ngSwitchCase="1" class="table-span-btn" (click)="updateDutyStateById(value, 0, row.jobStatus)">暂停带班</span>
+          <span *ngSwitchCase="0" class="table-span-btn" (click)="updateDutyStateById(value, 1, row.jobStatus)">恢复带班</span>
+        </span>
+      </ng-template>
+      <ng-template tdDataTableTemplate="jobStatus" let-value="value" let-row="row" let-column="column">
+        <span [ngSwitch]="value">
+          <span *ngSwitchCase="1">在职</span>
+          <span *ngSwitchCase="0">离职</span>
+        </span>
+      </ng-template>
+      <ng-template tdDataTableTemplate="contractStatus" let-value="value" let-row="row" let-column="column">
+        <span [ngSwitch]="value">
+          <span *ngSwitchCase="1">全职</span>
+          <span *ngSwitchCase="2">兼职</span>
+        </span>
+      </ng-template>
+      <ng-template tdDataTableTemplate="dutyStatus" let-value="value" let-row="row" let-column="column">
+        <span [ngSwitch]="value">
+          <span *ngSwitchCase="1">正常带班</span>
+          <span *ngSwitchCase="0">暂停带班</span>
+        </span>
+      </ng-template>
+    </td-data-table>
+    <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+      <h3>No results to display.</h3>
+    </div>
+    <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+      <span td-paging-bar-label hide-xs>Row per page: </span>
+      <mat-form-field>
+        <mat-select [(ngModel)]="pageSize">
+          <mat-option *ngFor="let size of [2,30,100,200,500,1000]" [value]="size">
+            {{size}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+    </td-paging-bar>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+</mat-card>
+
+<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['add']" tdLayoutManageListClose>
+  <mat-icon>add</mat-icon>
+</a>

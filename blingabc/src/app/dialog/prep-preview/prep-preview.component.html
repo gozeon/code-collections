@@ -1,0 +1,25 @@
+<div layout="row" layout-align="space-around center">
+  <ngx-qrcode [qrc-element-type]="'url'" [qrc-value]="uri"></ngx-qrcode>
+  <label class="fileContainer" *ngIf="data.pubStatus === 0">
+    重新上传
+    <input type="file" (change)="onFileChange($event)"/>
+  </label>
+</div>
+<td-data-table #dataTable [columns]="columns" [data]="filteredData">
+  <ng-template tdDataTableTemplate="content" let-value="value" let-row="row" let-column="column">
+    <div *ngIf="row.type === 'voice'">
+      <audio controls>
+        <source [src]="value" type="audio/mpeg">
+      </audio>
+    </div>
+    <div *ngIf="row.type === 'image'" style="height: 70px;">
+      <img [src]="value" style="width: auto;height: auto;max-height: 100%;max-width: 100%;"/>
+    </div>
+    <div *ngIf="row.type === 'quiz' || row.type === 'text'">
+      {{ value }}
+    </div>
+  </ng-template>
+</td-data-table>
+<div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+  <h3>No results to display.</h3>
+</div>

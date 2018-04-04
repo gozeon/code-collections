@@ -1,0 +1,47 @@
+<form [formGroup]="myForm" role="form">
+  <div layout="row" layout-wrap layout-wrap class="pad-sm">
+    <mat-form-field flex>
+      <input matInput placeholder="收件人" [(ngModel)]="logistics.name" formControlName="name" class="form-control">
+    </mat-form-field>
+    <mat-form-field flex class="push-left-lg push-right-lg">
+      <input matInput placeholder="手机号" [(ngModel)]="logistics.mobile" formControlName="mobile" class="form-control">
+    </mat-form-field>
+  </div>
+  <div layout="row" layout-wrap layout-wrap class="pad-sm">
+    <!-- <div flex=“20”> -->
+    <mat-form-field>
+      <mat-select flex placeholder="省" (change)="selectprovinces($event)" [(ngModel)]="logistics.provinceCode" formControlName="provinceCode"
+        class="form-control">
+        <mat-option *ngFor="let item of provinces" [value]="item.provinceCode">{{ item.provinceName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select flex placeholder="市" (change)="selectcitys($event)" [(ngModel)]="logistics.cityCode" formControlName="cityCode"
+        class="form-control">
+        <mat-option *ngFor="let item of citys" [value]="item.cityCode">{{ item.cityName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select flex placeholder="区" (change)="selectareas($event)" [(ngModel)]="logistics.areaCode" formControlName="areaCode"
+        class="form-control">
+        <mat-option *ngFor="let item of areas" [value]="item.areaCode">{{ item.areaName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- </div> -->
+  </div>
+  <div layout="row" layout-wrap layout-wrap class="pad-sm">
+    <mat-form-field flex>
+      <input matInput placeholder="详细地址" [(ngModel)]="logistics.address" formControlName="address" class="form-control">
+    </mat-form-field>
+  </div>
+
+  <!-- <mat-divider></mat-divider> -->
+  <div layout="row" layout-wrap layout-align="end center">
+    <div class="push-right-mat">
+      <button mat-button mat-dialog-close flex>取消</button>
+    </div>
+    <div>
+      <button mat-button [mat-dialog-close]="selectData" color="primary" flex type="submit">确定</button>
+    </div>
+  </div>
+</form>

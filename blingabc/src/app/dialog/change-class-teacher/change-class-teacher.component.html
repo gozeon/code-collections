@@ -1,0 +1,22 @@
+<div>
+  <form [formGroup]="form">
+    <div layout="column" layout-align="center center">
+      <mat-form-field [style.width]="'50%'">
+        <input matInput type="text" placeholder="原班主任" [formControl]="form.get('name')" />
+      </mat-form-field>
+      <mat-form-field [style.width]="'50%'">
+        <mat-select placeholder="新班主任" [(ngModel)]="newClassTeacher" [ngModelOptions]="{standalone: true}"
+          class="push-top-sm">
+          <mat-option *ngFor="let teacher of teachers" [value]="teacher.id">{{ teacher.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field [style.width]="'50%'" class="push-top-sm">
+        <textarea matInput placeholder="备注" [formControl]="form.get('descript')"></textarea>
+      </mat-form-field>
+    </div>
+    <div layout="row" layout-wrap layout-align="end center" class="push-top-mat">
+      <button mat-button (click)="onSubmit()">确定</button>
+      <button mat-button mat-dialog-close>取消</button>
+    </div>
+  </form>
+</div>

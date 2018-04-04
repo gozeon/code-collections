@@ -1,0 +1,20 @@
+<div layout="row" layout-wrap layout-margin layout-wrap>
+  <mat-form-field flex="100">
+    <mat-select placeholder="审核状态" (change)="change($event)" [(ngModel)]="selectData.checkStatus">
+      <mat-option *ngFor="let type of checkedTypes" [value]="type.value">{{ type.name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field flex="100">
+    <textarea matInput placeholder="说明" [(ngModel)]="selectData.content"></textarea>
+  </mat-form-field>
+</div>
+
+<!-- <mat-divider></mat-divider> -->
+<div layout="row" layout-wrap layout-align="end center">
+  <div class="push-right-mat">
+    <button mat-button mat-dialog-close flex>取消</button>
+  </div>
+  <div>
+    <button mat-button [mat-dialog-close]="selectData" flex [disabled]="!isSelect">确定</button>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button>订单记录
+</mat-toolbar>
+<mat-card class="push-sm">
+  <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="请输入家长手机号" (searchDebounce)="search($event)">
+    </td-search-box>
+    <mat-divider></mat-divider>  
+  <div layout="row" layout-wrap layout-align="space-between center" layout-margin class="pad-left-sm md-body-1">
+    <!-- <div> -->
+      <mat-form-field flex >
+        <mat-select placeholder="成单渠道" (change)="select()" [(ngModel)]="selected.orderChannel">
+          <mat-option *ngFor="let type of orderChannel" [value]="type.value">{{ type.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex >
+        <mat-select placeholder="支付状态" (change)="select()" [(ngModel)]="selected.payStatus">
+          <mat-option *ngFor="let type of payStatus" [value]="type.value">{{ type.name }}</mat-option>
+        </mat-select>
+      </mat-form-field >
+      <mat-form-field flex >
+        <mat-select placeholder="审核状态" (change)="select()" [(ngModel)]="selected.checkStatus">
+          <mat-option *ngFor="let type of checkStatus" [value]="type.value">{{ type.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex >
+        <mat-select placeholder="手动优惠" (change)="select()" [(ngModel)]="selected.minusStatus">
+          <mat-option *ngFor="let type of minusStatus" [value]="type.value">{{ type.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    <!-- </div> -->
+
+    <!-- <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="请输入家长手机号" (searchDebounce)="search($event)">
+    </td-search-box> -->
+  </div>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <td-data-table [columns]="columns" [data]="filteredData">
+      <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+        <mat-icon color="accent" [routerLink]="['detail', row.orderCode]" matTooltip="查看详情" tdLayoutManageListClose>create</mat-icon>
+      </ng-template>
+    </td-data-table>
+    <div class="mat-padding" *ngIf="!filteredData.length" layout="row" layout-wrap layout-align="center center">
+      <h3>没有数据</h3>
+    </div>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="dataTotal" (change)="pageChange($event)">
+    <span hide-xs>每页的行数:</span>
+    <mat-form-field [style.width.px]="50">
+      <mat-select [(ngModel)]="pageSize">
+        <mat-option *ngFor="let size of [10,30,50]" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    {{pagingBar.range}}
+    <span hide-xs>of {{pagingBar.total}}</span>
+  </td-paging-bar>
+</mat-card>
+<!-- <pre>{{filteredData | json}}</pre> -->
+<!-- <pre>{{selectData | json}}</pre> -->

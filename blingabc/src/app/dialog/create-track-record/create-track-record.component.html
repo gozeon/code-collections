@@ -1,0 +1,38 @@
+<div layout="row" layout-align="start center">
+  <mat-form-field>
+    <mat-select placeholder="试听意愿" [(ngModel)]="listeningStatus" [disabled]="listeningStatusDisabled">
+      <mat-option value="1">新分配</mat-option>
+      <mat-option value="2">强意愿</mat-option>
+      <mat-option value="3">无意愿</mat-option>
+      <mat-option value="4">已购买</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="push-left">
+    <mat-select placeholder="主课意愿" [(ngModel)]="mainStatus" [disabled]="mainStatusDisabled">
+      <mat-option value="1">新分配</mat-option>
+      <mat-option value="2">强意愿</mat-option>
+      <mat-option value="3">无意愿</mat-option>
+      <mat-option value="4">已购买</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div layout="row" layout-align="start center" layout-margin>
+  <mat-checkbox [(ngModel)]="isTrack" (change)="updateTrackState($event)">继续跟进</mat-checkbox>
+  <button mat-button (click)="addDay(1)">明天同时间</button>
+  <button mat-button (click)="addDay(2)">后天同时间</button>
+  <md2-datepicker type="datetime" format="y-MM-dd HH:mm"
+                  touchUi="true"
+                  [(ngModel)]="trackTime"
+                  openOnFocus>
+  </md2-datepicker>
+</div>
+<div>
+  <mat-form-field style="width: 100%">
+    <textarea matInput placeholder="跟踪记录" [(ngModel)]="content"></textarea>
+  </mat-form-field>
+</div>
+<mat-divider></mat-divider>
+<div class="push-top">
+  <button mat-button (click)="onSubmit()">确认</button>
+  <button mat-button  mat-dialog-close>取消</button>
+</div>

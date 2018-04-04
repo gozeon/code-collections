@@ -1,0 +1,69 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button>
+  Lesson Management
+</mat-toolbar>
+
+<mat-card class="push-sm pad-sm">
+  <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">Filter</div>
+  <form [formGroup]="form" (ngSubmit)="query()">
+    <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+      <mat-form-field flex=22>
+        <input matInput type="text" placeholder="Teacher's Name" [formControl]="form.get('firstName')"/>
+      </mat-form-field>
+      <mat-form-field flex=22>
+        <input matInput type="text" placeholder="Mobile" [formControl]="form.get('phone')"/>
+      </mat-form-field>
+      <mat-form-field flex=22>
+        <input matInput type="number" placeholder="Lesson ID" [formControl]="form.get('classLessonId')"/>
+      </mat-form-field>
+      <mat-form-field flex=22>
+        <input matInput type="number" placeholder="Lesson Type" [formControl]="form.get('courseTypeENName')"/>
+      </mat-form-field>
+      <mat-form-field flex=22>
+        <input matInput type="text" placeholder="Class ID" [formControl]="form.get('classCode')"/>
+      </mat-form-field>
+    </div>
+    <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+      <md2-datepicker type="datetime" format="y-MM-dd HH:mm" [(ngModel)]="date.startAt"
+                      [ngModelOptions]="{standalone: true}" placeholder="Lesson Start"
+                      flex=22 touchUi="true" openOnFocus></md2-datepicker>
+      <md2-datepicker type="datetime" format="y-MM-dd HH:mm" [(ngModel)]="date.endAt"
+                      [ngModelOptions]="{standalone: true}" placeholder="Lesson End"
+                      flex=22 touchUi="true" openOnFocus></md2-datepicker>
+      <div layout="row" layout-wrap layout-align="space-between center" flex=22>
+        <button type="submit" matTooltip="Filter" matTooltipPosition="after" mat-icon-button>
+          <mat-icon>search</mat-icon>
+        </button>
+        <mat-icon *ngIf="isShowReset" matTooltip="Reset" matTooltipPosition="after" color="accent"
+                  style="cursor: pointer;" (click)="reset()">autorenew
+        </mat-icon>
+      </div>
+      <div flex="22"></div>
+    </div>
+  </form>
+
+  <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">Lesson' list</div>
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData">
+    <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+      <span class="table-span-btn" (click)="openDialog(row)" *ngIf="row.state == 10">Mark Absent</span>
+    </ng-template>
+  </td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [initialPage]="initialPage" [total]="filteredTotal" (change)="pageChange($event)">
+    <span td-paging-bar-label hide-xs>Row per page: </span>
+    <mat-form-field>
+      <mat-select [(ngModel)]="pageSize">
+        <mat-option *ngFor="let size of [2,30,100,200,500,1000]" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+  </td-paging-bar>
+</mat-card>

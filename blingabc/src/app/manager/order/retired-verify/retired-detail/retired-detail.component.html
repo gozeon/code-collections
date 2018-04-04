@@ -1,0 +1,96 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="r.url" tdLayoutManageListOpen>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  {{ r.text }}
+</mat-toolbar>
+<mat-card class="push-sm pad-sm">
+  <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">基础信息</div>
+  <div layout="row" layout-align="space-between center">
+    <span>学生名：{{ stuName }}</span>
+    <span>家长姓名：{{ parentName }}</span>
+    <span>家长手机：{{ telephone }}</span>
+  </div>
+  <div layout="row" layout-align="space-between center">
+    <span>退单提交人：{{ submitterName }}</span>
+    <span>退单提交时间：{{ formatAt(createDate) }}</span>
+    <span></span>
+  </div>
+  <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">班级信息</div>
+  <div layout="row" layout-align="space-between center">
+    <span>班级编号：{{ classCode }}</span>
+    <span>班级名：{{ className }}</span>
+    <span>实付金额：{{ realPrice }}</span>
+    <span>应退课时数：{{ shouldNumber }}</span>
+  </div>
+
+  <mat-tab-group class="push-top push-bottom">
+    <mat-tab label="已完成">
+      <div layout="row" layout-align="space-around center">
+        <span flex="15">待退课时</span>
+        <span flex="15">课次</span>
+        <span flex="15">课时名</span>
+        <span flex="15">课时状态</span>
+        <span flex="15">学生课时状态</span>
+        <span flex="15">上课时间</span>
+      </div>
+      <div layout="row" layout-align="space-around center" *ngFor="let item of completedLessons" class="pad-top-sm">
+        <mat-checkbox flex="15" [checked]="item.ifQuit == 10" [disabled]="true" (change)="onChange(item)"></mat-checkbox>
+        <span flex="15">{{ item.lessonNum }}</span>
+        <span flex="15">{{ item.lessonName }}</span>
+        <span flex="15">{{ item.lessonStateName }}</span>
+        <span flex="15">{{ item.stuLessonStateName }}</span>
+        <span flex="15">{{ formatAt(item.beginDate) }}</span>
+      </div>
+
+      <div class="mat-padding" *ngIf="completedLessons.length === 0" layout="row" layout-wrap layout-align="center center">
+        <h3>No results to display.</h3>
+      </div>
+    </mat-tab>
+    <mat-tab label="未完成">
+      <div layout="row" layout-align="space-around center">
+        <span flex="15">待退课时</span>
+        <span flex="15">课次</span>
+        <span flex="15">课时名</span>
+        <span flex="15">课时状态</span>
+        <span flex="15">学生课时状态</span>
+        <span flex="15">上课时间</span>
+      </div>
+      <div layout="row" layout-align="space-around center" *ngFor="let item of unCompletedLessons" class="pad-top-sm">
+        <mat-checkbox flex="15" [checked]="item.ifQuit == 10" [disabled]="true"></mat-checkbox>
+        <span flex="15">{{ item.lessonNum }}</span>
+        <span flex="15">{{ item.lessonName }}</span>
+        <span flex="15">{{ item.lessonStateName }}</span>
+        <span flex="15">{{ item.stuLessonStateName }}</span>
+        <span flex="15">{{ formatAt(item.beginDate) }}</span>
+      </div>
+
+      <div class="mat-padding" *ngIf="unCompletedLessons.length === 0" layout="row" layout-wrap layout-align="center center">
+        <h3>No results to display.</h3>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">退班信息</div>
+  <div layout="row" class="push-top push-bottom">
+    <span flex=1>实退课时数: {{ realNumber }}</span>
+    <span flex=1>退班金额: {{ refundAmount }}</span>
+  </div>
+  <div>
+    <mat-form-field style="width: 100%">
+      <textarea matInput placeholder="说明" [(ngModel)]="remark" disabled></textarea>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-select placeholder="审核状态" [(ngModel)]="reviewState" [disabled]="selectDisabled">
+        <mat-option value="10">待审核</mat-option>
+        <mat-option value="20">通过</mat-option>
+        <mat-option value="30">驳回</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div layout="row" layout-align="end center">
+    <button mat-button (click)="onSubmit()">确认</button>
+  </div>
+</mat-card>

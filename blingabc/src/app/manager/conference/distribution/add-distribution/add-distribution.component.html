@@ -1,0 +1,40 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="['/main/conference/distribution']" tdLayoutManageListOpen>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  新建
+</mat-toolbar>
+<mat-card class="push-sm pad-sm">
+  <div>
+    开售学季：
+    <mat-form-field>
+      <mat-select placeholder="年份" [(ngModel)]="data.year">
+        <mat-option *ngFor="let item of years" [value]="item">{{ item }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="学期" [(ngModel)]="data.term">
+        <mat-option *ngFor="let item of seasons" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div>
+    售卖时间：
+    <md2-datepicker type="datetime" format="y-MM-dd HH:mm" openOnFocus placeholder="开始时间" [(ngModel)]="data.beginDate"></md2-datepicker>
+    至
+    <md2-datepicker type="datetime" format="y-MM-dd HH:mm" openOnFocus placeholder="结束时间" [(ngModel)]="data.endDate"></md2-datepicker>
+  </div>
+
+  <div>
+    备注：
+    <mat-form-field [style.width]="'50%'">
+      <input matInput type="text" [(ngModel)]="data.remark"/>
+    </mat-form-field>
+  </div>
+
+  <div class="push-top-lg">
+    <button mat-raised-button color="accent" class="push-right" (click)="onSubmit()">确定</button>
+    <button mat-raised-button [routerLink]="['/main/conference/distribution']">取消</button>
+  </div>
+</mat-card>

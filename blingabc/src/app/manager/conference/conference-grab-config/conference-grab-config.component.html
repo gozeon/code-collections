@@ -1,0 +1,44 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button>
+  发布会抢报
+</mat-toolbar>
+<mat-card class="push-sm pad-sm">
+  <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">操作</div>
+  <div layout="row" layout-align="start center" layout-margin>
+    <mat-form-field flex="33">
+      <input matInput type="text" placeholder="编号" [(ngModel)]="no" />
+    </mat-form-field>
+    <mat-form-field flex="33">
+      <input matInput type="text" placeholder="名字" [(ngModel)]="name" />
+    </mat-form-field>
+    <div flex="33">
+      <button mat-raised-button color="accent" [disabled]="!name" (click)="add()">增加</button>
+    </div>
+  </div>
+
+  <div *ngIf="isUpdate" layout="row" layout-align="start center" layout-margin>
+    <mat-form-field flex="33">
+      <input matInput type="text" placeholder="名字" [(ngModel)]="conferenceGrabConfig.name" />
+    </mat-form-field>
+    <div flex="33">
+      <mat-checkbox [(ngModel)]="conferenceGrabConfig.state">是否开启</mat-checkbox>
+    </div>
+    <div flex="33">
+      <button mat-raised-button color="accent" [disabled]="!conferenceGrabConfig.name" (click)="update()">修改</button>
+      <button mat-raised-button color="accent" class="push-left-sm" (click)="close()">关闭</button>
+    </div>
+  </div>
+
+  <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">列表</div>
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData">
+    <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+      <span class="table-span-btn" (click)="showWpdate(row)">修改</span>
+      <mat-icon class="tc-red-400" matTooltip="删除" (click)="delete(value)">close</mat-icon>
+    </ng-template>
+  </td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+</mat-card>

@@ -1,0 +1,67 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="['/main/content/lesson']" tdLayoutManageListOpen>
+    <mat-icon>arrow_back</mat-icon>
+  </button> 课程管理
+</mat-toolbar>
+<mat-card class="push-sm">
+  <mat-card-title>
+    <div layout="row" layout-wrap layout-align="space-between center">
+      <span>课程详情</span>
+      <span *ngIf="state==20 && id">已发布</span>
+      <span *ngIf="state==10 && id">未发布</span>
+    </div>
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" layout="row" layout-wrap layout-margin layout-wrap>
+      <mat-form-field flex=30>
+        <input matInput type="text" placeholder="课程名称" [formControl]="form.get('courseName')" [(ngModel)]="courseName" />
+      </mat-form-field>
+      <mat-form-field flex=30>
+        <input matInput type="textarea" placeholder="课程描述" min="1" [formControl]="form.get('courseDescribe')" [(ngModel)]="courseDescribe"
+        />
+      </mat-form-field>
+    </form>
+
+    <div layout="row" layout-wrap layout-margin layout-wrap>
+      <mat-form-field flex=30>
+        <mat-select placeholder="适用学季" [(ngModel)]="selected.term">
+          <mat-option *ngFor="let season of seasons" [value]="season.value">{{ season.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex=30>
+        <mat-select placeholder="类型" [(ngModel)]="selected.courseType">
+          <mat-option *ngFor="let type of types" [value]="type.value">{{ type.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex=30>
+        <mat-select placeholder="适用水平" [(ngModel)]="selected.level">
+          <mat-option *ngFor="let level of levels" [value]="level.value">{{ level.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">封面</div>
+    <div layout="row" layout-wrap layout-align="start end">
+      <img *ngIf="file.coveUrl" mat-card-sm-image alt="请选择图片" [attr.src]="file.coveUrl" matTooltip="view" style="cursor: pointer;"
+        (click)="showImageExampleDialog($event)" />
+      <input type="file" accept="image/*" (change)="uploadfile($event)" class="push-left" />
+    </div>
+    <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200" layout="row" layout-wrap layout-align="space-between center">
+      <span>课时列表
+        <small>(拖拽排序)</small>
+      </span>
+      <button mat-button (click)="openSelectCourseDialog()">添加</button>
+    </div>
+    <mat-list [dragula]='"seventh-bag"' [dragulaModel]='courseLessonList'>
+      <mat-list-item class="dragula-item" *ngFor='let lesson of courseLessonList'>
+        <mat-icon style="cursor: pointer;" class="tc-red-400 push-right" matTooltip="删除" (click)="delete(lesson.lessonId)">close</mat-icon>
+        <span>{{ lesson.lessonName }}</span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button type="submit" mat-button (click)="onSubmit(form.value)">确定</button>
+    <button mat-button [routerLink]="['/main/content/lesson']">取消</button>
+  </mat-card-actions>
+</mat-card>

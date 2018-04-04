@@ -1,0 +1,79 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-card class="push-sm pad-sm">
+  <div>
+    <button mat-raised-button color="accent" (click)="reset()" class="push-right">重置</button>
+    <!--<mat-form-field>-->
+      <!--<mat-select placeholder="年份">-->
+        <!--<mat-option *ngFor="let item of years" [value]="item">{{ item }}</mat-option>-->
+      <!--</mat-select>-->
+    <!--</mat-form-field>-->
+
+    <mat-form-field>
+      <mat-select placeholder="学季" (change)="filter()" [(ngModel)]="search.term">
+        <mat-option *ngFor="let item of seasons" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="期" (change)="filter()" [(ngModel)]="search.stage">
+        <mat-option *ngFor="let item of stages" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="技术服务" (change)="filter()" [(ngModel)]="search.signUp">
+        <mat-option [value]="''">所有</mat-option>
+        <mat-option [value]="0">未报名</mat-option>
+        <mat-option [value]="1">已报名</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="出勤" (change)="filter()" [(ngModel)]="search.absent">
+        <mat-option [value]="''">所有</mat-option>
+        <mat-option [value]="0">未出勤</mat-option>
+        <mat-option [value]="1">已出勤</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="text" placeholder="班级编码" (input)="filter()" [(ngModel)]="search.classCode"/>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="text" placeholder="手机号" (input)="filter()" [(ngModel)]="search.telephone"/>
+    </mat-form-field>
+
+  </div>
+
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData">
+    <!--<ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">-->
+      <!--<span class="table-span-btn push-right" [routerLink]="['detail', row.id]"-->
+            <!--tdLayoutManageListClose>编辑</span>-->
+      <!--<span class="table-span-btn" (click)="delete(value)">删除</span>-->
+    <!--</ng-template>-->
+    <ng-template tdDataTableTemplate="absent" let-value="value" let-row="row" let-column="column">
+      <span>{{ row.signUp == 0 ? '' : ['未开课', '正常', '缺勤'][row.absent] }}</span>
+    </ng-template>
+  </td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+    <span td-paging-bar-label hide-xs>Row per page: </span>
+    <mat-form-field>
+      <mat-select [(ngModel)]="pageSize">
+        <mat-option *ngFor="let size of [2,30,100,200,500,1000]" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+  </td-paging-bar>
+</mat-card>

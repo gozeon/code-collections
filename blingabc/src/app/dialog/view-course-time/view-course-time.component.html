@@ -1,0 +1,19 @@
+<div layout="row" layout-wrap layout-align="end">
+  <button mat-mini-fab mat-dialog-close class="fixed pull-top-xxl z-2"><mat-icon>close</mat-icon></button>
+</div>
+
+<mat-list>
+  <mat-list-item layout="row" layout-wrap layout-margin>
+    <span flex>课次</span>
+    <span flex>课时名称</span>
+    <span flex>上课时间</span>
+  </mat-list-item>
+  <mat-list-item *ngFor="let item of templateLessonList; let idx = index" layout="row" layout-wrap layout-margin>
+    <span flex>{{ idx+1 }}</span>
+    <span flex>{{ item.name }}</span>
+    <span flex>{{ item.startAt }}</span>
+  </mat-list-item>
+  <div *ngIf="templateLessonList.length == 0" layout="row" layout-wrap layout-align="center center">
+    <h3 class="tc-grey-400">没有课时哦</h3>
+  </div>
+</mat-list>

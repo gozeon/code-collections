@@ -1,0 +1,38 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button> 上课时间管理
+</mat-toolbar>
+<mat-card class="push-sm">
+  <div layout="row" layout-wrap class="pad">
+    <div>
+      <mat-form-field>
+        <mat-select placeholder="上课日" class="push-right" [(ngModel)]="selected.week">
+          <mat-option *ngFor="let week of weeks" [value]="week.value">{{ week.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="上课时间" class="push-right" [(ngModel)]="selected.time">
+          <mat-option *ngFor="let time of times" [value]="time.value">{{ time.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-button (click)="add()">添加</button>
+    </div>
+    <div *ngIf="timeslots.length" layout="row" layout-wrap>
+      <td-chips [(ngModel)]="timeslots"></td-chips>
+      <button mat-button (click)="submit()">确定</button>
+    </div>
+  </div>
+  <mat-card-content>
+    <td-data-table #dataTable [columns]="columns" [data]="data">
+      <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+        <button mat-icon-button color="primary" (click)="update(row)">
+          <mat-icon>create</mat-icon>
+        </button>
+      </ng-template>
+    </td-data-table>
+    <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+      <h3>No results to display.</h3>
+    </div>
+  </mat-card-content>
+</mat-card>

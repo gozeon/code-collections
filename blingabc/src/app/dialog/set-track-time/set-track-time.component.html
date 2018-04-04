@@ -1,0 +1,16 @@
+<div>
+  <mat-checkbox [(ngModel)]="isTrack" (change)="updateTrackState($event)">继续跟进</mat-checkbox>
+  <button mat-button (click)="addDay(1)">明天同时间</button>
+  <button mat-button (click)="addDay(2)">后天同时间</button>
+</div>
+<div>
+  <md2-datepicker type="datetime" format="y-MM-dd HH:mm"
+                  touchUi="true"
+                  [(ngModel)]="trackTime"
+                  openOnFocus>
+  </md2-datepicker>
+</div>
+<div layout="row" layout-align="end center" class="push-top">
+  <button mat-button  mat-dialog-close>取消</button>
+  <button mat-raised-button color="accent" (click)="onSubmit()">确认</button>
+</div>

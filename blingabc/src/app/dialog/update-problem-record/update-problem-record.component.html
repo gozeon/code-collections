@@ -1,0 +1,30 @@
+<div>
+  <span>手机号：{{ data.telephone }}</span>
+</div>
+<div>
+  <span>问题设备：
+    <span *ngIf="!data.videocam" class="push-right-sm">摄像头</span>
+    <span *ngIf="!data.headset" class="push-right-sm">耳机</span>
+    <span *ngIf="!data.mic" class="push-right-sm">麦克风</span>
+    <span *ngIf="!data.language" class="push-right-sm">网络</span>
+  </span>
+</div>
+<div>
+  <span class="table-span-btn" (click)="showRecord()">查看完整自检记录</span>
+</div>
+<div>
+  <mat-radio-group [(ngModel)]="data.status">
+    <mat-radio-button class="push-right-sm" value="0">未通过自检</mat-radio-button>
+    <mat-radio-button class="push-right-sm" value="1">处理完成</mat-radio-button>
+  </mat-radio-group>
+</div>
+<div>
+  备注：
+  <mat-form-field [style.width]="'100%'">
+    <textarea [(ngModel)]="data.remarks" matInput></textarea>
+  </mat-form-field>
+</div>
+<div class="push-top-lg">
+  <button mat-button color="accent" class="push-right" (click)="submit()">确定</button>
+  <button mat-button color="accent" mat-dialog-close>取消</button>
+</div>

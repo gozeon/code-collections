@@ -1,0 +1,153 @@
+<mat-card class="push-sm pad-sm">
+  <div layout="row" layout-align="space-between center">
+    <mat-form-field>
+      <input matInput type="text" placeholder="手机号" [(ngModel)]="searchItem" />
+    </mat-form-field>
+    <div>
+      <button mat-mini-fab (click)="searchMobile()">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button *ngIf="isSucess" mat-mini-fab (click)="reset()">
+        <mat-icon>autorenew</mat-icon>
+      </button>
+    </div>
+
+  </div>
+</mat-card>
+<mat-card class="push-sm pad-sm">
+  <div class="pad-sm push-top-sm push-bottom-sm bgc-grey-200">
+    家长信息
+  </div>
+  <form [formGroup]="myForm" role="form" (ngSubmit)="post(myForm.value)">
+    <div formGroupName="parent">
+      <div layout="row" layout-wrap layout-padding>
+        <mat-form-field flex=50>
+          <input matInput placeholder="微信号：" [(ngModel)]="userinfo.wechatName" formControlName="wechatName" class="form-control">
+        </mat-form-field>
+        <mat-form-field flex=50>
+          <input matInput placeholder="家长姓名：" [(ngModel)]="userinfo.name" formControlName="name" class="form-control">
+        </mat-form-field>
+
+      </div>
+      <div layout="row" layout-wrap layout-padding>
+        <mat-form-field flex=50>
+          <mat-select placeholder="与孩子关系：" [(ngModel)]="userinfo.type" formControlName="type" class="form-control">
+            <mat-option *ngFor="let type of parentType" [value]="type.value">{{ type.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field flex="50">
+          <input matInput placeholder="手机号：" disabled [(ngModel)]="userinfo.mobile" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+      </div>
+      <div class="pad-sm push-top-sm push-bottom-sm bgc-grey-200">渠道信息</div>
+      <div layout="row" layout-wrap layout-padding>
+        <!-- <div flex>获客渠道： -->
+        <mat-form-field flex=50>
+          <mat-select placeholder="获客渠道一：" [(ngModel)]="userinfo.channelCodeOne" formControlName="channelCodeOne" class="form-control"
+            (change)="select($event)">
+            <mat-option *ngFor="let type of channelCodeOnes" [value]="type.code">{{ type.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field flex=50>
+          <mat-select placeholder="获客渠道二：" [(ngModel)]="userinfo.channelCodeTwo" formControlName="channelCodeTwo" class="form-control">
+            <mat-option *ngFor="let type of channelCodeTwos" [value]="type.code">{{ type.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- </div> -->
+      </div>
+      <div layout="row" layout-wrap layout-padding>
+        <mat-form-field flex=50>
+          <mat-select placeholder="新东方学员：" [(ngModel)]="userinfo.xdfStatus" formControlName="xdfStatus" class="form-control">
+            <mat-option *ngFor="let type of xdfStatus" [value]="type.value">{{ type.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field flex=50>
+          <mat-select placeholder="种子用户：" [(ngModel)]="userinfo.seedStatus" formControlName="seedStatus" class="form-control">
+            <mat-option *ngFor="let type of seedStatus" [value]="type.value">{{ type.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div formGroupName="student">
+      <div class="pad-sm push-top-sm push-bottom-sm bgc-grey-200">学生信息</div>
+      <div layout="row" layout-wrap layout-padding>
+        <mat-form-field flex>
+          <input matInput placeholder="英文名：" [(ngModel)]="studentList.enName" formControlName="enName" class="form-control">
+        </mat-form-field>
+        <mat-form-field flex>
+          <input matInput placeholder="中文姓名：" [(ngModel)]="studentList.name" formControlName="name" class="form-control">
+        </mat-form-field>
+      </div>
+      <div layout="row" layout-wrap layout-align="start center" layout-padding>
+        <!-- <mat-input-container flex=50>
+          <input matInput placeholder="生日：" [(ngModel)]="studentList.birthday" formControlName="birthday" class="form-control">
+        </mat-input-container> -->
+        <md2-datepicker [(ngModel)]="studentList.birthday" format="y-MM-dd" type="date" flex=50 placeholder="生日" touchUi="true" openOnFocus
+          formControlName="birthday" class="form-control"></md2-datepicker>
+
+        <!-- <mat-input-container flex=50>
+                  <input matInput placeholder="年龄：" [(ngModel)]="studentList.age" formControlName="age" class="form-control">
+              </mat-input-container> -->
+
+        <mat-form-field flex=50>
+          <mat-select placeholder="年龄：" [(ngModel)]="studentList.age" formControlName="age" class="form-control">
+            <mat-option *ngFor="let type of age" [value]="type.value">{{ type.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div layout="row" layout-wrap layout-padding>
+        <mat-form-field flex=50>
+          <mat-select placeholder="性别：" [(ngModel)]="studentList.sex" formControlName="sex" class="form-control">
+            <mat-option *ngFor="let type of sex" [value]="type.value">{{ type.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+      <div class="pad-sm push-top-sm push-bottom-sm bgc-grey-200">水平及报名</div>
+      <div layout="row" layout-wrap layout-padding layout-align="start center">
+        <div flex=33>当前水平：{{studentList.level}}</div>
+        <mat-form-field flex=33>
+          <mat-select placeholder="试听：" [(ngModel)]="studentList.listeningStatus" [disabled]="studentList.listeningStatus == 4" formControlName="listeningStatus" class="form-control">
+            <mat-option *ngFor="let type of listeningStatus" [value]="type.value">{{ type.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field flex=33>
+          <mat-select placeholder="主课：" [(ngModel)]="studentList.mainStatus" [disabled]="studentList.mainStatus == 4" formControlName="mainStatus" class="form-control">
+            <mat-option *ngFor="let type of mainStatus" [value]="type.value">{{ type.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="pad-sm push-top-sm push-bottom-sm bgc-grey-200">使用信息</div>
+    <div layout="row" layout-wrap layout-padding>
+      <div flex>是否线上登录：{{userinfo.isLogin}}</div>
+      <div flex>设备检测：</div>
+    </div>
+    <div layout="row" layout-wrap layout-padding>
+      <div flex>优惠券：
+        <span *ngFor="let item of userinfo.studentCouponList">
+          {{item.couponPrice}}
+        </span>
+      </div>
+    </div>
+    <div class="pad-sm push-top-sm push-bottom-sm bgc-grey-200">服务信息</div>
+    <div layout="row" layout-wrap layout-padding>
+      <div flex>跟进销售：{{studentList.salerName}}</div>
+      <div flex>班主任：</div>
+      <div flex>外教：</div>
+    </div>
+    <div layout="row" layout-wrap layout-padding>
+      <div flex>当季转班次数：</div>
+    </div>
+    <div layout="row" layout-wrap layout-align="end center">
+      <div class="push-right-md">
+        <button mat-raised-button type="reset" flex (click)="reset()">重置</button>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" flex [disabled]="!isSave">保存</button>
+      </div>
+    </div>
+  </form>
+</mat-card>

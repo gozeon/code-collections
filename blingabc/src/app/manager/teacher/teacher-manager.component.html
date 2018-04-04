@@ -1,0 +1,31 @@
+<td-layout>
+
+  <td-layout-manage-list opened="true" mode="side">
+    <div td-sidenav-content>
+      <mat-nav-list td-sidenav-content>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['class']">
+          <mat-icon mat-list-icon>insert_chart</mat-icon>
+          班主任管理
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['foreign']">
+          <mat-icon mat-list-icon>star</mat-icon>
+          外教管理
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+           [routerLink]="['lesson']">
+          <mat-icon mat-list-icon>remove_circle_outline</mat-icon>
+          课程管理
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+           [routerLink]="['finance']">
+          <mat-icon mat-list-icon>directions_bus</mat-icon>
+          工资管理
+        </a>
+      </mat-nav-list>
+    </div>
+    <router-outlet></router-outlet>
+  </td-layout-manage-list>
+
+</td-layout>

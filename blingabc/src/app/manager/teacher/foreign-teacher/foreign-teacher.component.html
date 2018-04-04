@@ -1,0 +1,96 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button> Teacher Management
+</mat-toolbar>
+<mat-card class="push-sm">
+  <mat-card-content>
+    <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">Filter</div>
+    <form [formGroup]="form" (ngSubmit)="query()">
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="Teacher's Name" [formControl]="form.get('name')" />
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="Teacher's ID" [formControl]="form.get('number')" />
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <input matInput type="number" placeholder="Mobile" [formControl]="form.get('phone')" />
+        </mat-form-field>
+      </div>
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <mat-select placeholder="Status" [(ngModel)]="select.jobStatus" [ngModelOptions]="{standalone: true}">
+            <mat-option [value]="">All</mat-option>
+            <mat-option [value]="1">On</mat-option>
+            <mat-option [value]="0">Off</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <mat-select placeholder="Duty" [(ngModel)]="select.dutyStatus" [ngModelOptions]="{standalone: true}">
+            <mat-option [value]="">All</mat-option>
+            <mat-option [value]="1">Ongoing</mat-option>
+            <mat-option [value]="0">Suspended</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div layout="row" layout-wrap layout-align="space-between center" flex=30>
+          <button type="submit" matTooltip="Filter" matTooltipPosition="after" mat-icon-button>
+            <mat-icon>search</mat-icon>
+          </button>
+          <mat-icon *ngIf="isShowReset" matTooltip="Reset" matTooltipPosition="after" color="accent" style="cursor: pointer;" (click)="reset()">autorenew</mat-icon>
+        </div>
+      </div>
+    </form>
+
+    <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">Teachers' list</div>
+    <div layout-margin>
+      <button mat-raised-button color="accent" [disabled]="!(selectData.length > 0)" (click)="restoreAll()">Resume</button>
+      <button mat-raised-button color="accent" [disabled]="!(selectData.length > 0)" (click)="pauseAll()">Suspend</button>
+      <span *ngIf="selectData.length>0" hide-xs class="mat-subhead tc-grey-400">已选中{{selectData.length}}个课时</span>
+    </div>
+
+    <td-data-table #dataTable [columns]="columns" [data]="filteredData" [selectable]="true" (selectAll)="selectAllEvent($event)"
+      (rowSelect)="selectEvent($event)">
+      <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+        <span class="table-span-btn push-right-sm" [routerLink]="['detail', value]" tdLayoutManageListClose>View</span>
+        <span [ngSwitch]="row.dutyStatus">
+          <span *ngSwitchCase="1" class="table-span-btn" (click)="updateDutyStateById(value, 0, row.jobStatus)">Suspend</span>
+          <span *ngSwitchCase="0" class="table-span-btn" (click)="updateDutyStateById(value, 1, row.jobStatus)">Resume</span>
+        </span>
+      </ng-template>
+      <ng-template tdDataTableTemplate="jobStatus" let-value="value" let-row="row" let-column="column">
+        <span [ngSwitch]="value">
+          <span *ngSwitchCase="1">On</span>
+          <span *ngSwitchCase="0">Off</span>
+        </span>
+      </ng-template>
+      <ng-template tdDataTableTemplate="dutyStatus" let-value="value" let-row="row" let-column="column">
+        <span [ngSwitch]="value">
+          <span *ngSwitchCase="1">Ongoing</span>
+          <span *ngSwitchCase="0">Suspended</span>
+        </span>
+      </ng-template>
+    </td-data-table>
+    <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+      <h3>No results to display.</h3>
+    </div>
+    <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+      <span td-paging-bar-label hide-xs>Row per page: </span>
+      <mat-form-field>
+        <mat-select [(ngModel)]="pageSize">
+          <mat-option *ngFor="let size of [2,30,100,200,500,1000]" [value]="size">
+            {{size}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+    </td-paging-bar>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+</mat-card>
+
+<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['add']" tdLayoutManageListClose>
+  <mat-icon>add</mat-icon>
+</a>

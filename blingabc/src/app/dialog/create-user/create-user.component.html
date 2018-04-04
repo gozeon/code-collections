@@ -1,0 +1,29 @@
+<div layout="row" layout-wrap layout-wrap class="pad-sm push-bottom-md">
+  手机号{{selectData.mobile}}还不是系统账号，请选择获客渠道创建
+</div>
+<form [formGroup]="myForm" role="form">
+  <div layout="row" layout-wrap layout-wrap layout-padding class="pad-sm">
+    <mat-form-field flex>
+      <mat-select placeholder="获客渠道一" (change)="select($event)" [(ngModel)]="selectData.channelCodeOne" formControlName="channelCodeOne"
+        class="form-control">
+        <mat-option *ngFor="let item of channelCodeOnes" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field flex>
+      <mat-select placeholder="获客渠道二" [(ngModel)]="selectData.channelCodeTwo" formControlName="channelCodeTwo" class="form-control">
+        <mat-option *ngFor="let item of channelCodeTwos" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+
+  <!-- <mat-divider></mat-divider> -->
+  <div layout="row" layout-wrap layout-align="end center" class="push-top-md">
+    <div class="push-right-md">
+      <button mat-button mat-dialog-close flex>取消</button>
+    </div>
+    <div>
+      <button mat-button [mat-dialog-close]="selectData" color="primary" flex type="submit" [disabled]="!myForm.valid">创建</button>
+    </div>
+  </div>
+</form>

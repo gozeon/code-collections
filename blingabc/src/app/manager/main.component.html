@@ -1,0 +1,29 @@
+<td-layout #layout>
+  <td-navigation-drawer flex sidenavTitle="新东方青少外教直播" logo="assets:blingabc" [name]="name" [email]="email"
+                        navigationRoute="/">
+    <mat-nav-list>
+      <a *ngFor="let item of routes" mat-list-item [routerLink]="[item.route]" (click)="layout.close()">
+        <mat-icon>{{item.icon}}</mat-icon>
+        {{item.title}}</a>
+    </mat-nav-list>
+    <div td-navigation-drawer-menu>
+      <mat-nav-list>
+        <a *ngFor="let item of usermenu" mat-list-item [routerLink]="[item.route]">
+          <mat-icon>{{item.icon}}</mat-icon>
+          {{item.title}}</a>
+      </mat-nav-list>
+    </div>
+  </td-navigation-drawer>
+
+  <td-layout-nav color="accent" logo="assets:blingabc" toolbarTitle="新东方青少外教直播" navigationRoute="/">
+    <button mat-icon-button td-menu-button tdLayoutToggle>
+      <mat-icon>menu</mat-icon>
+    </button>
+    <router-outlet></router-outlet>
+    <td-layout-footer>
+      <div layout="row" layout-wrap layout-align="start center">
+        <span class="mat-caption">Copyright &copy; 2017 BlingABC. All rights reserved. {{ version }}</span>
+      </div>
+    </td-layout-footer>
+  </td-layout-nav>
+</td-layout>

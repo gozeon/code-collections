@@ -1,0 +1,35 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle><mat-icon>menu</mat-icon></button> 模板详情
+</mat-toolbar>
+<mat-card class="push-sm">
+  <mat-card-content>
+    <mat-radio-group layout="row" layout-wrap layout-margin>
+      <div flex>模板类型</div>
+      <mat-radio-button flex value="1" checked="checked">密码发送</mat-radio-button>
+      <mat-radio-button flex value="2">通知上课</mat-radio-button>
+      <mat-radio-button flex value="3">用户召回</mat-radio-button>
+      <mat-radio-button flex value="4">其他</mat-radio-button>
+    </mat-radio-group>
+    <mat-divider></mat-divider>
+    <!-- <td-dynamic-forms [elements]="textElements">
+    </td-dynamic-forms> -->
+    <mat-form-field flex=“30”>
+        <input matInput placeholder="名字" >
+      </mat-form-field>
+    <mat-form-field>
+        <textarea matInput placeholder="模板内容" ></textarea>
+      </mat-form-field>
+      <!-- <mat-input-container>
+          <textarea matInput placeholder="模板说明" ></textarea>
+        </mat-input-container> -->
+    <mat-radio-group layout="row" layout-wrap layout-margin>
+        <div flex>类型</div>
+        <mat-radio-button flex value="1" checked="checked">短信</mat-radio-button>
+        <mat-radio-button flex value="2">微信</mat-radio-button>
+      </mat-radio-group>
+    <div layout="row" layout-wrap layout-align="end center">
+      <div class="push-right-mat"><button mat-raised-button type="reset" flex>取消</button></div>
+      <div><button mat-raised-button color="primary" type="submit" flex>提交</button></div>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,51 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="['/main/content/practice']" tdLayoutManageListOpen>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  新建
+</mat-toolbar>
+<mat-card class="push-sm pad-sm">
+  <div layout="row" layout-margin>
+    <mat-form-field flex="20">
+      <input matInput type="text" placeholder="名称" [(ngModel)]="name"/>
+    </mat-form-field>
+  </div>
+  <div layout="row" layout-margin>
+    <mat-form-field flex="15">
+      <mat-select placeholder="适用学季" class="push-right" [(ngModel)]="selected.tearmCode">
+        <mat-option *ngFor="let season of seasons" [value]="season.code">{{ season.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field flex="15">
+      <mat-select placeholder="适用水平" class="push-right" [(ngModel)]="selected.level">
+        <mat-option *ngFor="let level of levels" [value]="level.code">{{ level.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field flex="15">
+      <mat-select placeholder="类型" [(ngModel)]="selected.bookType">
+        <mat-option [value]="''">所有</mat-option>
+        <mat-option [value]="1">学故事</mat-option>
+        <mat-option [value]="2">听歌曲</mat-option>
+        <mat-option [value]="3">学制作</mat-option>
+        <mat-option [value]="4">看影片</mat-option>
+        <mat-option [value]="5">互动练习</mat-option>
+        <mat-option [value]="6">学童谣</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div layout="row" layout-margin>
+    <mat-form-field flex="50" class="push-top-sm">
+      <textarea matInput placeholder="备注" [(ngModel)]="remark"></textarea>
+    </mat-form-field>
+  </div>
+  <div layout="row" layout-align="start center" class="push-left">
+    <label class="push-right">内容:</label>
+    <input #file type="file" (change)="uploadFile($event)"/>
+    <mat-icon *ngIf="contentUrl" class="tc-red-400 hover-pointer" (click)="contentUrl=''; file.value='';">close</mat-icon>
+    <mat-spinner *ngIf="loading" [diameter]="20" [strokeWidth]="2"></mat-spinner>
+  </div>
+  <mat-divider class="push-top push-bottom"></mat-divider>
+  <mat-card-actions>
+    <button type="submit" mat-button (click)="onSubmit()">确定</button>
+  </mat-card-actions>
+</mat-card>

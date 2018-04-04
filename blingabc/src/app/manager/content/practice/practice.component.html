@@ -1,0 +1,77 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button>
+  课后练习
+</mat-toolbar>
+<mat-card class="push-sm pad-sm">
+  <div layout="row" layout-wrap layout-align="space-between center">
+    <div>
+      <button mat-raised-button color="accent" [routerLink]="['add']">创建</button>
+      <button mat-raised-button color="accent" [disabled]="!(selectData.length > 0)" (click)="publishAll()">发布</button>
+      <span *ngIf="selectData.length>0" hide-xs class="mat-subhead tc-grey-400">已选中{{selectData.length}}项</span>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-select placeholder="适用学季" class="push-right" (change)="filter()" [(ngModel)]="selected.tearmCode">
+          <mat-option *ngFor="let season of seasons" [value]="season.code">{{ season.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="适用水平" (change)="filter()" [(ngModel)]="selected.level">
+          <mat-option *ngFor="let level of levels" [value]="level.code">{{ level.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="状态" class="push-right" (change)="filter()" [(ngModel)]="selected.pubStatus">
+          <mat-option [value]="''">所有</mat-option>
+          <mat-option [value]="0">未发布</mat-option>
+          <mat-option [value]="1">已发布</mat-option>
+          <mat-option [value]="2">已冻结</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="类型" class="push-right" (change)="filter()" [(ngModel)]="selected.bookType">
+          <mat-option [value]="''">所有</mat-option>
+          <mat-option [value]="1">学故事</mat-option>
+          <mat-option [value]="2">听歌曲</mat-option>
+          <mat-option [value]="3">学制作</mat-option>
+          <mat-option [value]="4">看影片</mat-option>
+          <mat-option [value]="5">互动练习</mat-option>
+          <mat-option [value]="6">学童谣</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="名称" [(ngModel)]="searchTerm" (input)="filter()"/>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData" [selectable]="true"
+                 (selectAll)="selectAllEvent($event)"
+                 (rowSelect)="selectEvent($event)">
+    <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+      <span *ngIf="row.pubStatus === 0" class="table-span-btn" [routerLink]="['detail', row.homeworkId]" tdLayoutManageListClose>编辑</span>
+      <span class="table-span-btn push-left-sm push-right-sm" (click)="preview(row)">预览</span>
+      <span *ngIf="row.pubStatus === 0" class="table-span-btn" (click)="updateState('publish', row.id)">发布</span>
+      <span *ngIf="row.pubStatus === 1" class="table-span-btn" (click)="updateState('freeze', row.id)">冻结</span>
+      <span *ngIf="row.pubStatus === 2" class="table-span-btn" (click)="updateState('free', row.id)">解冻</span>
+    </ng-template>
+  </td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+    <span td-paging-bar-label hide-xs>Row per page: </span>
+    <mat-form-field>
+      <mat-select [(ngModel)]="pageSize">
+        <mat-option *ngFor="let size of [2,30,100,200,500,1000]" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+  </td-paging-bar>
+</mat-card>

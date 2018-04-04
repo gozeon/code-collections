@@ -1,0 +1,28 @@
+<div layout="column" layout-align="start center" layout-wrap>
+  <div layout="row" layout-margin style="width: 500px;">
+    <span flex>Lesson Date: </span>
+    <span flex>{{ formatAt(data.beginDate) }}-{{ formatAtHm(data.endDate) }}</span>
+  </div>
+  <div layout="row" layout-margin style="width: 500px;">
+    <span flex>Teacher: </span>
+    <span flex>{{ data.name }}</span>
+  </div>
+  <mat-form-field style="width: 500px;">
+    <mat-select placeholder="Reason for Absence" [(ngModel)]="reasonCode">
+      <mat-option *ngFor="let item of reasons" [value]="item.code">{{ item.name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field style="width: 500px;">
+    <mat-select placeholder="Sub teacher" [(ngModel)]="teacherId">
+      <input type="text" class="select-input-search" (input)="filterTimes($event)" placeholder="search by name" />
+      <mat-option *ngFor="let item of teachers" [value]="item.id">{{ item.name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field style="width: 500px;">
+    <textarea matInput placeholder="说明" [(ngModel)]="Remark"></textarea>
+  </mat-form-field>
+</div>
+<div layout="row" layout-align="end center">
+  <button mat-button (click)="onSubmit()">确认</button>
+  <button mat-button mat-dialog-close>取消</button>
+</div>

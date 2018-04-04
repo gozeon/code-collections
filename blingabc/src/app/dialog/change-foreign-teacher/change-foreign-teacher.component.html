@@ -1,0 +1,22 @@
+<div>
+  <h3>Change Teacher</h3>
+  <form [formGroup]="form">
+    <div layout="column" layout-align="center center">
+      <mat-form-field [style.width]="'50%'">
+        <input matInput type="text" placeholder="Teacher" [formControl]="form.get('name')" />
+      </mat-form-field>
+      <mat-form-field [style.width]="'50%'">
+        <mat-select placeholder="Sub teacher" [(ngModel)]="newClassTeacher" [ngModelOptions]="{standalone: true}" class="push-top-sm">
+          <mat-option *ngFor="let teacher of teachers" [value]="teacher.id">{{ teacher.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field [style.width]="'50%'" class="push-top-sm">
+        <textarea matInput placeholder="Remark" [formControl]="form.get('descript')"></textarea>
+      </mat-form-field>
+    </div>
+    <div layout="row" layout-wrap layout-align="end center" class="push-top-mat">
+      <button mat-button (click)="onSubmit()">Submit</button>
+      <button mat-button mat-dialog-close>Cancel</button>
+    </div>
+  </form>
+</div>

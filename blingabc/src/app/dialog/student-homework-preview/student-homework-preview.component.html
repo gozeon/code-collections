@@ -1,0 +1,24 @@
+<td-data-table #dataTable [columns]="columns" [data]="filteredData">
+  <ng-template tdDataTableTemplate="voiceUrl" let-value="value" let-row="row" let-column="column">
+    <div *ngIf="value">
+      <audio controls style="width: 200px;">
+        <source [src]="value" type="audio/mpeg">
+      </audio>
+    </div>
+  </ng-template>
+  <ng-template tdDataTableTemplate="myanswer" let-value="value" let-row="row" let-column="column">
+    <div *ngIf="value">
+      <audio controls style="width: 200px;">
+        <source [src]="value" type="audio/mpeg">
+      </audio>
+    </div>
+  </ng-template>
+  <ng-template tdDataTableTemplate="imgUrl" let-value="value" let-row="row" let-column="column">
+    <div *ngIf="value" style="height: 70px;">
+      <img [src]="value" style="width: auto;height: auto;max-height: 100%;max-width: 100%;"/>
+    </div>
+  </ng-template>
+</td-data-table>
+<div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+  <h3>No results to display.</h3>
+</div>

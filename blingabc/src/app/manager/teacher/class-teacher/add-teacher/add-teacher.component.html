@@ -1,0 +1,68 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="['/main/teacher/class']" tdLayoutManageListOpen>
+      <mat-icon>arrow_back</mat-icon>
+    </button> 班主任列表
+</mat-toolbar>
+
+<mat-card class="push-sm">
+  <mat-card-title>
+    <span class="mat-title">添加班主任</span>
+  </mat-card-title>
+
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="老师姓名*" [formControl]="form.get('name')" />
+        </mat-form-field>
+        <mat-form-field flex=30>
+          <input matInput type="text" placeholder="英文名*" [formControl]="form.get('englishName')" />
+        </mat-form-field>
+      </div>
+
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <input matInput type="email" placeholder="老师邮箱*" [formControl]="form.get('email')" />
+        </mat-form-field>
+        <mat-radio-group flex=30 [(ngModel)]="radio.sex" [ngModelOptions]="{standalone: true}">
+          性别*：
+          <mat-radio-button value="1">男</mat-radio-button>
+          <mat-radio-button value="0">女</mat-radio-button>
+        </mat-radio-group>
+
+      </div>
+
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <mat-form-field flex=30>
+          <input matInput type="number" placeholder="手机*" [formControl]="form.get('phone')" />
+        </mat-form-field>
+        <md2-datepicker type="date" format="y-MM-dd" [(ngModel)]="date.birth" [ngModelOptions]="{standalone: true}" placeholder="生日"
+          flex=30 touchUi="true" openOnFocus></md2-datepicker>
+        <md2-datepicker type="date" format="y-MM-dd" [(ngModel)]="date.entryAt" [ngModelOptions]="{standalone: true}" placeholder="入职时间"
+          flex=30 touchUi="true" openOnFocus></md2-datepicker>
+      </div>
+
+      <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+        <mat-radio-group flex=30 [(ngModel)]="radio.jobStatus" [ngModelOptions]="{standalone: true}">
+          在职状态*：
+          <mat-radio-button value="1">在职</mat-radio-button>
+          <mat-radio-button value="0">离职</mat-radio-button>
+        </mat-radio-group>
+        <mat-radio-group flex=30 [(ngModel)]="radio.dutyStatus" [ngModelOptions]="{standalone: true}">
+          授课状态*：
+          <mat-radio-button value="1">正常带班</mat-radio-button>
+          <mat-radio-button value="0">暂停带班</mat-radio-button>
+        </mat-radio-group>
+        <mat-radio-group flex=30 [(ngModel)]="radio.contractStatus" [ngModelOptions]="{standalone: true}">
+          合同性质*：
+          <mat-radio-button value="1">全职</mat-radio-button>
+          <mat-radio-button value="2">兼职</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <mat-divider class="push-bottom-sm"></mat-divider>
+      <button type="submit" mat-button>确定</button>
+      <button mat-button [routerLink]="['/main/teacher/class']" tdLayoutManageListOpen>取消</button>
+    </form>
+  </mat-card-content>
+</mat-card>

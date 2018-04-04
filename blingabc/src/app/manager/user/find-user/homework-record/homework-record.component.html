@@ -1,0 +1,10 @@
+<mat-card class="push-sm pad-sm">
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData">
+    <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+      <span class="table-span-btn" (click)="showDialog(row)">查看</span>
+    </ng-template>
+  </td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+</mat-card>

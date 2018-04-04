@@ -1,0 +1,26 @@
+<td-layout>
+
+  <td-layout-manage-list opened="true" mode="side">
+    <div td-sidenav-content>
+      <mat-nav-list td-sidenav-content>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['tracking']">
+          <mat-icon mat-list-icon>supervisor_account</mat-icon>
+          用户跟踪
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+           [routerLink]="['new-student']">
+          <mat-icon mat-list-icon>account_balance_wallet</mat-icon>
+          新学员目录
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['user', 'user-info']">
+          <mat-icon mat-list-icon>search</mat-icon>
+          查找用户
+        </a>
+      </mat-nav-list>
+    </div>
+    <router-outlet></router-outlet>
+  </td-layout-manage-list>
+
+</td-layout>

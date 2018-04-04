@@ -1,0 +1,73 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button> 课程管理
+</mat-toolbar>
+<mat-card class="push-sm">
+  <div layout="row" layout-wrap layout-align="start center" class="pad-left-sm pad-right-sm">
+    <span *ngIf="!searchBox.searchVisible" class="push-left-sm">
+      <span class="mat-title">课程列表</span>
+    </span>
+    <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="课程名搜索" (searchDebounce)="search($event)"
+      flex>
+    </td-search-box>
+  </div>
+  <mat-divider></mat-divider>
+  <div layout="row" layout-wrap layout-align="space-between center" layout-margin>
+    <div layout-margin>
+      <button mat-raised-button color="accent" [disabled]="!(selectData.length > 0)" (click)="publishAll()">发布</button>
+      <span *ngIf="selectData.length>0" hide-xs class="mat-subhead tc-grey-400">已选中{{selectData.length}}个课程</span>
+    </div>
+    <div layout-margin>
+      <mat-icon *ngIf="selected.term || selected.level || selected.courseType" matTooltip="重置" color="accent" style="cursor: pointer;"
+        class="push-right" (click)="reset()">autorenew</mat-icon>
+      <mat-form-field>
+        <mat-select placeholder="适用学季" class="push-right" (change)="filter()" [(ngModel)]="selected.term">
+          <mat-option *ngFor="let season of seasons" [value]="season.value">{{ season.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="类型" class="push-right" (change)="filter()" [(ngModel)]="selected.courseType">
+          <mat-option *ngFor="let type of types" [value]="type.value">{{ type.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="适用水平" (change)="filter()" [(ngModel)]="selected.level">
+          <mat-option *ngFor="let level of levels" [value]="level.value">{{ level.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+  </div>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <td-data-table #dataTable [columns]="columns" [data]="filteredData" [selectable]="true" (selectAll)="selectAllEvent($event)"
+      (rowSelect)="selectEvent($event)">
+      <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+        <mat-icon color="accent" [routerLink]="['detail', value]" matTooltip="查看详情" tdLayoutManageListClose>create</mat-icon>
+        <mat-icon class="tc-red-400" matTooltip="删除" (click)="delete(row)">close</mat-icon>
+      </ng-template>
+      <ng-template tdDataTableTemplate="state" let-value="value" let-row="row" let-column="column">
+        <span *ngIf="value == 20">已发布</span>
+        <mat-icon *ngIf="value == 10" color="accent" matTooltip="发布" (click)="publish(row)">publish</mat-icon>
+      </ng-template>
+    </td-data-table>
+    <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+      <h3>No results to display.</h3>
+    </div>
+    <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+      <span td-paging-bar-label hide-xs>Row per page: </span>
+      <mat-form-field>
+        <mat-select [(ngModel)]="pageSize">
+          <mat-option *ngFor="let size of [2,30,100,200,500,1000]" [value]="size">
+            {{size}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+    </td-paging-bar>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+</mat-card>

@@ -1,0 +1,63 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-card class="push-sm pad-sm">
+  <div>
+    <button mat-raised-button color="accent" [routerLink]="['add']" class="push-right" tdLayoutManageListClose>添加</button>
+    <button mat-raised-button color="accent" (click)="reset()" class="push-right">重置</button>
+    <md2-datepicker type="month" format="MM/y" [(ngModel)]="search.startAt"
+                    [ngModelOptions]="{standalone: true}" placeholder="开始时间"
+                    touchUi="true" openOnFocus (change)="filter()"></md2-datepicker>
+    <md2-datepicker type="month" format="MM/y" [(ngModel)]="search.endAt"
+                    [ngModelOptions]="{standalone: true}" placeholder="结束时间"
+                    touchUi="true" openOnFocus (change)="filter()"></md2-datepicker>
+    <mat-form-field>
+      <mat-select placeholder="状态" (change)="filter()" [(ngModel)]="search.status">
+        <mat-option [value]="''">所有</mat-option>
+        <mat-option [value]="0">待处理</mat-option>
+        <mat-option [value]="1">已处理</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" placeholder="班级id" [(ngModel)]="search.classId" (input)="filter()"/>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" placeholder="手机号" [(ngModel)]="search.phone" (input)="filter()"/>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" placeholder="学生姓名" [(ngModel)]="search.name" (input)="filter()"/>
+    </mat-form-field>
+  </div>
+
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData">
+    <ng-template tdDataTableTemplate="task_id" let-value="value" let-row="row" let-column="column">
+    <!--<span *ngIf="row.status === 0" class="table-span-btn push-right" [routerLink]="['detail', row.id]"-->
+    <!--tdLayoutManageListClose>处理</span>-->
+      <span class="table-span-btn" (click)="show(row)">处理</span>
+    </ng-template>
+    <ng-template tdDataTableTemplate="type" let-value="value" let-row="row" let-column="column">
+      <mat-icon color="{{ row.videocam ? 'accent' : 'warn' }}">videocam</mat-icon>
+      <mat-icon color="{{ row.headset ? 'accent' : 'warn' }}">headset</mat-icon>
+      <mat-icon color="{{ row.mic ? 'accent' : 'warn' }}">mic</mat-icon>
+      <mat-icon color="{{ row.language ? 'accent' : 'warn' }}">language</mat-icon>
+    </ng-template>
+  </td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+    <span td-paging-bar-label hide-xs>Row per page: </span>
+    <mat-form-field>
+      <mat-select [(ngModel)]="pageSize">
+        <mat-option *ngFor="let size of [2,30,100,200,500,1000]" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+  </td-paging-bar>
+</mat-card>

@@ -1,0 +1,36 @@
+<td-layout>
+
+  <td-layout-manage-list opened="true" mode="side">
+    <div td-sidenav-content>
+      <mat-nav-list td-sidenav-content>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']"
+           [routerLinkActiveOptions]="{exact:true}" [routerLink]="['lesson']">
+          <mat-icon mat-list-icon>insert_chart</mat-icon>
+          课程管理
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']"
+           [routerLinkActiveOptions]="{exact:true}" [routerLink]="['course']">
+          <mat-icon mat-list-icon>star</mat-icon>
+          课时管理
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']"
+           [routerLinkActiveOptions]="{exact:true}" [routerLink]="['prep']">
+          <mat-icon mat-list-icon>assignment</mat-icon>
+          预习管理
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']"
+           [routerLinkActiveOptions]="{exact:true}" [routerLink]="['homework']">
+          <mat-icon mat-list-icon>event</mat-icon>
+          作业管理
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']"
+           [routerLinkActiveOptions]="{exact:true}" [routerLink]="['practice']">
+          <mat-icon mat-list-icon>event</mat-icon>
+          课后练习
+        </a>
+      </mat-nav-list>
+    </div>
+    <router-outlet></router-outlet>
+  </td-layout-manage-list>
+
+</td-layout>

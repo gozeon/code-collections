@@ -1,0 +1,26 @@
+<mat-radio-group layout="row" layout-wrap layout-padding>
+  <mat-radio-button flex value="1">按班展示</mat-radio-button>
+  <mat-radio-button flex value="2">按订单展示</mat-radio-button>
+</mat-radio-group>
+<mat-divider></mat-divider>
+<table td-data-table>
+  <th td-data-table-column>
+    <span>操作</span>
+  </th>
+  <th td-data-table-column *ngFor="let column of columns" [numeric]="column.numeric">
+    {{column.label}}
+  </th>
+  <tr td-data-table-row *ngFor="let row of data">
+    <td td-data-table-cell>
+      <button mat-icon-button color="accent" [routerLink]="['detail', value]">详情</button>
+    </td>
+    <td td-data-table-cell *ngFor="let column of columns" [numeric]="column.numeric">
+      {{column.format ? column.format(row[column.name]) : row[column.name]}}
+    </td>
+  </tr>
+</table>
+<mat-divider></mat-divider>
+<td-paging-bar #pagingBar pageSizeAllText="allText" [firstLast]="true"
+pageLinkCount="1" [initialPage]="1" [pageSize]="100" [total]="1345">
+  <span td-paging-bar-label hide-xs>Row per page:</span> {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
+</td-paging-bar>

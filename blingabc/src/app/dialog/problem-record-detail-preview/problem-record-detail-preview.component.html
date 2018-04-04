@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="box">
+    <strong>日期/系统信息</strong>
+    <div class="item"><label>日期:</label><p>{{ formatTime(+detail['addTime']) }}</p></div>
+    <div class="item"><label>操作系统:</label><p>{{ detail['operatingSystem'] }}</p></div>
+    <div class="item"><label>服务器名称:</label><p>{{ detail['serverName'] }}</p></div>
+    <div class="item"><label>CPU:</label><p>{{ detail['cpu'] }}</p></div>
+    <div class="item"><label>云盘:</label><p>{{ detail['operatingSystem'] }}</p></div>
+    <div class="item"><label>客户端IP:</label><p>{{ detail['clientIp'] }}</p></div>
+    <div class="item"><label>MAC地址:</label><p>{{ detail['mac'] }}</p></div>
+    <div class="item"><label>网络延时:</label><p>{{ detail['networkDelay'] }}</p></div>
+    <div class="item"><label>丢包率:</label><p>{{ detail['frameLoss'] }}</p></div>
+    <div class="item"><label>ClassIn版本号:</label><p>{{ detail['classInversion'] }}</p></div>
+  </div>
+
+  <div class="box">
+    <strong>摄像头</strong>
+    <div class="item"><label>用户选择:</label><p>{{ formatStatus(detail['cameraArbitrary']) }}</p></div>
+    <div class="item"><label>程序选择:</label><p>{{ formatStatus(detail['cameraImpersonal']) }}</p></div>
+    <div class="item"><label>摄像头截图:</label><p><img *ngIf="detail['cameraAttachment']" [src]="detail['cameraAttachment']" alt="摄像头截图"></p></div>
+    <div class="item"><label>使用设备:</label><p>{{ detail['eeoVideoDeviceName'] }}</p></div>
+    <div class="item"><label>设备列表:</label><p>{{ detail['cameraList'] }}</p></div>
+    <!--<div class="item"><label>设备列表:</label><p>{{ formatArrToStr(detail.cameraList) }}</p></div>-->
+  </div>
+
+  <div class="box">
+    <strong>扬声器</strong>
+    <div class="item"><label>用户选择:</label><p>{{ formatStatus(detail['headphoneArbitrary']) }}</p></div>
+    <div class="item"><label>程序选择:</label><p>{{ formatStatus(detail['headphoneImpersonal']) }}</p></div>
+    <div class="item"><label>使用设备:</label><p>{{ detail['eeoAudioOutputName'] }}</p></div>
+    <div class="item"><label>设备列表:</label><p>{{ detail['speakerList'] }}</p></div>
+    <!--<div class="item"><label>设备列表:</label><p>{{ formatArrToStr(detail.speakerList) }}</p></div>-->
+  </div>
+
+  <div class="box">
+    <strong>麦克风</strong>
+    <div class="item"><label>用户选择:</label><p>{{ formatStatus(detail['microphoneArbitrary']) }}</p></div>
+    <div class="item"><label>程序选择:</label><p>{{ formatStatus(detail['microphoneImpersonal']) }}</p></div>
+    <div class="item"><label>麦克风录音:</label><p><audio *ngIf="detail['microphoneAttachment']" controls><source [src]="detail['microphoneAttachment']"></audio></p></div>
+    <div class="item"><label>使用设备:</label><p>{{ detail['eeoAudioDeviceName'] }}</p></div>
+    <div class="item"><label>设备列表:</label><p>{{ detail['micphoneList'] }}</p></div>
+    <!--<div class="item"><label>设备列表:</label><p>{{ formatArrToStr(detail.micphoneList) }}</p></div>-->
+  </div>
+</div>

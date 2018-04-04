@@ -1,0 +1,45 @@
+<div layout="row" layout-wrap layout-padding layout-wrap>
+  <div flex>订单号：{{logObj.orderCode}}</div>
+  <div flex>支付时间：{{logObj.payDate}}</div>
+</div>
+
+<div layout="row" layout-wrap layout-padding layout-wrap>
+  <div flex>原价：{{logObj.orderPrice}}</div>
+  <div flex>实付价格：{{logObj.realPrice}}</div>
+</div>
+<mat-divider></mat-divider>
+<div layout="row" layout-wrap layout-padding >
+  <div flex>收件人：{{logObj.name}}</div>
+  <div flex>手机号：{{logObj.mobile}}</div>
+</div>
+<div layout="row" layout-wrap layout-padding >
+  <div flex>所在地区：{{logObj.provinceName}}-{{logObj.cityName}}-{{logObj.areaName}}</div>
+</div>
+<div layout="row" layout-wrap layout-padding>
+  <div flex>详细地址：{{logObj.address}}</div>
+</div>
+<mat-divider></mat-divider>
+<div layout="row" layout-wrap class="pad-sm" layout-align="space-between center">
+
+  <mat-form-field flex class="md-body-1">
+    <mat-select placeholder="发放类型" [(ngModel)]="selectData.sendStatus" (change)="changeSend($event)">
+      <mat-option *ngFor="let item of sendStatus" [value]="item.value">{{ item.name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field flex class="push-left-lg push-right-lg">
+    <input matInput placeholder={{plac}} [(ngModel)]="selectData.logisticsCode" (keyup)="changeLog()">
+  </mat-form-field>
+</div>
+<div layout="row" layout-wrap layout-margin >
+  <mat-form-field flex="100">
+    <textarea matInput placeholder="发放说明" [(ngModel)]="selectData.logisticsInfo"></textarea>
+  </mat-form-field>
+</div>
+<div layout="row" layout-wrap layout-align="end center">
+  <div class="push-right-mat">
+    <button mat-button mat-dialog-close flex>取消</button>
+  </div>
+  <div>
+    <button mat-button [mat-dialog-close]="selectData" color="primary" flex [disabled]="!isSubmit">确定</button>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<td-layout>
+
+  <td-layout-manage-list opened="true" mode="side">
+    <div td-sidenav-content>
+      <mat-nav-list td-sidenav-content>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['record']">
+          <mat-icon mat-list-icon>assignment</mat-icon>
+          学习记录
+        </a>
+      </mat-nav-list>
+    </div>
+    <router-outlet></router-outlet>
+  </td-layout-manage-list>
+
+</td-layout>

@@ -1,0 +1,25 @@
+<h3>Interview Result</h3>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <div layout="column" layout-align="center center">
+    <mat-form-field style="width:100%">
+      <mat-select placeholder="Result" [(ngModel)]="interviewStatus" [ngModelOptions]="{standalone: true}" (change)="doChange()">
+        <mat-option [value]="">Select</mat-option>
+        <mat-option [value]="1">PASSED</mat-option>
+        <mat-option [value]="2">FAILED</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="interviewStatus == 1" style="width:100%">
+      <mat-select placeholder="Interview Score" [(ngModel)]="interviewScore" [ngModelOptions]="{standalone: true}">
+        <mat-option *ngFor="let item of scores" [value]="item">{{ item }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="interviewStatus == 2" style="width:100%">
+      <mat-select placeholder="Reason" [(ngModel)]="interviewFailReason" [ngModelOptions]="{standalone: true}">
+        <mat-option *ngFor="let item of reasons" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <button mat-button type="submit">Sumbit</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</form>

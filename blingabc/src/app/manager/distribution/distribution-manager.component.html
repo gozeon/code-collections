@@ -1,0 +1,36 @@
+<td-layout>
+
+  <td-layout-manage-list opened="true" mode="side">
+    <div td-sidenav-content>
+      <mat-nav-list td-sidenav-content>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']"
+           [routerLinkActiveOptions]="{exact:true}"
+           [routerLink]="['teacher']">
+          <mat-icon mat-list-icon>group</mat-icon>
+          教师管理
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']"
+           [routerLinkActiveOptions]="{exact:true}"
+           [routerLink]="['commission']">
+          <mat-icon mat-list-icon>star</mat-icon>
+          佣金数据
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']"
+           [routerLinkActiveOptions]="{exact:true}"
+           [routerLink]="['withdraw']">
+          <mat-icon mat-list-icon>description</mat-icon>
+          提现数据
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']"
+           [routerLinkActiveOptions]="{exact:true}"
+           [routerLink]="['withdraw-prohibited']">
+          <mat-icon mat-list-icon>date_range</mat-icon>
+          禁止提现教师
+        </a>
+
+      </mat-nav-list>
+    </div>
+    <router-outlet></router-outlet>
+  </td-layout-manage-list>
+
+</td-layout>

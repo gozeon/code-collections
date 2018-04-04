@@ -1,0 +1,104 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="['/main/class/template']" tdLayoutManageListOpen>
+    <mat-icon>arrow_back</mat-icon>
+  </button>模板列表
+</mat-toolbar>
+<mat-card class="push-sm">
+  <mat-card-title>
+    创建班级
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">已选课程</div>
+    <td-data-table [columns]="LessonColumns" [data]="LessonData"></td-data-table>
+
+    <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">班级属性</div>
+    <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+
+      <md2-datepicker [disabled]="classStartDateDisabled" [(ngModel)]="classStartDate" type="date" format="y-MM-dd" placeholder="开课日期"
+        flex=30 touchUi="true" openOnFocus></md2-datepicker>
+      <mat-form-field flex=30>
+        <mat-select [disabled]="schoolTimeDisabled" placeholder="上课时间" [(ngModel)]="selected.schoolTimeId">
+          <mat-option *ngFor="let time of times" [value]="time.id">{{ time.schoolTimeTxt }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field flex=30>
+        <mat-select [disabled]="stageDisabled" placeholder="分期" [(ngModel)]="selected.stage">
+          <mat-option *ngFor="let item of stages" [value]="item.code">{{ item.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" layout="row" layout-wrap layout-margin layout-wrap>
+      <mat-form-field flex=30>
+        <input matInput type="number" min="0" placeholder="直播课时价格" [formControl]="form.get('livePrice')" [(ngModel)]="livePrice"
+        />
+      </mat-form-field>
+      <mat-form-field flex=30>
+        <input matInput type="number" min="0" placeholder="免费课时数" [formControl]="form.get('freeLesson')" [(ngModel)]="freeLesson"
+        />
+      </mat-form-field>
+      <mat-form-field flex=30>
+        <input matInput type="number" min="0" placeholder="直播班容" [formControl]="form.get('liveContain')" [(ngModel)]="liveContain"
+        />
+      </mat-form-field>
+    </form>
+    <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+      <mat-form-field flex=30>
+        <mat-select [disabled]="classLabelDisabled" placeholder="课程标签" [(ngModel)]="selected.classLabel">
+          <mat-option *ngFor="let classlabel of classlabels" [value]="classlabel.code">{{ classlabel.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex=30>
+        <input matInput type="number" min="1" placeholder="开班数" [(ngModel)]="quantity" />
+      </mat-form-field>
+      <mat-checkbox [disabled]="sendMaterial" [(ngModel)]="sendMaterial" flex=30>寄送教材</mat-checkbox>
+    </div>
+
+    <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200" layout="row" layout-wrap layout-align="space-between center">
+      <span layout="row" layout-wrap>选择授课老师
+        <mat-error *ngIf="quantity">(此项无效)</mat-error>
+      </span>
+      <button mat-button (click)="openSelectTeacherDialog()">添加</button>
+    </div>
+    <td-data-table #dataTable [columns]="teacherColumns" [data]="teacherData">
+      <ng-template tdDataTableTemplate="sex" let-value="value" let-row="row" let-column="column">
+        <span [ngSwitch]="value">
+          <span *ngSwitchCase="1">男</span>
+          <span *ngSwitchCase="0">女</span>
+        </span>
+      </ng-template>
+      <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+        <button mat-icon-button color="primary" (click)="delete(value)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </ng-template>
+    </td-data-table>
+    <div class="pad-sm" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+      <h3>No results to display.</h3>
+    </div>
+
+    <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">课时时间</div>
+    <mat-list>
+      <mat-list-item layout="row" layout-wrap layout-margin>
+        <span flex>课次</span>
+        <span flex>课时名称</span>
+        <span flex>上课时间</span>
+      </mat-list-item>
+      <mat-list-item *ngFor="let item of templateLessonList; let idx = index" layout="row" layout-wrap layout-margin>
+        <span flex>{{ idx + 1 }}</span>
+        <span flex>{{ item.name }}</span>
+        <span flex>{{ item.startAt }}</span>
+      </mat-list-item>
+      <div *ngIf="templateLessonList.length == 0" layout="row" layout-wrap layout-align="center center">
+        <h3 class="tc-grey-400">没有课时哦</h3>
+      </div>
+    </mat-list>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button type="submit" mat-button (click)="onSubmit(form.value)">确定</button>
+    <button mat-button [routerLink]="['/main/class/template']" tdLayoutManageListOpen>取消</button>
+  </mat-card-actions>
+</mat-card>

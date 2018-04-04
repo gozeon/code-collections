@@ -1,0 +1,23 @@
+<h3>CRM 用户</h3>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div layout="column" layout-align="center center" layout-wrap>
+    <mat-form-field [style.width.%]="50">
+      <input matInput type="text" placeholder="姓名*" [formControl]="form.get('name')" />
+    </mat-form-field>
+    <mat-form-field [style.width.%]="50">
+      <input matInput type="text" placeholder="账号*" [formControl]="form.get('username')" />
+    </mat-form-field>
+    <mat-form-field [style.width.%]="50">
+      <input matInput type="number" min="1" placeholder="手机号*" [formControl]="form.get('phone')" />
+    </mat-form-field>
+    <div [style.width.%]="50">
+      <mat-checkbox [(ngModel)]="status" [ngModelOptions]="{standalone: true}">在职</mat-checkbox>
+    </div>
+  </div>
+
+  <mat-divider class="push-top-sm push-bottom-sm"></mat-divider>
+  <div layout="row" layout-wrap layout-align="end center">
+    <button type="submit" mat-button>确定</button>
+    <button mat-button mat-dialog-close>取消</button>
+  </div>
+</form>

@@ -1,0 +1,157 @@
+// global
+$BaseBgColor: #eeeeee;
+$primary: #039be5;
+.dragula-item {
+  cursor: move;
+  &:hover {
+    background: $BaseBgColor !important;
+  }
+}
+
+.mat-icon.md-icon-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mat-form-field-wrapper {
+  padding-bottom: 0.5em !important;
+}
+
+.mat-form-field-underline {
+ bottom: initial  !important;
+}
+
+[layout-padding] {
+  padding: 0px 8px !important;
+}
+
+::ng-deep {
+  .mat-form-field-wrapper {
+    padding-bottom: 0.5em;
+  }
+
+  .mat-form-field-underline {
+   bottom: initial;
+  }
+}
+
+.td-data-table {
+  .td-data-table-row {
+    .td-data-table-cell {
+      // md-icon
+      .mat-icon {
+        cursor: pointer;
+        &:hover {
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+}
+
+.md2-datepicker-trigger {
+  padding: 10px 0 12px 36px !important;
+  .md2-datepicker-input {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5) !important;
+    color: rgba(0, 0, 0, 0.5) !important;
+  }
+}
+
+// .td-data-table-column:first-child {
+//   .td-data-table-heading {
+//     text-align: center !important;
+//     padding: 0;
+//   }
+// }
+.td-data-table-column-row {
+  .td-data-table-column:first-child {
+    text-align: center !important;
+    .td-data-table-heading {
+      text-align: center !important;
+      padding: 0 !important;
+    }
+  }
+}
+
+.td-data-table-column {
+  text-align: center !important;
+}
+
+.td-data-table-cell {
+  .td-data-table-cell-content-wrapper {
+    justify-content: center !important;
+    align-items: center !important;
+    span {
+      text-align: left;
+    }
+  }
+}
+
+.td-data-table-cell-content-wrapper {
+  // padding: 0 0 0 30% !important;
+  text-align: right !important;
+  padding: 0 !important;
+}
+
+.table-span-btn {
+  color: #039be5;
+  cursor: pointer;
+  text-decoration: none;
+  &:hover {
+    color: #1983b4;
+    text-decoration: underline;
+  }
+}
+
+.hover-pointer {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+* {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.select-input-search {
+  width: 100%;
+  padding: 5px 10px;
+  outline: 0;
+}
+
+// input file style
+.fileContainer {
+  overflow: hidden;
+  position: relative;
+}
+
+.fileContainer [type=file] {
+  cursor: inherit;
+  display: block;
+  font-size: 999px;
+  filter: alpha(opacity=0);
+  min-height: 100%;
+  min-width: 100%;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  top: 0;
+}
+
+.fileContainer {
+  background: $primary;
+  border-radius: .5em;
+  float: left;
+  padding: .5em;
+  color: #ffffff;
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.fileContainer [type=file] {
+  cursor: pointer;
+}

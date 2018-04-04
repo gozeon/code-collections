@@ -1,0 +1,26 @@
+<td-layout>
+
+  <td-layout-manage-list opened="true" mode="side">
+    <div td-sidenav-content>
+      <mat-nav-list td-sidenav-content>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['class']">
+          <mat-icon mat-list-icon>insert_chart</mat-icon>
+          学生班级
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['lesson']">
+          <mat-icon mat-list-icon>school</mat-icon>
+          学生课时
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['user', 'user-info']">
+          <mat-icon mat-list-icon>star</mat-icon>
+          查找用户
+        </a>
+      </mat-nav-list>
+    </div>
+    <router-outlet></router-outlet>
+  </td-layout-manage-list>
+
+</td-layout>

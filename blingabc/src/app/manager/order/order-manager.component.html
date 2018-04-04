@@ -1,0 +1,46 @@
+<td-layout>
+
+  <td-layout-manage-list opened="true" mode="side">
+    <div td-sidenav-content>
+      <mat-nav-list td-sidenav-content>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['order-verify']">
+          <mat-icon mat-list-icon>shopping_cart</mat-icon>
+          订单记录
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['order-log']">
+          <mat-icon mat-list-icon>directions_bus</mat-icon>
+          物流管理
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['order-check']">
+          <mat-icon mat-list-icon>check_circle</mat-icon>
+          订单审核
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['retired-class']">
+          <mat-icon mat-list-icon>remove</mat-icon>
+          退班列表
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+           [routerLink]="['retired-verify']">
+          <mat-icon mat-list-icon>remove_circle</mat-icon>
+          退班审核
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['change-class']">
+          <mat-icon mat-list-icon>swap_horiz</mat-icon>
+          转班记录
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+           [routerLink]="['manual-refund']">
+          <mat-icon mat-list-icon>star</mat-icon>
+          手动退班
+        </a>
+      </mat-nav-list>
+    </div>
+    <router-outlet></router-outlet>
+  </td-layout-manage-list>
+
+</td-layout>

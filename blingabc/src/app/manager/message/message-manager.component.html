@@ -1,0 +1,26 @@
+<td-layout>
+
+  <td-layout-manage-list opened="true" mode="side">
+    <div td-sidenav-content>
+      <mat-nav-list td-sidenav-content>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['template']">
+          <mat-icon mat-list-icon>insert_chart</mat-icon>
+          模版管理
+        </a>
+        <!-- <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['templateDetail']">
+          <mat-icon mat-list-icon>insert_drive_file</mat-icon>
+          模版详情
+        </a> -->
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['history']">
+          <mat-icon mat-list-icon>school</mat-icon>
+          历史记录
+        </a>
+      </mat-nav-list>
+    </div>
+    <router-outlet></router-outlet>
+  </td-layout-manage-list>
+
+</td-layout>

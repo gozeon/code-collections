@@ -1,0 +1,44 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="['/main/content/prep']" tdLayoutManageListOpen>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  预习管理
+</mat-toolbar>
+<mat-card class="push-sm pad-sm">
+  <div layout="row" layout-margin>
+    <mat-form-field flex="20">
+      <input matInput type="text" placeholder="预习名称" [(ngModel)]="name"/>
+    </mat-form-field>
+  </div>
+  <div layout="row" layout-margin>
+    <mat-form-field flex="25">
+      <mat-select placeholder="适用学季" class="push-right" [(ngModel)]="selected.tearmCode">
+        <mat-option *ngFor="let season of seasons" [value]="season.code">{{ season.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field flex="25">
+      <mat-select placeholder="适用水平" [(ngModel)]="selected.level">
+        <mat-option *ngFor="let level of levels" [value]="level.code">{{ level.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div layout="row" layout-margin>
+    <mat-form-field flex="50" class="push-top-sm">
+      <textarea matInput placeholder="备注" [(ngModel)]="remark"></textarea>
+    </mat-form-field>
+  </div>
+  <div layout="row" layout-margin>
+    <div flex="50" layout="row">
+      <label class="push-right">预习内容:</label>
+      <input type="file" #fileInput (change)="uploadFile($event)"/>
+      <mat-icon *ngIf="file" (click)="deleteFile()" class="tc-red-400 hover-pointer">close</mat-icon>
+      <mat-progress-spinner *ngIf="uploading" color="accent" mode="indeterminate" [diameter]="20"
+                            [strokeWidth]="2"></mat-progress-spinner>
+      <a href="http://img.blingabc.com/19fa9f1aaf6e4e3b92d1721e8a380bf4.zip" [download]="'preview-example.zip'">下载模板</a>
+    </div>
+  </div>
+  <mat-divider class="push-top-sm push-bottom-sm"></mat-divider>
+  <div layout="row" layout-align>
+    <button mat-button (click)="onSubmit()">确定</button>
+  </div>
+</mat-card>

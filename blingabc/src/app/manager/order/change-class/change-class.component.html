@@ -1,0 +1,62 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button>
+  转班记录
+</mat-toolbar>
+<mat-card class="push-sm">
+  <div layout="row" layout-wrap layout-align="end center" class="push-right-md">
+    <td-search-input class="push-right" placeholder="搜索家长手机号" (searchDebounce)="searchNum($event)"
+                     showUnderline="true"></td-search-input>
+    <td-search-input placeholder="转入或转出班级编号" (searchDebounce)="searchCode($event)"
+                     showUnderline="true"></td-search-input>
+  </div>
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData"></td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+    <span td-paging-bar-label hide-xs>Row per page: </span>
+    <mat-form-field>
+      <mat-select [(ngModel)]="pageSize">
+        <mat-option *ngFor="let size of [2, 30,100,200,500,1000]" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+  </td-paging-bar>
+</mat-card>
+<!--<mat-card-content>-->
+<!--<div layout="row" layout-wrap layout-align="end center" class="push-right-md">-->
+<!--<td-search-input  class="push-right" placeholder="搜索家长手机号" (searchDebounce)="searchNum($event)" showUnderline="true"></td-search-input>-->
+<!--<td-search-input placeholder="转入或转出班级编号" (searchDebounce)="searchCode($event)" showUnderline="true"></td-search-input>-->
+<!--</div>-->
+<!--<mat-divider></mat-divider>-->
+<!--<td-data-table [columns]="columns" [data]="filteredData">-->
+<!--&lt;!&ndash; <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">-->
+<!--<mat-icon color="accent" [routerLink]="['detail', row.orderCode]" matTooltip="查看详情" tdLayoutManageListClose>create</mat-icon>-->
+<!--</ng-template> &ndash;&gt;-->
+<!--</td-data-table>-->
+<!--<div class="mat-padding" *ngIf="!filteredData.length" layout="row" layout-wrap layout-align="center center">-->
+<!--<h3>没有数据</h3>-->
+<!--</div>-->
+<!--</mat-card-content>-->
+<!--<mat-divider></mat-divider>-->
+<!--<td-paging-bar #pagingBar [pageSize]="pageSize" [total]="dataTotal" (change)="pageChange($event)">-->
+<!--<span hide-xs>每页的行数:</span>-->
+<!--<mat-form-field [style.width.px]="50">-->
+<!--<mat-select [(ngModel)]="pageSize">-->
+<!--<mat-option *ngFor="let size of [10,30,50]" [value]="size">-->
+<!--{{size}}-->
+<!--</mat-option>-->
+<!--</mat-select>-->
+<!--</mat-form-field>-->
+<!--{{pagingBar.range}}-->
+<!--<span hide-xs>of {{pagingBar.total}}</span>-->
+<!--</td-paging-bar>-->
+<!--</mat-card>-->
+<!--&lt;!&ndash; <pre>{{filteredData | json}}</pre> &ndash;&gt;-->
+<!--&lt;!&ndash; <pre>{{selectData | json}}</pre> &ndash;&gt;-->

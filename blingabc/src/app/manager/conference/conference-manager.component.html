@@ -1,0 +1,36 @@
+<td-layout>
+
+  <td-layout-manage-list opened="true" mode="side">
+    <div td-sidenav-content>
+      <mat-nav-list td-sidenav-content>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['config']">
+          <mat-icon mat-list-icon>settings</mat-icon>
+          发布会配置
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['grab-config']">
+          <mat-icon mat-list-icon>assignment</mat-icon>
+          发布会抢报
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+           [routerLink]="['renewal']">
+          <mat-icon mat-list-icon>star</mat-icon>
+          续报
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+           [routerLink]="['distribution']">
+          <mat-icon mat-list-icon>remove_circle</mat-icon>
+          分销
+        </a>
+        <a mat-list-item mat-ripple class="block relative" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+           [routerLink]="['freshman-guidance']">
+          <mat-icon mat-list-icon>account_balance</mat-icon>
+          新生指导课配置
+        </a>
+      </mat-nav-list>
+    </div>
+    <router-outlet></router-outlet>
+  </td-layout-manage-list>
+
+</td-layout>

@@ -1,0 +1,13 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="[mainUri]" tdLayoutManageListOpen>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  新建
+</mat-toolbar>
+
+<mat-card class="push-sm pad-sm">
+<div class="push-top-lg">
+  <button mat-raised-button color="accent" class="push-right" (click)="onSubmit()">确定</button>
+  <button mat-raised-button [routerLink]="[mainUri]">取消</button>
+</div>
+</mat-card>

@@ -1,0 +1,111 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button>
+  班级管理
+</mat-toolbar>
+<mat-card class="push-sm">
+  <div layout="row" layout-wrap layout-align="space-between center" class="pad-left-sm pad-right-sm">
+    <span class="push-left-sm">
+      <span class="mat-title">所有班级</span>
+    </span>
+    <div layout="row" layout-wrap>
+      <td-search-input class="push-right" placeholder="搜索外教名" (searchDebounce)="searchName($event)"
+                       showUnderline="true"></td-search-input>
+      <td-search-input placeholder="搜索班级编号" (searchDebounce)="searchCode($event)"
+                       showUnderline="true"></td-search-input>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div layout="row" layout-wrap layout-align="space-between center" layout-margin>
+    <div layout-margin>
+      <button mat-raised-button color="accent" [disabled]="!(selectData.length > 0)" (click)="openOpenClassToDialog()">
+        开班到
+      </button>
+      <button mat-raised-button color="accent" [disabled]="!(selectData.length > 0)" (click)="publishAll()">上架</button>
+      <button mat-raised-button color="accent" [disabled]="!(selectData.length > 0)" (click)="offTheShelf()">下架</button>
+      <button mat-raised-button color="accent" [disabled]="!(selectData.length > 0)"
+              (click)="openSelectClassTeacherDialog()">选择班主任
+      </button>
+      <span *ngIf="selectData.length > 0" hide-xs class="mat-subhead tc-grey-400">已选中{{selectData.length}}个班级</span>
+    </div>
+
+    <div layout-margin layout="row" layout-wrap layout-align="end center">
+      <mat-icon *ngIf="selected.term || selected.level || selected.schoolTimeId || selected.courseType
+      || selected.distribution || selected.stage || selected.state || selected.liveCurrentContain"
+                matTooltip="重置" color="accent" style="cursor: pointer;" class="push-right" (click)="reset()">autorenew
+      </mat-icon>
+      <mat-form-field flex>
+        <mat-select placeholder="适用学季" (change)="filter()" [(ngModel)]="selected.term">
+          <mat-option *ngFor="let season of seasons" [value]="season.value">{{ season.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex>
+        <mat-select placeholder="类型" (change)="filter()" [(ngModel)]="selected.courseType">
+          <mat-option *ngFor="let type of types" [value]="type.value">{{ type.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex>
+        <mat-select placeholder="适用水平" (change)="filter()" [(ngModel)]="selected.level">
+          <mat-option *ngFor="let level of levels" [value]="level.value">{{ level.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex>
+        <mat-select placeholder="上课时间" (change)="filter()" [(ngModel)]="selected.schoolTimeId">
+          <input type="text" class="select-input-search" (input)="filterTimes($event)"/>
+          <mat-option *ngFor="let time of times" [value]="time.id">{{ time.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex>
+        <mat-select placeholder="导出到" (change)="filter()" [(ngModel)]="selected.distribution">
+          <mat-option *ngFor="let distribution of distributions" [value]="distribution.value">{{ distribution.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex>
+        <mat-select placeholder="期" (change)="filter()" [(ngModel)]="selected.stage">
+          <mat-option *ngFor="let item of stages" [value]="item.code">{{ item.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex>
+        <mat-select placeholder="状态" (change)="filter()" [(ngModel)]="selected.state">
+          <mat-option *ngFor="let item of states" [value]="item.code">{{ item.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex>
+        <input matInput type="number" min="0" placeholder="当前报名人数" (input)="filter()"
+               [(ngModel)]="selected.liveCurrentContain"/>
+      </mat-form-field>
+    </div>
+
+  </div>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <td-data-table #dataTable [columns]="columns" [data]="filteredData" [selectable]="true"
+                   (selectAll)="selectAllEvent($event)"
+                   (rowSelect)="selectEvent($event)">
+      <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+        <button mat-icon-button color="primary" [routerLink]="['detail', value]" tdLayoutManageListClose>
+          <mat-icon>create</mat-icon>
+        </button>
+      </ng-template>
+    </td-data-table>
+    <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+      <h3>No results to display.</h3>
+    </div>
+    <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+      <span td-paging-bar-label hide-xs>Row per page: </span>
+      <mat-form-field>
+        <mat-select [(ngModel)]="pageSize">
+          <mat-option *ngFor="let size of [2,30,100,200,500,1000]" [value]="size">
+            {{size}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+    </td-paging-bar>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+</mat-card>

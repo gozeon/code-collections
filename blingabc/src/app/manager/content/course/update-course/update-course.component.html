@@ -1,0 +1,116 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="['/main/content/course']" tdLayoutManageListOpen>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  修改课时
+</mat-toolbar>
+<mat-card class="push-sm pad-sm">
+  <div layout="row" layout-align="start center" layout-wrap layout-margin>
+    <mat-form-field flex=30>
+      <input matInput type="text" placeholder="课时名称" [(ngModel)]="course.name"/>
+    </mat-form-field>
+    <mat-form-field flex=30>
+      <input matInput type="number" placeholder="默认课次" min="1" [(ngModel)]="course.lessonNum"/>
+    </mat-form-field>
+    <mat-form-field flex=30>
+      <input matInput type="number" placeholder="时长" min="1" [(ngModel)]="course.whenLong"/>
+    </mat-form-field>
+  </div>
+  <div layout="row" layout-align="start center" layout-wrap layout-margin>
+    <mat-form-field flex=30>
+      <mat-select placeholder="适用学季" [(ngModel)]="course.term">
+        <mat-option *ngFor="let item of seasons" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field flex=30>
+      <mat-select placeholder="类型" [(ngModel)]="course.courseType">
+        <mat-option *ngFor="let item of types" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field flex=30>
+      <mat-select placeholder="适用水平" [(ngModel)]="course.level">
+        <mat-option *ngFor="let item of levels" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div layout="row" layout-align="start center" layout-wrap layout-margin>
+    <mat-form-field flex=30>
+      <input matInput type="number" placeholder="课后ABCmouse练习ID" [(ngModel)]="course.mouseId"/>
+    </mat-form-field>
+    <mat-checkbox [(ngModel)]="course.isTestCourse" flex=30>设为测评课</mat-checkbox>
+  </div>
+
+  <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">简介</div>
+  <quill-editor [(ngModel)]="course.vocabulary"></quill-editor>
+
+  <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">封面</div>
+  <div layout="row" layout-align="start end">
+    <img *ngIf="cover.url" mat-card-sm-image alt="请选择图片" [attr.src]="cover.url"/>
+    <input type="file" accept="image/*" (change)="uploadCoverImage($event)" #coverInput/>
+    <mat-icon *ngIf="cover.url" (click)="cover.name=''; cover.url=''; coverInput.value='';"
+              class="tc-red-400 hover-pointer">
+      close
+    </mat-icon>
+    <mat-spinner *ngIf="loading.cover" [diameter]="20" [strokeWidth]="2"></mat-spinner>
+  </div>
+
+  <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">课前资源</div>
+  <div layout="row" layout-align="start center">
+    <mat-checkbox [(ngModel)]="prep.state" (change)="needPreviewChange()" [disabled]="disabled.prep">
+      有课前资源
+    </mat-checkbox>
+    <button *ngIf="prep.state" mat-raised-button (click)="openDialogSelectPrep()" class="push-left push-right"
+            [disabled]="disabled.prepCanChange">
+      选择
+    </button>
+    <span *ngIf="prep.state">{{ prep.name }}</span>
+  </div>
+
+  <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">课中资源</div>
+  <div layout="row" layout-align="start center">
+    <label class="push-right">上课课件:</label>
+    <input #ClassCourseware type="file" (change)="uploadClassCourseWare($event)"/>
+    {{ courseWareForClass.name }}
+    <mat-icon *ngIf="courseWareForClass.url"
+              (click)="deleteCourseWareForClass(); ClassCourseware.value='';"
+              class="tc-red-400 hover-pointer">
+      close
+    </mat-icon>
+    <mat-spinner *ngIf="loading.courseWareForClass" [diameter]="20" [strokeWidth]="2"></mat-spinner>
+  </div>
+  <div layout="row" layout-align="start center">
+    <label class="push-right">备课课件:</label>
+    <input #LessonPreparationCourseware type="file" (change)="uploadLessonPreparationCourseWare($event)"/>
+    {{ lessonPreparationCourseWare.name }}
+    <mat-icon *ngIf="lessonPreparationCourseWare.url"
+              (click)="deleteLessonPreparationCourseWare(); LessonPreparationCourseware.value='';"
+              class="tc-red-400 hover-pointer">
+      close
+    </mat-icon>
+    <mat-spinner *ngIf="loading.lessonPreparationCourseWare" [diameter]="20" [strokeWidth]="2"></mat-spinner>
+  </div>
+
+  <div class="pad-xs push-top-sm push-bottom-sm bgc-grey-200">课后资源</div>
+  <div layout="row" layout-align="start center" class="push-bottom-sm">
+    <mat-checkbox [(ngModel)]="homework.state" (change)="needHomeworkChange()" [disabled]="disabled.homework">有绘本跟读
+    </mat-checkbox>
+    <button *ngIf="homework.state" mat-raised-button (click)="openDialogSelectHomework()"
+            class="push-left push-right" [disabled]="disabled.homeworkCanChange">选择
+    </button>
+    <span *ngIf="homework.state">{{ homework.name }}</span>
+  </div>
+
+  <div layout="row" layout-align="start center">
+    <mat-checkbox [(ngModel)]="practice.state" (change)="needPracticeChange()" [disabled]="disabled.practice">有课后作业
+    </mat-checkbox>
+    <button *ngIf="practice.state" mat-raised-button (click)="openDialogSelectPractice()"
+            class="push-left push-right" [disabled]="disabled.practiceCanChange">选择
+    </button>
+    <span *ngIf="practice.state">{{ practice.name }}</span>
+  </div>
+
+  <mat-divider class="push-top push-bottom"></mat-divider>
+  <mat-card-actions>
+    <button type="submit" mat-button (click)="onSubmit()" [disabled]="auth">确定</button>
+  </mat-card-actions>
+</mat-card>

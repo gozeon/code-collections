@@ -1,0 +1,34 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="[mainUri]" tdLayoutManageListOpen>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  新建
+</mat-toolbar>
+<mat-card class="push-sm pad-sm">
+  <div>
+    手机号：
+    <mat-form-field>
+      <input matInput type="text" placeholder="手机号" [(ngModel)]="data.phone"/>
+    </mat-form-field>
+  </div>
+
+  <div>
+    问题设备:
+    <mat-checkbox [(ngModel)]="data.videocam">摄像头</mat-checkbox>
+    <mat-checkbox [(ngModel)]="data.headset">耳机</mat-checkbox>
+    <mat-checkbox [(ngModel)]="data.mic">麦克风</mat-checkbox>
+    <mat-checkbox [(ngModel)]="data.language">网络设备</mat-checkbox>
+  </div>
+
+  <div>
+    备注：
+    <mat-form-field [style.width]="'50%'">
+      <textarea [(ngModel)]="data.remark" matInput></textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="push-top-lg">
+    <button mat-raised-button color="accent" class="push-right" (click)="onSubmit()">确定</button>
+    <button mat-raised-button [routerLink]="[mainUri]">取消</button>
+  </div>
+</mat-card>

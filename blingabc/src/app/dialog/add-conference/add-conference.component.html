@@ -1,0 +1,33 @@
+<h3>新建配置</h3>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+    <mat-form-field flex=30>
+      <input matInput type="text" placeholder="发布会名*" [formControl]="form.get('name')" />
+    </mat-form-field>
+    <mat-form-field flex=30>
+      <input matInput type="number" min="1" placeholder="倍数*" [formControl]="form.get('multiple')" />
+    </mat-form-field>
+  </div>
+  <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+
+    <mat-form-field flex=30>
+      <mat-select placeholder="开班到*" [(ngModel)]="distribution" [ngModelOptions]="{standalone: true}">
+        <mat-option *ngFor="let item of distributions" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div layout="row" layout-wrap layout-align="start center" layout-margin layout-wrap>
+    <md2-datepicker type="datetime" format="y-MM-dd HH:mm" [(ngModel)]="date.startAt" [ngModelOptions]="{standalone: true}" placeholder="开始时间"
+      flex=30 touchUi="true" openOnFocus></md2-datepicker>
+    <md2-datepicker type="datetime" format="y-MM-dd HH:mm" [(ngModel)]="date.endAt" [ngModelOptions]="{standalone: true}" placeholder="结束时间"
+      flex=30 touchUi="true" openOnFocus></md2-datepicker>
+  </div>
+
+
+  <mat-divider class="push-bottom-sm"></mat-divider>
+  <div>
+    <button type="submit" mat-button>确定</button>
+    <button mat-button mat-dialog-close>取消</button>
+  </div>
+</form>

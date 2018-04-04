@@ -1,0 +1,39 @@
+<div>
+  <mat-form-field>
+    <mat-select placeholder="适用学季" class="push-right" (change)="filter()" [(ngModel)]="selected.tearmCode">
+      <mat-option *ngFor="let season of seasons" [value]="season.code">{{ season.name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="适用水平" (change)="filter()" [(ngModel)]="selected.level">
+      <mat-option *ngFor="let level of levels" [value]="level.code">{{ level.name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput type="text" placeholder="预习名称" [(ngModel)]="searchTerm" (input)="filter()"/>
+  </mat-form-field>
+</div>
+<td-data-table #dataTable [columns]="columns" [data]="filteredData" [selectable]="true"
+               (rowSelect)="selectEvent($event)" [multiple]="false">
+</td-data-table>
+<div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+  <h3>No results to display.</h3>
+</div>
+<td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+  <span td-paging-bar-label hide-xs>Row per page: </span>
+  <mat-form-field>
+    <mat-select [(ngModel)]="pageSize">
+      <mat-option *ngFor="let size of [5]" [value]="size">
+        {{size}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+</td-paging-bar>
+<div layout="row" layout-align="end center">
+  <button mat-button (click)="onSubmit()" [disabled]="selectData.length !== 1">确认</button>
+  <button mat-button mat-dialog-close>取消</button>
+</div>

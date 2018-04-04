@@ -1,0 +1,35 @@
+<mat-card-content>
+  <div layout-margin layout="row" layout-wrap>
+    <mat-form-field flex=30>
+      <mat-select placeholder="开班到" [(ngModel)]="distribution">
+        <mat-option *ngFor="let distribution of distributions" [value]="distribution.value">{{ distribution.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <td-data-table #dataTable [columns]="columns" [data]="filteredData">
+    <ng-template tdDataTableTemplate="id" let-value="value" let-row="row" let-column="column">
+      <mat-icon style="cursor: pointer;" class="tc-red-400 push-right" matTooltip="删除" (click)="delete(value)">close</mat-icon>
+    </ng-template>
+  </td-data-table>
+  <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+    <h3>请返回重新选择</h3>
+  </div>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+    <span td-paging-bar-label hide-xs>Row per page: </span>
+    <mat-form-field>
+      <mat-select [(ngModel)]="pageSize">
+        <mat-option *ngFor="let size of [5, 10, 20]" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span>{{pagingBar.range}}
+      <span hide-xs>of {{pagingBar.total}}</span>
+    </span>
+  </td-paging-bar>
+</mat-card-content>
+<mat-divider></mat-divider>
+<mat-card-actions>
+  <button mat-button (click)="submit()">确定</button>
+  <button mat-button mat-dialog-close>取消</button>
+</mat-card-actions>

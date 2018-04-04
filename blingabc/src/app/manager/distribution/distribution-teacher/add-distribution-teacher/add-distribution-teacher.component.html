@@ -1,0 +1,55 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="[mainUri]" tdLayoutManageListOpen>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  新建
+</mat-toolbar>
+
+<mat-card class="push-sm pad-sm">
+  <div>
+    <img mat-card-avatar [attr.src]="avatarUri" [style.width.px]="70" [style.height.px]="70" class="push-right"/>
+    <input type="file" accept="image/*" (change)="chooseIamge($event)"/>
+  </div>
+
+  <div>
+    位置：
+    <mat-form-field>
+      <mat-select placeholder="省" [(ngModel)]="provinceCode" (change)="getStateByProvinceId()">
+        <mat-option *ngFor="let item of provinces" [value]="item.provinceCode">{{ item.provinceName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="市" [(ngModel)]="cityCode" (change)="getStateByCityId()">
+        <mat-option *ngFor="let item of citys" [value]="item.cityCode">{{ item.cityName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="区" [(ngModel)]="areaCode" >
+        <mat-option *ngFor="let item of areas" [value]="item.areaCode">{{ item.areaName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div>姓名：
+    <mat-form-field>
+      <input matInput type="text" [(ngModel)]="name"/>
+    </mat-form-field>
+  </div>
+
+  <div>邮箱：
+    <mat-form-field>
+      <input matInput type="text" [(ngModel)]="email"/>
+    </mat-form-field>
+  </div>
+
+  <div>身份证号码：
+    <mat-form-field>
+      <input matInput type="text" [(ngModel)]="authCard"/>
+    </mat-form-field>
+  </div>
+
+  <div class="push-top-lg">
+    <button mat-raised-button color="accent" class="push-right" (click)="onSubmit()">确定</button>
+    <button mat-raised-button [routerLink]="[mainUri]">取消</button>
+  </div>
+</mat-card>

@@ -1,0 +1,15 @@
+<div layout="column">
+  <mat-form-field >
+    <input matInput type="text" placeholder="Title" [(ngModel)]="req.title" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="number" placeholder="Amount (USD)" [(ngModel)]="req.amount"/>
+  </mat-form-field>
+  <mat-form-field style="width: 100%">
+    <textarea matInput placeholder="Remark" [(ngModel)]="req.remark"></textarea>
+  </mat-form-field>
+</div>
+<div layout="row" layout-align="end center">
+  <button mat-button (click)="onSubmit()">确认</button>
+  <button mat-button mat-dialog-close>取消</button>
+</div>

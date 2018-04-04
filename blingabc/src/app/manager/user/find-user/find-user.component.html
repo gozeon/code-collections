@@ -1,0 +1,41 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <nav mat-tab-nav-bar>
+    <a mat-tab-link class="find-user-a" [routerLinkActive]="['find-user-a-active']" [routerLink]="['user-info']"
+       routerLinkActive="active">
+      用户信息
+    </a>
+    <a mat-tab-link *ngIf="isShowBtn" class="find-user-a" [routerLinkActive]="['find-user-a-active']"
+       [routerLink]="['class-record']"
+       routerLinkActive="active">
+      班级记录
+    </a>
+    <a mat-tab-link *ngIf="isShowBtn" class="find-user-a" [routerLinkActive]="['find-user-a-active']"
+       [routerLink]="['track-record']"
+       routerLinkActive="active">
+      跟踪记录
+    </a>
+    <a mat-tab-link *ngIf="isShowBtn" class="find-user-a" [routerLinkActive]="['find-user-a-active']"
+       [routerLink]="['to-be-in-class']"
+       routerLinkActive="active">
+      待上课时
+    </a>
+    <a mat-tab-link *ngIf="isShowBtn" class="find-user-a" [routerLinkActive]="['find-user-a-active']"
+       [routerLink]="['finish-the-lesson']"
+       routerLinkActive="active">
+      完成课时
+    </a>
+    <a mat-tab-link *ngIf="isShowBtn" class="find-user-a" [routerLinkActive]="['find-user-a-active']"
+       [routerLink]="['homework-record']"
+       routerLinkActive="active">
+      作业记录
+    </a>
+  </nav>
+  <span flex></span>
+  <button mat-raised-button color="accent" (click)="openOrderDialog()" [disabled]="!isShow">下单</button>
+  <button mat-raised-button color="accent" (click)="openMessageDialog()" [disabled]="!isShow">短信</button>
+  <button mat-raised-button color="accent" (click)="openResetPasswordDialog()" [disabled]="!isShow">重置密码</button>
+</mat-toolbar>
+<router-outlet></router-outlet>

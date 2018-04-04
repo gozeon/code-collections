@@ -1,0 +1,51 @@
+<mat-toolbar>
+  <button mat-icon-button tdLayoutManageListToggle>
+    <mat-icon>menu</mat-icon>
+  </button> 模板管理
+</mat-toolbar>
+
+<mat-card class="push-sm">
+  <mat-radio-group layout="row" layout-wrap layout-align="space-between center" class="pad-sm" layout-margin (change)="changeType($event)">
+    <div flex>类型</div>
+    <mat-radio-button flex value=0 checked="checked">全部</mat-radio-button>
+    <mat-radio-button flex value=1>密码发送</mat-radio-button>
+    <mat-radio-button flex value=2>通知上课</mat-radio-button>
+    <mat-radio-button flex value=3>用户召回</mat-radio-button>
+    <mat-radio-button flex value=4>其他</mat-radio-button>
+  </mat-radio-group>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <table td-data-table>
+      <th td-data-table-column>
+        <span>操作</span>
+      </th>
+      <th td-data-table-column *ngFor="let column of columns" [numeric]="column.numeric">
+        {{column.label}}
+      </th>
+      <tr td-data-table-row *ngFor="let row of list">
+        <td td-data-table-cell>
+          <button mat-icon-button color="accent" [routerLink]="['detail', value]">详情</button>
+          <button mat-icon-button color="accent">发送</button>
+        </td>
+        <td td-data-table-cell *ngFor="let column of columns" [numeric]="column.numeric">
+          {{column.format ? column.format(row[column.name]) : row[column.name]}}
+        </td>
+      </tr>
+    </table>
+  </mat-card-content>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="total" (change)="pageChange($event)">
+    <span hide-xs>每页的行数:</span>
+    <mat-form-field [style.width.px]="50">
+      <mat-select [(ngModel)]="pageSize">
+        <mat-option *ngFor="let size of [5,10,15,20]" [value]="size">
+          {{size}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    {{pagingBar.range}}
+    <span hide-xs>of {{pagingBar.total}}</span>
+  </td-paging-bar>
+</mat-card>
+<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['add']" tdLayoutManageListClose>
+  <mat-icon>add</mat-icon>
+</a>

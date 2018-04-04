@@ -1,0 +1,31 @@
+<div>
+  <td-search-input placeholder="内容搜索" (searchDebounce)="searchContent($event)" showUnderline="true"></td-search-input>
+</div>
+<td-data-table #dataTable [columns]="columns" [data]="filteredData" [selectable]="true"
+               (rowSelect)="selectEvent($event)" [multiple]="false">
+</td-data-table>
+<div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-wrap layout-align="center center">
+  <h3>No results to display.</h3>
+</div>
+<td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="pageChange($event)">
+  <span td-paging-bar-label hide-xs>Row per page: </span>
+  <mat-form-field>
+    <mat-select [(ngModel)]="pageSize">
+      <mat-option *ngFor="let size of [5]" [value]="size">
+        {{size}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <span>{{pagingBar.range}}
+        <span hide-xs>of {{pagingBar.total}}</span>
+      </span>
+</td-paging-bar>
+<div *ngFor="let key of objectKeys(params)" class="push-bottom-sm">
+  <span style="display: block;" class="push-bottom-sm">{{ key }}:</span>
+  <input type="text" [(ngModel)]="params[key]" [name]="key" (input)="onChange($event)">
+</div>
+<p class="md-caption tc-grey-500">{{ content }}</p>
+<div layout="row" layout-align="end center">
+  <button mat-button (click)="onSubmit()" [disabled]="!selectData">确认</button>
+  <button mat-button mat-dialog-close>取消</button>
+</div>

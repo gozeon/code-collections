@@ -1,0 +1,50 @@
+<mat-toolbar>
+  <button mat-icon-button [routerLink]="[mainUri]" tdLayoutManageListOpen>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  新建
+</mat-toolbar>
+
+<mat-card class="push-sm pad-sm">
+  <div>
+    年份：
+    <mat-form-field>
+      <mat-select [(ngModel)]="data.year">
+        <mat-option *ngFor="let item of years" [value]="item">{{ item }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div>
+    学季：
+    <mat-form-field>
+      <mat-select [(ngModel)]="data.term">
+        <mat-option *ngFor="let item of seasons" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div>
+    学期：
+    <mat-form-field>
+      <mat-select [(ngModel)]="data.stage">
+        <mat-option *ngFor="let item of stages" [value]="item.code">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div>
+    通知时间：
+    <md2-datepicker type="datetime" format="y-MM-dd HH:mm" openOnFocus placeholder="开始时间"
+                    [(ngModel)]="data.startDate"></md2-datepicker>
+    至
+    <md2-datepicker type="datetime" format="y-MM-dd HH:mm" openOnFocus placeholder="结束时间"
+                    [(ngModel)]="data.endDate"></md2-datepicker>
+  </div>
+
+
+  <div class="push-top-lg">
+    <button mat-raised-button color="accent" class="push-right" (click)="onSubmit()">确定</button>
+    <button mat-raised-button [routerLink]="[mainUri]">取消</button>
+  </div>
+</mat-card>

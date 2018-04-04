@@ -1,0 +1,14 @@
+.find-user-a {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.87);
+  &:hover{
+    color: #039be5;
+  }
+}
+.find-user-a-active {
+  text-decoration: none;
+  color: #039be5;
+  &:hover{
+    opacity: 0.7;
+  }
+}

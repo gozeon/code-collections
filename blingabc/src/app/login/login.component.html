@@ -1,0 +1,18 @@
+<td-layout-nav color="accent" logo="assets:blingabc" toolbarTitle="登录" navigationRoute="/">
+  <div layout="row" layout-align="center center">
+    <mat-card class="push-md pad" flex-xs="80" flex-gt-xs="30">
+      <h4 *ngIf="isMaintain">系统正在维护...</h4>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" >
+        <mat-form-field class="push-top" style="width: 100%;">
+          <input matInput type="text" placeholder="用户名*" [formControl]="form.get('username')"/>
+        </mat-form-field>
+        <mat-form-field class="push-top" style="width: 100%;">
+          <input matInput type="password" placeholder="密码*" [formControl]="form.get('password')"/>
+        </mat-form-field>
+        <div layout="row" layout-align="end center" style="width: 100%;">
+          <button type="submit" [disabled]="!form.valid" mat-button>确定</button>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</td-layout-nav>
