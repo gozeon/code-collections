@@ -1,0 +1,44 @@
+<!--The whole content below can be removed with the new code.-->
+
+<div>*ngIf</div>
+<div>
+  <div *ngIf="false">dsa</div>
+  <div *ngIf="a > b">a > b</div>
+  <div *ngIf="myFun()">myFun()</div>
+</div>
+
+<div>ngSwitch</div>
+<div [ngSwitch]="myVar">
+  <div *ngSwitchCase="'1'">1</div>
+  <div *ngSwitchCase="'2'">2</div>
+  <div *ngSwitchCase="'3'">3</div>
+  <div *ngSwitchCase="'1'">1</div>
+  <div *ngSwitchDefault>default</div>
+</div>
+
+<div>ngStyle</div>
+<div>
+  <div [ngStyle]="{color: 'red'}">dsa</div>
+  <div [style.font-size.px]="fontSize">fontSize: {{ fontSize }}px</div>
+</div>
+
+<div>ngClass</div>
+<div>
+  <div [ngClass]="{bordered: false}">bordered: false</div>
+  <div [ngClass]="{bordered: true}">bordered: true</div>
+  <div [ngClass]="{bordered: isBordered}">bordered: isBordered: false</div>
+  <div class="bordered" [ngClass]="['blue', 'round']">class="bordered" [ngClass]="['blue', 'round']"</div>
+</div>
+
+<div>*ngFor</div>
+<div *ngFor="let item of items; let idx = index">
+  <div>{{idx}} : {{item}}</div>
+</div>
+
+<div>ngNonBindable</div>
+<div>
+  <span class="bordered">{{ content }}</span>
+  <span class="bordered" ngNonBindable>
+    This is what {{ content }} rendered
+  </span>
+</div>

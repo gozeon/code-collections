@@ -1,0 +1,35 @@
+<!--The whole content below can be removed with the new code.-->
+<form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+  <input type="text" name="sku" ngModel />
+  <button type="Submit">Submit</button>
+</form>
+
+<div>FormBuilder</div>
+<form [formGroup]="myform" (ngSubmit)="onSubmit1(myform.value)">
+  <input type="text" placeholder="sku" [formControl]="myform.controls['fsku']" />
+  <button type="Submit">Submit</button>
+</form>
+
+<div>Validators</div>
+<form [formGroup]="myform2" (ngSubmit)="onSubmit2(myform2.value)">
+  <input type="text" placeholder="sku" [formControl]="myform2.controls['sku2']" />
+  <button type="Submit">Submit</button>
+  <div *ngIf="!myform2.controls['sku2'].valid">SKU is invalid</div>
+  <div *ngIf="myform2.controls['sku2'].hasError('required')">SKU is required</div>
+  <div *ngIf="!myform2.valid">form is invalid</div>
+</form>
+
+<div>own Validators</div>
+<form [formGroup]="myform3" (ngSubmit)="onSubmit3(myform3.value)">
+  <input type="text" placeholder="sku" [formControl]="myform3.controls['sku3']" />
+  <button type="Submit">Submit</button>
+  <div *ngIf="!myform3.controls['sku3'].valid">SKU is invalid</div>
+  <div *ngIf="myform3.controls['sku3'].hasError('required')">SKU is required</div>
+  <div *ngIf="!myform3.valid">form is invalid</div>
+</form>
+
+<div>EventEmitter</div>
+<form [formGroup]="myform4">
+  <input type="text" placeholder="sku" [formControl]="myform4.controls['sku4']" />
+  <button type="Submit">Submit</button>
+</form>

@@ -1,0 +1,29 @@
+{
+  "name": "angular-study",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gozeon/angular-study.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gozeon/angular-study/issues"
+  },
+  "homepage": "https://github.com/Gozeon/angular-study#readme",
+  "devDependencies": {
+    "cz-conventional-changelog": "^2.0.0",
+    "electron-packager": "^10.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
