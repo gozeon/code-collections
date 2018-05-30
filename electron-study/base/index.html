@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <style>
+    button {
+      margin-right: 10px;
+    }
+
+    .box {
+      padding: 5px;
+      background: rgba(238, 156, 156, 0.2);
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+
+    .stdout {
+      background: black;
+      color: white;
+      min-height: 200px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root">
+    <div class="box">
+      <input type="text" placeholder="project name">
+      <button>创建项目</button>
+      <button>gulp haha</button>
+      <button>gulp clock</button>
+    </div>
+
+    <div class="box">
+      <h1>STDOUT</h1>
+      <pre class="stdout"></pre>
+    </div>
+
+  </div>
+
+
+
+  <script>require('electron-connect').client.create()</script>
+  <script>
+    // You can also require other files to run in this process
+    require('./renderer.js');
+  </script>
+  <script>
+    var {dialog} = require('electron').remote;
+  </script>
+</body>
+
+</html>
