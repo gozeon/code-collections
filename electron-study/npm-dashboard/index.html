@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Npm Dashboard</title>
+  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/bootstrap.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="https://github.com/FEPluto" mode="browser">Pluto</a>
+    <div class="navbar-form navbar-right">
+      <button class="btn btn-primary" id="selectProjectBtn">选择新项目</button>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="jumbotron">
+    <h1>Npm Dashboard</h1>
+    <p>一款可视化执行 npm script 的控制台</p>
+    <p>
+      <button class="btn btn-primary btn-lg" id="selectProjectBtnLg">选择项目</button>
+    </p>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12" id="scriptsGroup"></div>
+  </div>
+
+  <div class="log">
+    <ul class="nav nav-tabs" id="logName">
+    </ul>
+    <div class="tab-content" id="logContent">
+    </div>
+  </div>
+</div>
+
+<script>require( 'electron-connect' ).client.create()</script>
+<script>
+  const { dialog } = require( 'electron' ).remote;
+</script>
+<script>
+  window.$ = window.jQuery = require( './assets/jquery.js' );
+
+  // You can also require other files to run in this process
+  require( './renderer.js' );
+</script>
+
+<script src="assets/bootstrap.js"></script>
+</body>
+
+</html>

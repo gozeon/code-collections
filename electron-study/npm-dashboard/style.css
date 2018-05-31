@@ -1,0 +1,69 @@
+pre {
+    background-color: black;
+    color: #fff;
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.row {
+    overflow: hidden;
+}
+
+[class*="col-"] {
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+}
+
+.col-align-down {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.nav-tabs {
+    background-color: black;
+    border-bottom: none;
+}
+
+.nav-tabs > li {
+    padding-left: 5px;
+    border-bottom: none;
+    margin: 0;
+}
+.nav-tabs > li.active {
+    margin: 0;
+}
+.nav-tabs > li > a {
+    padding: 4px 6px;
+}
+
+.nav-tabs > li > a:hover {
+    border-radius: 0;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    border: none;
+    background-color: black;
+    color: #fff;
+
+}
+
+.tab-content > pre {
+    border-radius: 0;
+    background-color: black;
+}
+
+.btn-circle {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 3.1666;
+    border-radius: 50%;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
