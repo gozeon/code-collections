@@ -1,8 +1,8 @@
 <app-accordion>
-  <app-accordion-item title="First Group">this is the content</app-accordion-item>
-  <app-accordion-item title="Second Group">
-    <input type="text" class="form-control" />
-    <button>Send</button>
+  <!-- 不能直接用ngfor -->
+  <app-accordion-item title="first">first content</app-accordion-item>
+  <app-accordion-item *ngFor="let a of [1, 3, 3]" title="Group">
+    {{a}} Group
   </app-accordion-item>
 
 </app-accordion>
