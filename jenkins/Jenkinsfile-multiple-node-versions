@@ -1,0 +1,43 @@
+node {
+	stage('git') {
+		git credentialsId: 'ccaef842-95a7-47b0-beea-739758e585df', url: 'http://git.jdb-dev.com/liqs/test-jenkins.git'
+	}
+
+	stage('build') {
+		parallel(
+			"node-v10.9.0": {
+				nodejs('node-v10.9.0') {
+					// some block
+					sh """
+					curl -sSL https://gist.githubusercontent.com/52cik/c1de8926e20971f415dd/raw/e98cbe963748046f371a5c95161449b8b5bd321a/npm.taobao.sh | sh
+					"""
+					sh "npm config ls -l"
+					sh "npm install"
+					sh "npm run build"
+				}
+			},
+			'node-v9.11.2': {
+				nodejs('node-v9.11.2') {
+					// some block
+					sh """
+					curl -sSL https://gist.githubusercontent.com/52cik/c1de8926e20971f415dd/raw/e98cbe963748046f371a5c95161449b8b5bd321a/npm.taobao.sh | sh
+					"""
+					sh "npm config ls -l"
+					sh "npm install"
+					sh "npm run build"
+				}
+			},
+			'node-v8.11.2': {
+				nodejs('node-v8.11.2') {
+					// some block
+					sh """
+					curl -sSL https://gist.githubusercontent.com/52cik/c1de8926e20971f415dd/raw/e98cbe963748046f371a5c95161449b8b5bd321a/npm.taobao.sh | sh
+					"""
+					sh "npm config ls -l"
+					sh "npm install"
+					sh "npm run build"
+				}
+			}
+		)
+	}
+}
