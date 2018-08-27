@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
-	"net/http"
 	"github.com/gorilla/handlers"
-	"os"
+	"github.com/gorilla/mux"
 	"log"
+	"net/http"
+	"os"
 )
 
 const (
