@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>JS</title>
+</head>
+
+<body>
+  <script>
+
+    var value = 2;
+    var obj = {
+      value: 1,
+    }
+
+    obj.add = function () {
+      var that = this;  // this === obj
+      var c = function () {
+        console.log(that.value + that.value); // 2
+        console.log(this.value + this.value); // 4  this === window
+      }
+      c();
+    }
+
+    obj.add();
+
+  </script>
+
+  <script>
+
+    var Quo = function (string) {
+      this.status = string;
+    }
+
+    Quo.prototype.get_status = function () {
+      return this.status
+    }
+
+    var myQuo = new Quo('confused'); // this === myQuo
+    console.log(myQuo.get_status());
+
+  </script>
+
+  <script>
+    function add(a, b) {
+      return a + b;
+    }
+    var arr = [1, 2];
+    console.log(add.apply(null, arr));
+
+    var obj = { status: 'confused' };
+    console.log(Quo.prototype.get_status.apply(obj));
+
+  </script>
+</body>
+
+</html>
