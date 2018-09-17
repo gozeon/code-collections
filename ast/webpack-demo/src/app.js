@@ -13,3 +13,5 @@ button.onclick = () => {
 		chat.init();
 	});
 };
+
+console.log(ENV);
