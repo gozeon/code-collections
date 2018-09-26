@@ -1,0 +1,4 @@
+Django==2.0.8
+django_taggit==0.22.2
+Markdown==2.6.11
+psycopg2==2.7.4
