@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>history pushstate</title>
+</head>
+
+<body>
+  <h1>index</h1>
+  <button data-href="index">index</button>
+  <button data-href="page1">page 1</button>
+  <button data-href="page2">page 2</button>
+
+  <script>
+
+    Array.prototype.forEach.call(document.querySelectorAll('button'), item => {
+      item.addEventListener('click', function (e) {
+        const href = item.dataset.href + '.html';
+        const title = item.textContent;
+        const data = { data: { path: href } };
+
+        // window.history.replaceState(data, title, href);
+        window.history.pushState(data, title, href);
+
+        console.log('state:', history.state)
+      }, false);
+    });
+
+    window.addEventListener('popstate', function (e) {
+      let character = e.state;
+
+      if (character == null) {
+        console.log('no state');
+      }
+
+      console.log('prev state: ', character);
+
+    });
+  </script>
+</body>
+
+</html>
