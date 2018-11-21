@@ -1,0 +1,16 @@
+{
+  "name": "node-api-jenkins",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fixturefiles": "^0.3.0",
+    "jenkins": "^0.23.0"
+  }
+}
