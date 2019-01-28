@@ -1,0 +1,21 @@
+{
+  "name": "fastify-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "boom": "^7.3.0",
+    "fastify": "^1.13.4",
+    "fastify-swagger": "^1.1.0",
+    "mongoose": "^5.4.7",
+    "nodemon": "^1.18.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon ./src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
