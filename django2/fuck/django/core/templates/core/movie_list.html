@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    All The Movies
+{% endblock %}
+
+{% block main %}
+    <div class="list-group mb-4">
+        {% for move in object_list %}
+            <a href="{% url 'core:MovieDetail' pk=move.id %}" class="list-group-item list-group-item-action">
+                {{ move }}
+            </a>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+        <nav>
+            <ul class="pagination">
+                <li class="page-item">
+                    <a href="{% url 'core:MovieList' %}?page=1" class="page-link">First</a>
+                </li>
+
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a href="{% url 'core:MovieList' %}?page={{ page_obj.previous_page_number }}" class="page-link">
+                            {{ page_obj.previous_page_number }}
+                        </a>
+                    </li>
+                {% endif %}
+
+                <li class="page-item active">
+                    <a href="{% url 'core:MovieList' %}?page={{ page_obj.number }}" class="page-link">
+                        {{ page_obj.number }}
+                    </a>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a href="{% url 'core:MovieList' %}?page={{ page_obj.next_page_number }}" class="page-link">
+                            {{ page_obj.next_page_number }}
+                        </a>
+                    </li>
+                {% endif %}
+
+                <li class="page-item">
+                    <a href="{% url 'core:MovieList' %}?page=last" class="page-link">Latest</a>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
