@@ -1,2 +1,2 @@
-!['pycharm-flask.png']()
-!['pycharm-jinja2.png']()
+![]('pycharm-flask.png')
+![]('pycharm-jinja2.png')
