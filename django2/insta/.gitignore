@@ -1,0 +1,7 @@
+db.sqlite3
+env/
+
+media/images/*.gif
+media/images/*.jpg
+media/images/*.jpeg
+media/images/*.png
