@@ -1,0 +1,1 @@
+http://brunorocha.org/python/microservices-with-python-rabbitmq-and-nameko.html
