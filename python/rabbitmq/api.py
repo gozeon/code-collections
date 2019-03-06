@@ -47,7 +47,8 @@ def compute():
         # asynchronously spawning and email notification
         rpc.mail.send.call_async(email, subject, msg)
         # asynchronously spawning the compute task
-        result = rpc.compute.compute.call_async(operation, value, other, email)
+        result = rpc.compute.compute.call_async(operation, value, other, email).result()
+				print(result)
         return msg, 200
 
 
