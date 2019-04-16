@@ -33,3 +33,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 [lazy-loading-ngmodules](https://angular.io/guide/lazy-loading-ngmodules)
 [How to Try Angular CLI with Bazel](https://medium.com/lacolaco-blog/how-to-try-angular-cli-with-bazel-c133181d32da)
 [Dynamic import()](https://developers.google.com/web/updates/2017/11/dynamic-import)
+[bazel example](https://github.com/angular/angular-bazel-example)
