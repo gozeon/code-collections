@@ -1,4 +1,4 @@
-import {copy} from '/utils.mjs'
+import {copy} from '/js/utils.mjs'
 
 export default () => {
   console.log('Hi from the default export!');
@@ -10,6 +10,6 @@ export const doStuff = () => {
 };
 
 export const loadPageInto = (el) => {
-  alert(copy({name: 'movies'}))
-  el.textContent = 'movies';
+  console.log(copy({name: 'video game'}))
+  el.textContent = 'video game';
 }

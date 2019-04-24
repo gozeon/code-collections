@@ -14,7 +14,7 @@
     link.addEventListener('click', async (event) => {
       event.preventDefault();
       try {
-        const module = await import(`/${link.dataset.entryModule}.mjs`);
+        const module = await import(`/js/${link.dataset.entryModule}.mjs`);
         // The module exports a function named `loadPageInto`.
         module.loadPageInto(main);
       } catch (error) {
