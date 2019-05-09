@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<style>
+			body {
+				color: #fff;
+				font-family: arial;
+				font-weight: bold;
+				font-size: 40px;
+			}
+			.main-container {
+				max-width: 600px;
+				margin: 0 auto;
+				border: solid 10px green;
+				padding: 10px;
+				margin-top: 40px;
+			}
+			.main-container * {
+				padding: 10px;
+				background: #aaa;
+				border: dashed 5px #000;
+			}
+			.main-container * + * {
+				margin-top: 20px;
+			}
+			.main-header {
+				height: 50px;
+				background: #aaa;
+				border-color: red;
+			}
+			.main-test {
+				min-height: 50px;
+				background: #aaa;
+				border-color: green;
+			}
+			.main-content {
+				min-height: 1000px;
+			}
+
+			.main-header {
+				position: sticky;
+				top: 0;
+			}
+
+			.main-footer {
+				position: sticky;
+				bottom: 0;
+			}
+
+			div[data-fixed="fixed"] {
+				position: fixed;
+				top: 140px;
+			}
+			.two {
+				top: 80px;
+			}
+		</style>
+	</head>
+	<body>
+		<main class="main-container">
+			<header class="main-header">HEADER 1</header>
+			<header class="main-header two">HEADER 2</header>
+			<div class="main-test">fixed定位 没设置div大小 会根据内容多大就多大</div>
+			<div class="main-content">MAIN CONTENT</div>
+			<footer class="main-footer">FOOTER</footer>
+		</main>
+
+		<script>
+			function ceiling(obj) {
+				var ot = obj.offsetTop;
+				document.onscroll = function() {
+					var st =
+						document.body.scrollTop || document.documentElement.scrollTop;
+						console.log(ot, st)
+						console.log(getComputedStyle(obj, null).display)
+					// obj.setAttribute("data-fixed", st >= ot ? "fixed" : "");
+					obj.setAttribute("data-fixed", st >= 100 ? "fixed" : "");
+				};
+			}
+			ceiling(document.querySelector("div.main-test"));
+		</script>
+	</body>
+</html>
