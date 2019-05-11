@@ -1,0 +1,11 @@
+doctype html
+html(lang="")
+  head
+    link(rel="stylesheet", href="index.css")
+  body
+    a(href="./about/index.pug") about
+    ul
+      each val, index in data
+        li=index + ':' + val
+
+    script(src="index.js")
