@@ -38,7 +38,7 @@ app.use(async (ctx, next) => {
 
 	if (existJsonFile) {
 		console.log("data file: ", jsonFile);
-		ctx.body = require(jsonFile);
+		ctx.body = fs.readJsonSync(jsonFile);
 	}
 	await next();
 });
