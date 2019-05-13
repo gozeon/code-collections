@@ -1,0 +1,27 @@
+{
+  "name": "mock-f",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "clean": "rimraf out",
+    "export": "npm run clean && next build && next export"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv-webpack": "^1.7.0",
+    "evergreen-ui": "^4.15.0",
+    "lodash": "^4.17.11",
+    "next": "^8.1.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-json-editor-ajrm": "^2.5.9",
+    "react-sticky": "^6.0.3",
+    "whatwg-fetch": "^3.0.0"
+  }
+}
