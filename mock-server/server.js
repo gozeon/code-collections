@@ -8,6 +8,8 @@ const logger = require("koa-logger");
 const bodyParser = require("koa-bodyparser");
 const Ajv = require("ajv");
 
+const config = require("./config/index");
+
 const ajv = new Ajv();
 const app = new Koa();
 
@@ -20,10 +22,10 @@ const mockSchema = {
 
 ajv.addSchema(mockSchema, "mockSchema");
 
-const ROOT_FOLDER = "MOCK";
-const ROOT_PATH = path.join(__dirname, ROOT_FOLDER);
+const MOCK_FOLDER = config.get("MOCK_FOLDER");
+const MOCK_PATH = path.join(__dirname, MOCK_FOLDER);
 
-fs.ensureDirSync(ROOT_PATH);
+fs.ensureDirSync(MOCK_PATH);
 
 app.use(cors());
 app.use(bodyParser());
@@ -33,7 +35,7 @@ app.use(logger());
  * mock
  */
 app.use(async (ctx, next) => {
-	const jsonFile = path.join(__dirname, ROOT_FOLDER, ctx.url + ".json");
+	const jsonFile = path.join(MOCK_PATH, ctx.url.split('?')[0] + ".json");
 	const existJsonFile = fs.existsSync(jsonFile);
 
 	if (existJsonFile) {
@@ -50,14 +52,14 @@ app.use(async ctx => {
 	if (ctx.method === "GET" && ctx.url === "/api/mock") {
 		try {
 			const result = [];
-			const files = await globby([ROOT_PATH]);
+			const files = await globby([MOCK_PATH]);
 
 			for (let i = 0; i < files.length; i++) {
 				// win mac 正反斜杠
 				const isWin = process.platform === "win32";
 				const rootPath = isWin
-					? path.posix.join(...ROOT_PATH.split(path.sep))
-					: ROOT_PATH;
+					? path.posix.join(...MOCK_PATH.split(path.sep))
+					: MOCK_PATH;
 				const deleteRootPath = files[i].replace(new RegExp(rootPath), "");
 				const deleteEndJson = deleteRootPath.replace(/\.json$/g, "");
 
@@ -84,7 +86,7 @@ app.use(async ctx => {
 					newPath = newPath.substring(0, newPath.length - 1);
 				}
 				// 判断是否存在
-				// if (fs.existsSync(path.join(ROOT_PATH, newPath + ".json"))) {
+				// if (fs.existsSync(path.join(MOCK_PATH, newPath + ".json"))) {
 				//   ctx.body = {
 				//     result: "no",
 				//     message: `${newPath}已经存在`
@@ -93,9 +95,9 @@ app.use(async ctx => {
 				//   console.log("create path:", newPath);
 				//   console.log("create data:", newData);
 
-				//   await fs.mkdirpSync(path.join(ROOT_PATH, newPath));
+				//   await fs.mkdirpSync(path.join(MOCK_PATH, newPath));
 				//   await fs.writeJSONSync(
-				//     path.join(ROOT_PATH, newPath + ".json"),
+				//     path.join(MOCK_PATH, newPath + ".json"),
 				//     newData
 				//   );
 
@@ -105,9 +107,9 @@ app.use(async ctx => {
 				console.log("create path:", newPath);
 				console.log("create data:", newData);
 
-				await fs.mkdirpSync(path.join(ROOT_PATH, newPath));
+				await fs.mkdirpSync(path.join(MOCK_PATH, newPath));
 				await fs.writeJSONSync(
-					path.join(ROOT_PATH, newPath + ".json"),
+					path.join(MOCK_PATH, newPath + ".json"),
 					newData
 				);
 
@@ -126,4 +128,4 @@ app.use(async ctx => {
 	}
 });
 
-app.listen(3000);
+app.listen(config.get("PORT"));
