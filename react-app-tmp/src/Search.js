@@ -10,6 +10,7 @@ import {
     Position,
     toaster
 } from "evergreen-ui";
+import {Link} from 'react-router-dom'
 
 import logo from './166521.png';
 
@@ -36,7 +37,7 @@ class Search extends React.Component {
         return (
             <Pane>
                 <Pane display="flex" justifyContent="flex-end" padding={16}>
-                    <Button appearance="minimal" is="a" href="/document" marginRight={20}>
+                    <Button appearance="minimal" is={Link} to="/document" marginRight={20}>
                         Document
                     </Button>
                 </Pane>
