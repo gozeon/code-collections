@@ -1,0 +1,27 @@
+{
+  "name": "vue-cli-tsx",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "core-js": "^2.6.5",
+    "vue": "^2.6.10",
+    "vue-class-component": "^7.1.0",
+    "vue-property-decorator": "^8.1.0",
+    "vue-router": "^3.0.3",
+    "vue-strict-prop": "^0.3.5",
+    "vue-tsx-support": "^2.3.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.9.0",
+    "@vue/cli-plugin-typescript": "^3.9.0",
+    "@vue/cli-service": "^3.9.0",
+    "typescript": "^3.4.3",
+    "vue-cli-plugin-tsx-support": "^0.4.1",
+    "vue-jsx-hot-loader": "^1.4.1",
+    "vue-template-compiler": "^2.6.10"
+  }
+}
