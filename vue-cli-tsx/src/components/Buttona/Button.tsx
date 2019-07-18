@@ -1,6 +1,6 @@
 import Component from "vue-class-component";
 import * as tsx from "vue-tsx-support";
-import {VNode} from "vue";
+import Vue,{VNode} from "vue";
 
 interface MyComponentProps {
     text: string;
@@ -16,7 +16,8 @@ interface Events {
     }
 })
 class MyComponent extends tsx.Component<MyComponentProps, Events> {
-    render(): VNode {
+	// @link https://github.com/wonderful-panda/vue-tsx-support/issues/36
+    render(this: Vue & MyComponentProps): VNode {
         return <button onClick={() => this.$emit('success', 'test')}>{this.text}</button>
     }
 }
