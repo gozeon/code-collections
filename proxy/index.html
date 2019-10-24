@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // const target = {
+        //     message: 'this is message'
+        // }
+
+        // const handler = {
+        //     get: (target, objectKey) => {
+        //         console.log('read property: ', objectKey)
+        //         return target[objectKey]
+        //     }
+        // }
+
+        // let p = new Proxy(target,handler)
+
+        // console.log(p.message)
+
+        const handler = {
+            set: (target, objectKey, value) => {
+                if (objectKey == 'message' && (value.length == 0 || typeof(value) == 'string')) {
+                    throw new TypeError('Either message is empty or not valid string')
+                }
+                target[objectKey] = value
+                return target
+            }
+        }
+
+        let p = new Proxy({}, handler)
+
+        // p.message = ''
+        // console.log(p.message)
+        p.text = 'sss'
+        console.log(p.text)
+    </script>
+</body>
+</html>
