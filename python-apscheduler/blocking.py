@@ -12,7 +12,8 @@ from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
 job_stores = {
-    'default': SQLAlchemyJobStore(url='sqlite:///jobs.sqlite'),
+    # 'default': SQLAlchemyJobStore(url='sqlite:///jobs.sqlite'),
+    'default': SQLAlchemyJobStore(url='mysql+pymysql://root:root@127.0.0.1:3306/fe_job?charset=utf8', tablename='job'),
     # 'mongo': MongoDBJobStore()
 }
 
@@ -26,7 +27,7 @@ job_defaults = {
     'max_instances': 3
 }
 
-scheduler = BlockingScheduler(jobStores=job_stores, executors=executors, job_defaults=job_defaults, timezone=utc)
+scheduler = BlockingScheduler(jobstores=job_stores, executors=executors, job_defaults=job_defaults, timezone=utc)
 
 
 def tt():
