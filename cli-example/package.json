@@ -1,0 +1,32 @@
+{
+  "name": "niffler-cli",
+  "version": "0.0.0",
+  "description": "",
+  "bin": {
+    "niffler": "./bin/niffler.js"
+  },
+  "scripts": {
+    "test": "node ./bin/niffler.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^3.0.5",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^4.0.1",
+    "gozesay": "0.0.1",
+    "lodash": "^4.17.15",
+    "yeoman-environment": "^2.4.0",
+    "yeoman-generator": "^4.1.0"
+  }
+}
