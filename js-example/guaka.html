@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>橡皮擦</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"
+    />
+  </head>
+
+  <body>
+    <canvas id="canvas" width="300" height="300" style="background: #eee">
+      Canvas not supported
+    </canvas>
+
+    <script>
+      var canvas = document.getElementById("canvas"),
+        context = canvas.getContext("2d"),
+        ERASER_SIZE = 15, // 橡皮擦的大小
+        dragging = false; // 是否处在拖动状态
+
+      /**
+       * 转换坐标值
+       * 将鼠标点击或移动时获取的坐标值，减去 canvas 相对窗口的坐标值，就是在 canvas 画布中的坐标值
+       * @param {Obj} e 手指当前相对窗口的坐标位置
+       */
+      function windowToCanvas(e) {
+        let x = e.targetTouches[0].clientX,
+          y = e.targetTouches[0].clientY,
+          bbox = canvas.getBoundingClientRect();
+
+        return {
+          x: x - bbox.left,
+          y: y - bbox.top
+        };
+      }
+
+      /**
+       * 绘制剪辑区域，并清除该区域中的内容
+       * @param {Obj} loc 手指当前相对 canvas 画布中的坐标位置
+       */
+      function drawEraser(loc) {
+        context.save();
+        context.beginPath();
+        context.arc(loc.x, loc.y, ERASER_SIZE, 0, Math.PI * 2, false);
+        context.clip();
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.restore();
+      }
+
+      /**
+       * 页面加载时，绘制一个铺满 canvas 画布的矩形
+       * 该矩形用于被擦除
+       */
+      window.onload = function(e) {
+        context.save();
+        context.fillStyle = "#666";
+        context.beginPath();
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.restore();
+      };
+
+      /**
+       * ① 手指按下时，开启 dragging 状态，并绘制剪辑区域
+       */
+      canvas.addEventListener("touchstart", function(e) {
+        var loc = windowToCanvas(e);
+        dragging = true;
+        drawEraser(loc);
+      });
+
+      /**
+       * ② 手指移动时，不断进行剪辑区域的绘制，以及路径更新，实现擦除的效果
+       */
+      canvas.addEventListener("touchmove", function(e) {
+        var loc;
+
+        if (dragging) {
+          loc = windowToCanvas(e);
+          drawEraser(loc);
+        }
+      });
+
+      /**
+       * ③ 手指离开，结束擦除过程
+       */
+      canvas.addEventListener("touchend", function(e) {
+        dragging = false;
+      });
+    </script>
+  </body>
+</html>
