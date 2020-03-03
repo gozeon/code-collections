@@ -1,5 +1,6 @@
 # express 实时数据流(real time stream) sse
 
+- https://medium.com/conectric-networks/a-look-at-server-sent-events-54a77f8d6ff7
 - https://javascript.info/server-sent-events
 - https://www.html5rocks.com/en/tutorials/eventsource/basics/
 - https://stackoverflow.com/questions/21934831/nodejs-express-stream-stdout-instantly-to-the-client
