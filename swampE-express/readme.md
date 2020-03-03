@@ -1,5 +1,6 @@
 # express 实时数据流(real time stream) sse
 
+- https://www.youtube.com/watch?v=Z4ni7GsiIbs&t=2s
 - https://medium.com/conectric-networks/a-look-at-server-sent-events-54a77f8d6ff7
 - https://javascript.info/server-sent-events
 - https://www.html5rocks.com/en/tutorials/eventsource/basics/
