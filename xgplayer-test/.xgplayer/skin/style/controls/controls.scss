@@ -1,0 +1,40 @@
+.xgplayer-skin-my-skin {
+  .xgplayer-controls {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background-image: $controlsBgImage;
+    z-index: 10;
+  }
+}
+
+.xgplayer-skin-my-skin.xgplayer-nostart {
+  .xgplayer-controls {
+    display: none;
+  }
+}
+
+.xgplayer-skin-my-skin.no-controls {
+  .xgplayer-controls {
+    display: none;
+  }
+}
+
+.xgplayer-skin-my-skin.xgplayer-inactive {
+  .xgplayer-controls {
+    display: none;
+  }
+}
+.xgplayer-skin-my-skin.xgplayer-is-live {
+  .xgplayer-controls {
+    .xgplayer-time,.xgplayer-progress {
+      display: none;
+    }
+    .xgplayer-live {
+      display: block;
+    }
+  }
+}
