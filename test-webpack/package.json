@@ -1,0 +1,15 @@
+{
+	"dependencies": {
+		"nodemon": "^2.0.4",
+		"webpack": "^4.43.0",
+		"webpack-cli": "^3.3.12",
+		"webpack-dev-server": "^3.11.0"
+	},
+	"sideEffects": [
+		"./src/a.js"
+	],
+	"scripts": {
+		"build": "nodemon --watch ./ -i dist --delay 250ms --exec './node_modules/.bin/webpack --config webpack.config.js'",
+		"start": "nodemon --watch ./ -i dist --delay 250ms --exec './node_modules/.bin/webpack-dev-server --config webpack.config.js'"
+	}
+}
