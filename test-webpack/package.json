@@ -1,14 +1,25 @@
 {
 	"dependencies": {
+		"@babel/cli": "^7.10.5",
+		"@babel/core": "^7.10.5",
+		"@babel/plugin-syntax-dynamic-import": "^7.8.3",
+		"@babel/preset-env": "^7.10.4",
+		"babel-loader": "^8.1.0",
+		"core-js": "^3.6.5",
+		"lodash": "^4.17.19",
 		"nodemon": "^2.0.4",
+		"regenerator-runtime": "^0.13.5",
 		"webpack": "^4.43.0",
 		"webpack-cli": "^3.3.12",
-		"webpack-dev-server": "^3.11.0"
+		"webpack-dev-server": "^3.11.0",
+		"whatwg-fetch": "^3.2.0"
 	},
 	"sideEffects": [
 		"./src/a.js"
 	],
 	"scripts": {
+		"build:babel": "babel src",
+		"build:webpack": "webpack --config webpack.config.js",
 		"build": "nodemon --watch ./ -i dist --delay 250ms --exec './node_modules/.bin/webpack --config webpack.config.js'",
 		"start": "nodemon --watch ./ -i dist --delay 250ms --exec './node_modules/.bin/webpack-dev-server --config webpack.config.js'"
 	}

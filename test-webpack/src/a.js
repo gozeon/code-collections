@@ -1,7 +1,10 @@
-export function a () {
-    console.log(a)
+// import {map} from 'lodash'
+
+export function a() {
+    // map([1, 2], i => i++)
+    return 'loadaaaa'
 }
 
-export function b () {
-    console.log(b)
+export function b() {
+    return "test tree shaking"
 }
