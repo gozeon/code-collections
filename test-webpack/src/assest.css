@@ -1,0 +1,18 @@
+body {
+    background: rgb(228, 223, 223);
+}
+
+div {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+}
+
+img {
+    height: 100%;
+    width: 100%;
+}
+
+.bi {
+    background-image: url('../../npm-vs-yarn-vs-pnpm.png');
+}
