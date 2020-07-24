@@ -1,0 +1,12 @@
+dependencies:
+  date-fns: 2.15.0
+lockfileVersion: 5.1
+packages:
+  /date-fns/2.15.0:
+    dev: false
+    engines:
+      node: '>=0.11'
+    resolution:
+      integrity: sha512-ZCPzAMJZn3rNUvvQIMlXhDr4A+Ar07eLeGsGREoWU19a3Pqf5oYa+ccd+B3F6XVtQY6HANMFdOQ8A+ipFnvJdQ==
+specifiers:
+  date-fns: ^2.15.0

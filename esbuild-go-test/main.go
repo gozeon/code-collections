@@ -9,15 +9,40 @@ import (
 	"github.com/evanw/esbuild/pkg/api"
 )
 
+// 删除目录
+func exist(path string) bool {
+	_, err := os.Stat(path)
+	if err != nil {
+		if os.IsExist(err) {
+			return true
+		}
+
+		return false
+	}
+	return true
+}
+
 func main() {
+	outDir := filepath.Dir("./js/")
+
+	if exist(outDir) {
+		err := os.RemoveAll(outDir)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	result := api.Build(api.BuildOptions{
-		EntryPoints: []string{"main.js", "a.js", "b.js"},
-		Outdir:      filepath.Dir("./js/"),
+		EntryPoints: []string{"main.js"},
+		Outdir:      outDir,
 		Bundle:      true,
 		Write:       true,
+		Splitting:   true,
 		// MinifyWhitespace: true,
 
 		// Target:    api.ES5,
+		Format:    api.FormatESModule,
+		Platform:  api.PlatformNode,
 		Sourcemap: api.SourceMapExternal,
 		LogLevel:  api.LogLevelInfo,
 	})
