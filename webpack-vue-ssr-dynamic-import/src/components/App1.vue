@@ -1,5 +1,6 @@
 <template>
   <div>
+		<com/>
     <div class="bg">123</div>
     <div class="image"></div>
     <button @click="dya()">dy click</button>
@@ -10,10 +11,12 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import Com from './Com.vue';
 
 @Component({
   components: {
-    dy: () => import("./DY.vue")
+		dy: () => import("./DY.vue"),
+		com: Com
   }
 })
 export default class App extends Vue {
@@ -21,7 +24,7 @@ export default class App extends Vue {
 
   async dya() {
     const { a } = await import("./a.js")
-    
+
     a()
   }
   beforeMount() {

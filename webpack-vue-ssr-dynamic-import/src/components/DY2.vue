@@ -1,17 +1,25 @@
 <template>
-  <div>dy 2</div>
+  <div>
+		dy 2
+		<Com2 />
+	</div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import Com2 from './Com2.vue';
 
-@Component({})
+@Component({
+	components: {
+		Com2
+	}
+})
 export default class DY extends Vue {
 }
 </script>
 
 <style scoped>
 div{
-  background: aqua;
+  background: rgb(34, 255, 0);
 }
 </style>
