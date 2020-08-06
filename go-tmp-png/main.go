@@ -61,6 +61,8 @@ func stringToInt(target string) int {
 
 // http请求捕获
 func handleImage(w http.ResponseWriter, r *http.Request) {
+	// 这样CORSMethodMiddleware才会生效
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	sWidth := mux.Vars(r)["width"]
 	sHeight := mux.Vars(r)["height"]
 
