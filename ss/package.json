@@ -1,0 +1,44 @@
+{
+  "ss": {
+    "a": 1
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "keywords": [
+    "template",
+    "husky",
+    "prettier"
+  ],
+  "author": "goze",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/generator": "^7.12.1",
+    "@babel/parser": "^7.12.3",
+    "@babel/register": "^7.12.1",
+    "@babel/template": "^7.10.4",
+    "@babel/traverse": "^7.12.1",
+    "chokidar": "^3.4.3",
+    "cosmiconfig": "^7.0.0",
+    "decache": "^4.6.0",
+    "esbuild": "^0.7.17",
+    "express": "^4.17.1",
+    "fast-glob": "^3.2.4",
+    "ignore": "^5.1.8",
+    "koa": "^2.13.0",
+    "koa-body": "^4.2.0",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^9.4.0",
+    "lodash": "^4.17.20",
+    "majo": "^0.10.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.5"
+  },
+  "devDependencies": {
+    "husky": "^4.3.0",
+    "prettier": "^2.1.2",
+    "pretty-quick": "^3.1.0"
+  }
+}
