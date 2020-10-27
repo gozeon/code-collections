@@ -1,3 +1,24 @@
+# 最新
+
+教程 `https://www.youtube.com/watch?v=PQZabktC23M`
+
+```text
+super_coco04
+1903
+PACREG167150
+Name: Martin, James R
+Barcode: ********7150
+Username: super_coco04
+Registered at: Troy Public Library
+Patron code: Online
+Date of original registration: 10/27/2020
+Expiration date: 11/27/2020
+Last activity date: 10/27/2020
+3w4n1w08hrn@temporary-mail.net
+https://www.lynda.com/portal/sip?org=troypl.org
+```
+
+
 # 免费账户方式
 
 1. 生产身份 [链接](https://www.fakeaddressgenerator.com/World_Address/get_us_address/city/Houston)
