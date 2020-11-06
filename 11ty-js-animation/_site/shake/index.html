@@ -1,0 +1,69 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>抖动</title>
+</head>
+<body>
+
+    <div><a href="/readme"> readme</a><a href="/"> 矩形内碰撞运动</a><a href="/shake"> 抖动</a><a href="/circle"> 圆形内碰撞运动</a><a href="/swiper"> 屏幕滚动</a><a href="/swiperjs"> swiperjs</a></div>
+
+    <style>
+    @-webkit-keyframes shake {
+        0% {
+            -webkit-transform: translate(2px, 1px) rotate(0deg);
+        }
+        10% {
+            -webkit-transform: translate(-1px, -2px) rotate(-1deg);
+        }
+        20% {
+            -webkit-transform: translate(-3px, 0px) rotate(1deg);
+        }
+        30% {
+            -webkit-transform: translate(0px, 2px) rotate(0deg);
+        }
+        40% {
+            -webkit-transform: translate(1px, -1px) rotate(1deg);
+        }
+        50% {
+            -webkit-transform: translate(-1px, 2px) rotate(-1deg);
+        }
+        60% {
+            -webkit-transform: translate(-3px, 1px) rotate(0deg);
+        }
+        70% {
+            -webkit-transform: translate(2px, 1px) rotate(-1deg);
+        }
+        80% {
+            -webkit-transform: translate(-1px, -1px) rotate(1deg);
+        }
+        90% {
+            -webkit-transform: translate(2px, 2px) rotate(0deg);
+        }
+        100% {
+            -webkit-transform: translate(1px, -2px) rotate(-1deg);
+        }
+    }
+
+    .shake:hover {
+        -webkit-animation-name: shake;
+        -webkit-animation-duration: 0.5s;
+        -webkit-transform-origin: 50% 50%;
+        -webkit-animation-iteration-count: infinite;
+    }
+
+    .box {
+        width: 100px;
+        height: 100px;
+        background: salmon;
+    }
+</style>
+
+<div class="shake box"></div>
+
+</body>
+</html>

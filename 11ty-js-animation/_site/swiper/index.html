@@ -1,0 +1,143 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>屏幕滚动</title>
+</head>
+<body>
+
+    <div><a href="/readme"> readme</a><a href="/"> 矩形内碰撞运动</a><a href="/shake"> 抖动</a><a href="/circle"> 圆形内碰撞运动</a><a href="/swiper"> 屏幕滚动</a><a href="/swiperjs"> swiperjs</a></div>
+
+    
+
+<style>
+* {
+	box-sizing: border-box;
+}
+.container {
+	height: 90vh;
+	display: flex;
+	align-items: center;
+    justify-content: center;
+}
+
+.screen {
+	width: 202px;
+	height: 50px;
+	border: 1px solid red;
+}
+
+.box {
+	z-index: -1;
+	position: absolute;
+}
+
+.item {
+	width: 200px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+}
+
+.item:nth-child(2n-1) {
+	background: #eee;
+}
+
+</style>
+
+<div>
+	<button onclick="start()">开始</button>
+	<button onclick="pause()">暂停</button>
+	<button onclick="stop()">停止3</button>
+</div>
+
+<div class="container">
+
+	<div class="screen">
+		<div class="box">
+			<div class="item">item1</div>
+			<div class="item">item2</div>
+			<div class="item">item3</div>
+			<div class="item">item4</div>
+			<div class="item">item5</div>
+			<div class="item">item6</div>
+			<div class="item">item7</div>
+			<div class="item">item8</div>
+			<div class="item">item1</div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+class Swiper {
+	timer
+	el
+	speed
+	sum
+	step
+	height
+	direction
+
+	constructor(el, speed, direction, sum, height) {
+		this.el = el
+		this.speed = speed
+		this.direction = direction
+		this.sum = sum
+		this.height = height
+		this.step = 0
+
+	}
+
+	start() {
+		this.pause()
+		this.timer = setInterval(() => {
+			if(this.step >= this.sum * this.height) {
+				this.step = 0
+			}
+
+			this.el.style.transform = `translateY(${this.direction * this.step}px)`
+
+			this.step += this.speed
+		},  30)
+	}
+
+	stop(num) {
+		this.pause()
+		this.el.style.transform = `translateY(${this.direction * (num - 1) * this.height}px)`
+	}
+
+	pause() {
+		if(this.timer) {
+			clearInterval(this.timer)
+		}
+	}
+}
+
+let item = new Swiper(
+	document.querySelector('.box'),
+	5,
+	-1,
+	8,
+	50
+)
+
+function start() {
+	item.start()
+}
+
+function pause() {
+	item.pause()
+}
+
+function stop() {
+	item.stop(3)
+}
+</script>
+
+</body>
+</html>
