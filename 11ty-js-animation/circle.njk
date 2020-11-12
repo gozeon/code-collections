@@ -79,6 +79,8 @@ site_title: 圆形内碰撞运动
 
 </style>
 
+<img width="300px" height="200px" src="/images/index.png" alt="">
+
 <div>
     <button onclick="start()">start</button>
     <button onclick="stop()">stop</button>
@@ -122,11 +124,16 @@ site_title: 圆形内碰撞运动
             //     b: document.documentElement.clientHeight - 100,
             //     r: document.documentElement.clientWidth - 100
             // }
+
+
+			// 如果父组件是圆形，边界就锁定在内部正方形里面
+			const pEl = this.el.parentNode.offsetWidth
+			const circleOffset = (pEl -  Math.sqrt(pEl * pEl / 2)) / 2.5
             this.limit = {
-                t: 0,
-                l: 0,
-                b: this.el.parentNode.offsetHeight - this.el.offsetHeight,
-                r: this.el.parentNode.offsetWidth - this.el.offsetWidth
+                t: circleOffset,
+                l: circleOffset,
+                b: this.el.parentNode.offsetHeight - this.el.offsetHeight - circleOffset,
+                r: this.el.parentNode.offsetWidth - this.el.offsetWidth - circleOffset
             }
         }
 
@@ -145,7 +152,7 @@ site_title: 圆形内碰撞运动
                     t = this.limit.b
                 } else if (t <= this.limit.t) {
                     this.speed.y = this.speed.y * -1
-                    t = 0
+                    t = this.limit.t
                 }
 
                 // 左右边界
@@ -154,7 +161,7 @@ site_title: 圆形内碰撞运动
                     l = this.limit.r
                 } else if (l <= this.limit.l) {
                     this.speed.x = this.speed.x * -1
-                    l = 0
+                    l = this.limit.l
                 }
 
                 this.el.style.left = l + 'px'
