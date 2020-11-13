@@ -7,6 +7,7 @@ import (
 	"image/color"
 	"image/png"
 	"log"
+	"math/rand"
 	"net/http"
 	"strconv"
 	"time"
@@ -21,6 +22,7 @@ import (
 func addLabel(img *image.RGBA, x, y int, label string) {
 	col := color.RGBA{51, 68, 85, 255}
 	point := fixed.Point26_6{fixed.Int26_6(x * 64), fixed.Int26_6(y * 64)}
+
 	d := &font.Drawer{
 		Dst:  img,
 		Src:  image.NewUniform(col),
@@ -31,14 +33,21 @@ func addLabel(img *image.RGBA, x, y int, label string) {
 }
 
 // 生成图片
-func generatorImage(width, height int) *image.RGBA {
+func generatorImage(width, height int, randColor bool) *image.RGBA {
 	txt := fmt.Sprintf("%dx%d", width, height)
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	bgColor := color.RGBA{241, 243, 245, 255}
+
+	if randColor {
+		bgColor.R = uint8(rand.Intn(256))
+		bgColor.G = uint8(rand.Intn(256))
+		bgColor.B = uint8(rand.Intn(256))
+	}
 
 	// 设置背景色
 	for i := 0; i < width; i++ {
 		for j := 0; j < height; j++ {
-			img.Set(i, j, color.RGBA{241, 243, 245, 255})
+			img.Set(i, j, bgColor)
 		}
 	}
 
@@ -59,6 +68,19 @@ func stringToInt(target string) int {
 	return result
 }
 
+// 字符串转化bool
+func stringToBool(target string) bool {
+	if len(target) == 0 {
+		return false
+	}
+	result, err := strconv.ParseBool(target)
+	if err != nil {
+		log.Println(err)
+	}
+
+	return result
+}
+
 // http请求捕获
 func handleImage(w http.ResponseWriter, r *http.Request) {
 	// 这样CORSMethodMiddleware才会生效
@@ -66,7 +88,10 @@ func handleImage(w http.ResponseWriter, r *http.Request) {
 	sWidth := mux.Vars(r)["width"]
 	sHeight := mux.Vars(r)["height"]
 
-	img := generatorImage(stringToInt(sWidth), stringToInt(sHeight))
+	v := r.URL.Query()
+	randColor := v.Get("randColor")
+
+	img := generatorImage(stringToInt(sWidth), stringToInt(sHeight), stringToBool(randColor))
 
 	// 返回一个buffer
 	buffer := new(bytes.Buffer)
