@@ -1,0 +1,8 @@
+{
+  "user": "[id]",
+  "friends": [
+    {
+      "bio": "I love to use the `[userid]` variable"
+    }
+  ]
+}
