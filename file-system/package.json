@@ -1,0 +1,17 @@
+{
+  "name": "file-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "fast-glob.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "goze",
+  "license": "ISC",
+  "dependencies": {
+    "fast-glob": "^3.2.5",
+    "glob": "^7.1.7",
+    "jest-haste-map": "^27.0.5"
+  }
+}
