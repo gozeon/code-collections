@@ -6,3 +6,8 @@ https://www.trl.org/reference-database-results?topics=120
 cemodol545@toudrum.com
 
 https://www.youtube.com/watch?v=HowE33SHhqo
+
+
+https://www.udemy.com/course/python-networking/learn/lecture/27758702#overview
+
+cocecef207@ovout.com / cocecef207
