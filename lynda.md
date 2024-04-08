@@ -72,6 +72,9 @@ https://mail.tm/zh/
 ## 1.1.1.1
 https://1.1.1.1/ J07Y52tl-S5u840KH-7g0uX84G
 
+## xshell
+552marja
+552marja@awgarstone.com
 
 ## qt
 talekas815@ikanid.com  
