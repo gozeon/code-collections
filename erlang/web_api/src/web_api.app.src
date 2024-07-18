@@ -1,0 +1,19 @@
+{application, web_api,
+ [{description, "An OTP application"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, {web_api_app, []}},
+  {applications,
+   [kernel,
+    stdlib,
+    % jiffy,
+    thoas,
+    cowboy,
+    sync % 开发模式
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {licenses, ["Apache-2.0"]},
+  {links, []}
+ ]}.
