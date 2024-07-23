@@ -1,3 +1,6 @@
+
+https://www.youtube.com/watch?v=4cnmyQJToKM
+
 # Finsta
 
 To start your Phoenix server:
