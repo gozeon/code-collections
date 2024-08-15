@@ -3,50 +3,7 @@
 
 https://ls2pac.lapl.org/
 https://www.linkedin.com/learning-login/go/lapl
-lapl.org ECARD0493106 167475
-lapl.org ECARD0280340 167475
-
-```
-账号1
-J GREGORY LUTON
-Contact InformationChange Contact Info
-3122 GLENMANOR PL
-LOS ANGELES, CA 90039-1713
-3236627681
-94W0S2U_@TEMPORARY-MAIL.NET
-Library Card or ID
-ECARD0280340
-Expiration Date: 03/23/2024
-Status: Soft Block
-J GREGORY LUTON
-Contact InformationChange Contact Info
-3122 GLENMANOR PL
-LOS ANGELES, CA 90039-1713
-3236627681
-383217112@qq.com
-Library Card or ID
-ECARD0280340
-Expiration Date: 03/23/2024
-Status: Soft Block
-EZ LoginChange EZ Username or Change EZ Password
-ggboom
-ez :
-ggboom
-e39mv8#@xMYpEAF
-```
-
-
 	
-https://www.trl.org/reference-database-results?topics=120
-
-
-886448 / 2302
-
-cemodol545@toudrum.com
-
-https://www.youtube.com/watch?v=HowE33SHhqo
-
-
 ## udemy
 https://www.udemy.com/course/python-networking/learn/lecture/27758702#overview
 
