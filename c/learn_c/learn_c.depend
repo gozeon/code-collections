@@ -1,0 +1,28 @@
+# depslib dependency file v1.0
+1723788144 source:d:\c\learn_c\main.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+	<ctype.h>
+	"01.c"
+	"02.c"
+	"03.c"
+	"04.c"
+
+1723787253 d:\c\learn_c\01.c
+
+1723777615 source:d:\c\learn_c\01.c
+
+1723787228 d:\c\learn_c\02.c
+	<stdio.h>
+
+1723780362 source:d:\c\learn_c\02.c
+	<stdio.h>
+
+1723787242 d:\c\learn_c\03.c
+
+1723787292 d:\c\learn_c\04.c
+	<stdio.h>
+	<string.h>
+
