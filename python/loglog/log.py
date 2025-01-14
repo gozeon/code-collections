@@ -10,6 +10,8 @@ logger.remove()
 logger.add(sys.stdout, level=settings.LOG_LEVEL)
 logger.add("loglog.log", level=settings.LOG_LEVEL, rotation="1 week")
 
+logger.isEnabledFor = lambda level: True
+
 
 # 返回配置好的 logger 供其他模块使用
 def get_logger():
