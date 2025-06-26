@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  redis:
+    image: redis:7.2-bookworm
+    ports:
+      - "6379:6379"
+  
+  fastapi:
+    build: .
+    container_name: fastapi
+    depends_on:
+      - redis
+    ports:
+      - "8000:8000"
+  
+  worker1:
+    build: .
+    container_name: worker1
+    depends_on:
+      - redis
+    command: celery -A app.worker worker --loglevel=info --hostname=worker1@%h
+
+  worker2:
+    build: .
+    container_name: worker2
+    depends_on:
+      - redis
+    command: celery -A app.worker worker --loglevel=info --hostname=worker2@%h
+
+  worker3:
+    build: .
+    container_name: worker3
+    depends_on:
+      - redis
+    command: celery -A app.worker worker --loglevel=info --hostname=worker3@%h
+  
+  flower:
+    build: .
+    container_name: flower
+    depends_on:
+      - redis
+    command: celery -A app.worker flower --port=5555 --base_auth=admin:admin
+    ports:
+      - "5555:5555"
