@@ -1,0 +1,15 @@
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+/* @import 'tailwindcss'; */
+
+.van-theme-dark {
+  body {
+    color: var(--van-text-color);
+    background-color: var(--van-background);
+  }
+}
+
+:root:root {
+  --van-skeleton-paragraph-height: 20px;
+}
