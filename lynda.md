@@ -25,7 +25,7 @@ vpn tracker 365 hewalom354@runfons.com / hewalom354
 ## zlibrary
 https://zlibrary-sg.se/ jayeh77298@pgobo.com / jayeh77298
 
-https://zlibrary-africa.se/ ykxnyht@pretreer.com / ykxnyht
+ https://z-lib.by/ ykxnyht@pretreer.com / ykxnyht
 
 ## temp email
 https://mail.tm/zh/  
