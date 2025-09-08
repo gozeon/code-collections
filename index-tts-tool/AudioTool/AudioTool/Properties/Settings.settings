@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AudioTool.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ApiHost" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://10.10.100.150:8000</Value>
+    </Setting>
+    <Setting Name="AudacityPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D:\Program Files\Audacity\Audacity.exe</Value>
+    </Setting>
+    <Setting Name="AudioGap" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="OutputFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">%USERPROFILE%\Music</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
