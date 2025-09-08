@@ -297,5 +297,60 @@ namespace AudioTool
                 Properties.Settings.Default.Save();
             }
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            var dgv = dataGridView1;
+            var bs = bindingSource2;
+
+            if (dgv.SelectedRows.Count > 0)
+            {
+                int selectedIndex = bs.Position; // Get the current position in the BindingSource
+                if (selectedIndex > 0) // Cannot move up if it's the first row
+                {
+                    DataRow rowToMove = ((DataRowView)bs.Current).Row; // Get the DataRow
+                    DataRow newPositionRow = ((DataRowView)bs[selectedIndex - 1]).Row; // Get the row above
+
+                    // Get the original values of the row above
+                    object[] originalValues = newPositionRow.ItemArray;
+
+                    // Copy the values of the row to move into the position above
+                    newPositionRow.ItemArray = rowToMove.ItemArray;
+
+                    // Copy the original values of the row above into the row's original position
+                    rowToMove.ItemArray = originalValues;
+
+                    bs.Position = selectedIndex - 1; // Update the BindingSource position
+
+                    dgv.Rows[selectedIndex - 1].Selected = true;
+                }
+            }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            var dgv = dataGridView1;
+            var bs = bindingSource2;
+
+            if (dgv.SelectedRows.Count > 0)
+            {
+                int selectedIndex = bs.Position;
+                if (selectedIndex < bs.Count - 1) // Cannot move down if it's the last row
+                {
+                    DataRow rowToMove = ((DataRowView)bs.Current).Row;
+                    DataRow newPositionRow = ((DataRowView)bs[selectedIndex + 1]).Row;
+
+                    object[] originalValues = newPositionRow.ItemArray;
+
+                    newPositionRow.ItemArray = rowToMove.ItemArray;
+                    rowToMove.ItemArray = originalValues;
+
+                    bs.Position = selectedIndex + 1;
+
+                    dgv.Rows[selectedIndex + 1].Selected = true;
+                }
+            }
+        }
+
     }
 }
