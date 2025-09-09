@@ -26,19 +26,34 @@ client = Client(src="http://10.10.100.150:7860/")
 app.mount("/files", StaticFiles(directory=OUT_DIR), name="files")
 
 class RefVideo(str, Enum):
-    man_news_909 = "909_news_man.m4a"
-    woman_news_909 = "909_news_woman.m4a"
+    man_news_909 = ("909_news_man.m4a", "男声 909频道 新闻 ")
+    woman_news_909 = ("909_news_woman.m4a", "女声 909频道 新闻 ")
+
+    def __new__(cls, value: str, label: str):
+        obj = str.__new__(cls, value)
+        obj._value_ = value
+        obj.label = label  # 增加中文说明
+        return obj
+
+    def __str__(self):
+        return self.label
 
 class TaskModel(BaseModel):
     ref_video: RefVideo = Field(description="参考音频")
     text: str = Field(min_length=1, max_length=1500, description="生成音频的文本")
+
+@app.get("/ref-videos")
+def get_ref_videos():
+    """
+    返回 RefVideo 枚举供前端下拉框使用
+    """
+    return [{"label": member.label, "value": member.value} for member in RefVideo]
 
 @app.post("/start/task")
 def start_task(task: TaskModel, background_tasks: BackgroundTasks):
     task_id = str(uuid.uuid4())
     def long_task():
         try:
-            print(task.ref_video)
             tasks[task_id] = {"status": "running"}
             logger.info(f"{task_id} 开始生成: {task}")
             result = client.predict(handle_file(task.ref_video.value), task.text, api_name="/gen_single")

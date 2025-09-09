@@ -1,16 +1,11 @@
-﻿using NAudio.Wave;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 using static AudioTool.DataSet1;
 
 namespace AudioTool
@@ -23,9 +18,10 @@ namespace AudioTool
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            dataSet1.DataTable1.AddDataTable1Row("909频道 新闻 男声", "909_news_man.m4a");
-            dataSet1.DataTable1.AddDataTable1Row("909频道 新闻 女声", "909_news_woman.m4a");
+            // 初始化参考音频
+            initRefAudioOptions();
 
+            // 初始化配置项
             textBox3.Text = Properties.Settings.Default.ApiHost;
             textBox4.Text = Properties.Settings.Default.AudacityPath;
             numericUpDown1.Value = (decimal)Properties.Settings.Default.AudioGap;
@@ -39,6 +35,29 @@ namespace AudioTool
             initOutputFolderSetting();
 
             textBox5.Text = Properties.Settings.Default.OutputFolder; // UI 显示
+        }
+
+        private async void initRefAudioOptions()
+        { 
+            var arr = await TaskApiClientFactory.Create().GetRefAudiosAsync();
+
+            // 清空原有数据
+            //dataSet1.DataTable1.Clear();
+
+            // 填充 DataTable
+            foreach (var item in arr)
+            {
+                string label = item["label"]?.ToString();
+                string value = item["value"]?.ToString();
+                try
+                {
+                    dataSet1.DataTable1.AddDataTable1Row(label, value);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show($"初始化参考音频: {ex.Message}");
+                }
+            }
         }
 
         private void initOutputFolderSetting()

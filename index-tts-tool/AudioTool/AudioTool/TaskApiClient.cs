@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -91,6 +92,19 @@ namespace AudioTool
             }
 
             return savePath;
+        }
+
+        /// <summary>
+        /// 获取参考视频
+        /// </summary>
+        public async Task<JArray> GetRefAudiosAsync()
+        {
+            HttpResponseMessage response = await _client.GetAsync($"{_baseUrl}/ref-videos");
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<JArray>(json);
+            return res;
         }
     }
 }
