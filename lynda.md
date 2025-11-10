@@ -56,7 +56,8 @@ https://huggingface.co/
 552marjaMARJA
 
 ## solidworks
-9020005749845773JF29WTBB
-9710 0018 9065 7395 PBHJ QHFH
-25734@e5-st-sworks.ad.psu.edu
-https://pennstate.service-now.com/kb_view.do?sys_kb_id=07e3d09497ff61901479b8bfe153af29
+9020005749845773JF29WTBB  
+9710 0018 9065 7395 PBHJ QHFH  
+25734@e5-st-sworks.ad.psu.edu  
+https://pennstate.service-now.com/kb_view.do?sys_kb_id=07e3d09497ff61901479b8bfe153af29  
+
