@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <title>地址匹配结果</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 40px;
+
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 6px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <th colspan="3">订报纸信息</th>
+            <th colspan="2">订单信息</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>姓名</th>
+            <th>电话</th>
+            <th>住址</th>
+            <th>收货地址</th>
+            <th>机顶盒号</th>
+            <th>得分</th>
+        </tr>
+        {{ for r in all }}
+        <tr class="all" data-score="{{ r.score }}">
+            <td>{{ r.left.origin["姓名"] }}</td>
+            <td>{{ r.left.origin["电话"] }}</td>
+            <td>{{ r.left.origin["住址"] }}</td>
+            <td>{{ r.right.origin["收货地址"] }}</td>
+            <td>{{ r.right.origin["机顶盒号"] }}</td>
+            <td>{{ r.score }}</td>
+        </tr>
+        {{ end }}
+    </table>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+              function scoreToColor(score) {
+                const minScore = 70;
+                const maxScore = 100;
+
+                const colorStart = { r: 245, g: 183, b: 177 }; // 低分颜色 (红)
+                const colorEnd = { r: 40, g: 167, b: 69 };  // 高分颜色 (绿)
+
+                // 超出区间
+                if (score <= minScore) return `rgb(${colorStart.r},${colorStart.g},${colorStart.b})`;
+                if (score >= maxScore) return `rgb(${colorEnd.r},${colorEnd.g},${colorEnd.b})`;
+
+                // 非线性映射：t^exponent，exponent>1，高分变化更明显
+                let t = (score - minScore) / (maxScore - minScore);
+                let exponent = 3.5; // 越大，高分变化越明显
+                t = Math.pow(t, exponent);
+
+                let r = colorStart.r + (colorEnd.r - colorStart.r) * t;
+                let g = colorStart.g + (colorEnd.g - colorStart.g) * t;
+                let b = colorStart.b + (colorEnd.b - colorStart.b) * t;
+
+                return `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
+            }
+
+            // 遍历表格行，设置背景色
+            const rows = document.querySelectorAll("tbody tr");
+            rows.forEach(row => {
+                const score = parseFloat(row.dataset.score);
+                if (!isNaN(score)) {
+                    row.style.backgroundColor = scoreToColor(score);
+                }
+            });
+
+        });
+    </script>
+</body>
+
+</html>
