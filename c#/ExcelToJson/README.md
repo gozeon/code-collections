@@ -15,3 +15,7 @@
             3. 剩下的进行百分比计算，比如街道得分是40，那么就乘 0.4
     c. 最终得分 = max(max(score, score2), 最终得分），也就是每次遍历取最高分。
 5. 输出报告
+
+# 格式化地址
+
+免费方案可参考 https://github.com/taishan1994/python_common_code_collection/blob/main/src/%E6%A0%B9%E6%8D%AE%E5%9C%B0%E5%9D%80%E6%8F%90%E5%8F%96%E7%9C%81-%E5%B8%82-%E5%8C%BA-%E8%A1%97%E9%81%93.py  
