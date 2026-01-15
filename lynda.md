@@ -18,7 +18,9 @@ https://www.gying.in/
 
 rolam90580@shackvine.com / rolam90580
 
-https://www.xl720.com/
+https://www.xl720.com/  
+
+音乐： https://1music.cc/
 
 ## teamviewer
 https://www.teamviewer.cn/cn/ oaakungebg@iubridge.com / oaakungebg
