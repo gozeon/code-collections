@@ -40,14 +40,273 @@ namespace Similar
             //    Console.WriteLine("JSON file not found.");
             //    return;
             //}
-            string jsonPath1 = @"D:\qq\订报纸信息.json";
-            string jsonPath2 = @"D:\qq\订单信息2.0.json";
+            string baseDir = @"D:\电视购物订单\电视购物订单";
+            Do2025youzhan(baseDir);
+            Do2024youzhan(baseDir);
+            Do2023youzhan(baseDir);
+            return;
 
-            // ========= 2. 读取 JSON =========
-            var json1 = ReadJson(jsonPath1, new FieldMap { IdField= "电话", AddressField= "住址" });
+            //string jsonPath1 = Path.Combine(baseDir, "json", "订报纸信息.json");
+            string jsonPath1 = Path.Combine(baseDir, "json", "今晚报数据统计.json");
+
+            var json2List = new[]
+            {
+                Path.Combine(baseDir, "json", "400-2025全年.json"),
+                Path.Combine(baseDir, "json", "400订单-2024全年.json"),
+                Path.Combine(baseDir, "json", "400-2019-2023全部订单.json"),
+
+                Path.Combine(baseDir, "json", "订单信息2.0.json"),
+
+                Path.Combine(baseDir, "json", "有赞2025年.json"),
+                Path.Combine(baseDir, "json", "2024年度有赞订单.json"),
+                Path.Combine(baseDir, "json", "有赞2019-2023订单总和.json"),
+            };
+
+            var semaphore = new SemaphoreSlim(2); // ⭐ 同时最多 2 个
+            var tasks = new List<Task>();
+
+            foreach (var jsonPath2 in json2List)
+            {
+                tasks.Add(Task.Run(async () =>
+                {
+                    await semaphore.WaitAsync();
+                    try
+                    {
+                        await CompareJson(baseDir, jsonPath1, jsonPath2);
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                }));
+            }
+
+            await Task.WhenAll(tasks);
+            Console.WriteLine("Done.");
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadKey();
+        }
+
+        private static void Do2023youzhan(string baseDir)
+        {
+            string ajsonPath1 = Path.Combine(baseDir, "json", "今晚报数据统计.json");
+            string ajsonPath2 = Path.Combine(baseDir, "手机", "有赞2019-2023订单总和.json");
+            string outPath = Path.Combine(baseDir, "手机", "report", "有赞2019-2023订单总和.json");
+
+            JArray arr1 = JArray.Parse(File.ReadAllText(ajsonPath1));
+            JArray arr2 = JArray.Parse(File.ReadAllText(ajsonPath2));
+
+            // 先把 path2 建成字典：手机号->对象
+            var dict2 = arr2
+                .Where(x => x["提货人手机号"] != null)
+                .GroupBy(x => x["提货人手机号"]!.ToString())
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Cast<JObject>().ToList()
+                );
+
+            Console.WriteLine($"有赞2019-2023订单 dict2 数量（唯一手机号数）: {dict2.Count}");
+
+            var result = new JArray();
+
+            foreach (JObject a in arr1)
+            {
+                var phone = a["电话"]?.ToString();
+                if (string.IsNullOrEmpty(phone)) continue;
+
+                if (dict2.TryGetValue(phone, out var orders))
+                {
+                    foreach (var order in orders)
+                    {
+                        var merged = new JObject();
+
+                        foreach (var p in a.Properties())
+                            merged[p.Name] = p.Value;
+
+                        foreach (var p in order.Properties())
+                            merged[p.Name] = p.Value;
+
+                        result.Add(merged);
+                    }
+                }
+            }
+
+            File.WriteAllText(
+                outPath,
+                new JArray(result).ToString(Newtonsoft.Json.Formatting.Indented)
+            );
+
+            JsonToExcel(Path.ChangeExtension(outPath, "xlsx"), result);
+        }
+
+        private static void JsonToExcel(string excelFilePath, JArray arr)
+        {
+            IWorkbook workbook = new XSSFWorkbook();
+            ISheet sheet = workbook.CreateSheet("Sheet1");
+
+            if (!arr.Any())
+            {
+                using var fs = File.Create(excelFilePath);
+                workbook.Write(fs);
+                return;
+            }
+
+            // 所有字段名作为列头
+            var headers = arr
+                .SelectMany(x => ((JObject)x).Properties())
+                .Select(p => p.Name)
+                .Distinct()
+                .ToList();
+
+            // 文本格式（防止手机号变科学计数）
+            ICellStyle textStyle = workbook.CreateCellStyle();
+            textStyle.DataFormat = workbook.CreateDataFormat().GetFormat("@");
+
+            // 表头
+            IRow headerRow = sheet.CreateRow(0);
+            for (int i = 0; i < headers.Count; i++)
+            {
+                headerRow.CreateCell(i).SetCellValue(headers[i]);
+            }
+
+            // 数据
+            for (int r = 0; r < arr.Count; r++)
+            {
+                var obj = (JObject)arr[r];
+                IRow row = sheet.CreateRow(r + 1);
+
+                for (int c = 0; c < headers.Count; c++)
+                {
+                    var cell = row.CreateCell(c);
+                    cell.CellStyle = textStyle;
+
+                    cell.SetCellValue(
+                        obj.TryGetValue(headers[c], out var v)
+                            ? v.ToString()
+                            : ""
+                    );
+                }
+            }
+
+            // 自动列宽
+            for (int i = 0; i < headers.Count; i++)
+            {
+                sheet.AutoSizeColumn(i);
+            }
+
+            using var file = File.Create(excelFilePath);
+            workbook.Write(file);
+        }
+
+        private static void Do2024youzhan(string baseDir)
+        {
+            string ajsonPath1 = Path.Combine(baseDir, "json", "今晚报数据统计.json");
+            string ajsonPath2 = Path.Combine(baseDir, "手机", "2024年度有赞订单.json");
+            string outPath = Path.Combine(baseDir, "手机", "report", "2024年度有赞订单.json");
+
+            JArray arr1 = JArray.Parse(File.ReadAllText(ajsonPath1));
+            JArray arr2 = JArray.Parse(File.ReadAllText(ajsonPath2));
+
+            // 先把 path2 建成字典：手机号->对象
+            var dict2 = arr2
+                .Where(x => x["收货人手机号"] != null)
+                .GroupBy(x => x["收货人手机号"]!.ToString())
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Cast<JObject>().ToList()
+                );
+
+            Console.WriteLine($"2024年度有赞订单 dict2 数量（唯一手机号数）: {dict2.Count}");
+
+            var result = new JArray();
+
+            foreach (JObject a in arr1)
+            {
+                var phone = a["电话"]?.ToString();
+                if (string.IsNullOrEmpty(phone)) continue;
+
+                if (dict2.TryGetValue(phone, out var orders))
+                {
+                    foreach (var order in orders)
+                    {
+                        var merged = new JObject();
+
+                        foreach (var p in a.Properties())
+                            merged[p.Name] = p.Value;
+
+                        foreach (var p in order.Properties())
+                            merged[p.Name] = p.Value;
+
+                        result.Add(merged);
+                    }
+                }
+            }
+
+            File.WriteAllText(
+                outPath,
+                new JArray(result).ToString(Newtonsoft.Json.Formatting.Indented)
+            );
+            JsonToExcel(Path.ChangeExtension(outPath, "xlsx"), result);
+        }
+
+        private static void Do2025youzhan(string baseDir)
+        {
+            string ajsonPath1 = Path.Combine(baseDir, "json", "今晚报数据统计.json");
+            string ajsonPath2 = Path.Combine(baseDir, "手机", "有赞2025年.json");
+            string outPath = Path.Combine(baseDir, "手机", "report", "有赞2025年.json");
+
+            JArray arr1 = JArray.Parse(File.ReadAllText(ajsonPath1));
+            JArray arr2 = JArray.Parse(File.ReadAllText(ajsonPath2));
+
+            // 先把 path2 建成字典：手机号->对象
+            var dict2 = arr2
+                .Where(x => x["买家手机号"] != null)
+                .GroupBy(x => x["买家手机号"]!.ToString())
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Cast<JObject>().ToList()
+                );
+
+            Console.WriteLine($"有赞2025年dict2 数量（唯一手机号数）: {dict2.Count}");
+
+            var result = new JArray();
+
+            foreach (JObject a in arr1)
+            {
+                var phone = a["电话"]?.ToString();
+                if (string.IsNullOrEmpty(phone)) continue;
+
+                if (dict2.TryGetValue(phone, out var orders))
+                {
+                    foreach (var order in orders)
+                    {
+                        var merged = new JObject();
+
+                        foreach (var p in a.Properties())
+                            merged[p.Name] = p.Value;
+
+                        foreach (var p in order.Properties())
+                            merged[p.Name] = p.Value;
+
+                        result.Add(merged);
+                    }
+                }
+            }
+
+            File.WriteAllText(
+                outPath,
+                new JArray(result).ToString(Newtonsoft.Json.Formatting.Indented)
+            );
+            JsonToExcel(Path.ChangeExtension(outPath, "xlsx"), result);
+        }
+
+        private static async Task CompareJson(string baseDir, string jsonPath1, string jsonPath2)
+        {
+            // ========= 2.读取 JSON =========
+            var json1 = ReadJson(jsonPath1, new FieldMap { IdField = "电话", AddressField = "住址" });
             var json2 = ReadJson(jsonPath2, new FieldMap { IdField = "机顶盒号", AddressField = "收货地址" });
 
-            Console.WriteLine($"json1: {json1.Count}, json2: {json2.Count}");
+            Console.WriteLine($"{Path.GetFileNameWithoutExtension(jsonPath1)}: {json1.Count}, {Path.GetFileNameWithoutExtension(jsonPath2)}: {json2.Count}");
 
             // ========= 3. 地址预处理 =========
             json1.ForEach(x => x.Parsed = Parse(x.Address));
@@ -58,27 +317,22 @@ namespace Similar
 
             // ========= 5. 输出 =========
             string templatePath = Path.Combine(AppContext.BaseDirectory, "report.tpl.html");
-            string outputPath = @"D:\qq\report.html";
-
+            string outputPath = Path.Combine(baseDir, "report", Path.GetFileName(Path.ChangeExtension(jsonPath2, ".html")));
             await Task.WhenAll(
-                Task.Run(() =>
-                {
-                    foreach (var r in results)
-                    {
-                        if (r.Score > 90)
-                        {
-                            Console.WriteLine($"{r.Left.Address} -> {r.Right.Address} | {r.Score}");
+              Task.Run(() =>
+              {
+                  foreach (var r in results)
+                  {
+                      if (r.Score > 90)
+                      {
+                          Console.WriteLine($"{r.Left.Address} -> {r.Right.Address} | {r.Score}");
 
-                        }
-                    }
-                }),
-                Task.Run(() => ExportHtmlWithScriban(results, templatePath, outputPath)),
-                Task.Run(() => ExportExcelWithNpoi(results, Path.ChangeExtension(outputPath, ".xlsx")))
-            );
-
-
-            Console.WriteLine("Done.");
-
+                      }
+                  }
+              }),
+              Task.Run(() => ExportHtmlWithScriban(results, templatePath, outputPath)),
+              Task.Run(() => ExportExcelWithNpoi(results, Path.ChangeExtension(outputPath, ".xlsx")))
+          );
         }
 
         private static void ExportExcelWithNpoi(List<MatchResult> results, string outputPath)
@@ -107,7 +361,7 @@ namespace Similar
 
             IRow row1 = sheet.CreateRow(1);
             row1.HeightInPoints = 22;
-            string[] subHeaders = { "姓名", "电话", "住址", "收货地址", "机顶盒号", "得分" };
+            string[] subHeaders = { "姓名", "电话", "住址", "收货地址", "订单ID/机顶盒号", "得分" };
             for (int i = 0; i < subHeaders.Length; i++)
             {
                 var cell = row1.CreateCell(i);
@@ -321,7 +575,8 @@ namespace Similar
                        .Replace("室", "")
                        .Replace("号", "")
                        .Replace("－", "-")
-                       .Replace("—", "-");
+                       .Replace("—", "-")
+                       .Replace("～", "-");
 
             text = RemoveInvisibleChars(text);
             return text;
@@ -366,7 +621,8 @@ namespace Similar
                 "滨海新区",
                 "静海区",
                 "宁河区",
-                "蓟州区"
+                "蓟州区",
+                "大港区"
             };
             foreach (var d in districts)
             {
@@ -425,7 +681,8 @@ namespace Similar
 
             var options = new ParallelOptions
             {
-                MaxDegreeOfParallelism = Environment.ProcessorCount
+                // 核心数除2 不容易跑满
+                MaxDegreeOfParallelism = Environment.ProcessorCount / 2
             };
 
             Parallel.ForEach(json1, options, a =>
@@ -467,8 +724,19 @@ namespace Similar
                             {
                                 streetScore = FuzzySimilarity(street_a, street_b);
                             }
-                                
-                            score2 = score2 * streetScore / 100;
+                            double streetWeight = 0.2;
+
+                            // 如果街道是满分，则不影响 score2
+                            if (streetScore >= 100)
+                            {
+                                score2 = score2 * streetScore / 100;
+                            }
+                            else
+                            {
+                                // 加权计算
+                                score2 = (int)(score2 * (1 - streetWeight) + score2 * (streetScore / 100.0) * streetWeight);
+                            }
+
 
                             Console.WriteLine($"{street_a} {street_b} {score2}");
                         }
