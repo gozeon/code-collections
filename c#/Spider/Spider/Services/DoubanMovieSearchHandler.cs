@@ -4,6 +4,7 @@ using Spider.Models;
 using Spider.Queue;
 using Spider.Utils;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,31 +12,31 @@ using System.Threading.Tasks;
 
 namespace Spider.Services
 {
-	internal class BingSearchHandler : IPageHandler
+	internal class DoubanMovieSearchHandler : IPageHandler
 	{
-		private readonly CrawlTaskQueue _queue;
+		private readonly ILogger<DoubanMovieSearchHandler> _logger;
 		private readonly UrlDeduplicator _dedup;
-		private readonly ILogger<BingSearchHandler> _logger;
+		private readonly CrawlTaskQueue _queue;
 
-
-		public BingSearchHandler(CrawlTaskQueue queue, UrlDeduplicator urlDeduplicator, ILogger<BingSearchHandler> logger)
+		public DoubanMovieSearchHandler(ILogger<DoubanMovieSearchHandler> logger, UrlDeduplicator urlDeduplicator, CrawlTaskQueue queue)
 		{
-			_queue = queue;
-			_dedup = urlDeduplicator;
 			_logger = logger;
+			_dedup = urlDeduplicator;
+			_queue = queue;
 		}
+
 		public bool CanHandle(Uri uri, CrawlTaskType type)
 		{
-			return type == CrawlTaskType.Search && uri.Host.Contains("bing.com");
+			return type == CrawlTaskType.Search && uri.Host.Contains("movie.douban.com");
 		}
 
 		public async Task<IPage> HandleAsync(IPage page, CrawlTask task, CancellationToken ct)
 		{
-			_logger.LogInformation("Bing search: {Url}", task.Url);
+			_logger.LogInformation("豆瓣电影 search: {Url}", task.Url);
 
 			await page.GotoAsync(task.Url, new PageGotoOptions { WaitUntil = WaitUntilState.Load, Timeout = 30_000 });
 
-			var searchBox = page.Locator("#sb_form_q");
+			var searchBox = page.Locator("#db-nav-movie #inp-query");
 
 			// 等待出现
 			await searchBox.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 3_000 });
@@ -44,15 +45,13 @@ namespace Spider.Services
 			{
 				// 模拟打字
 				await searchBox.FillAsync(task.Keyword, new LocatorFillOptions { Timeout = 5_000 });
-				await searchBox.ClickAsync();
 
 				// 回车,两下强行触发
 				await searchBox.PressAsync("Enter");
 				await page.WaitForTimeoutAsync(1_500);
-				await searchBox.PressAsync("Enter");
 
 				// 等待结果
-				var firstLink = await page.WaitForSelectorAsync("#b_results > li.b_algo h2 a", new PageWaitForSelectorOptions { Timeout = 5_000 });
+				var firstLink = await page.WaitForSelectorAsync(".item-root a", new PageWaitForSelectorOptions { Timeout = 5_000 });
 				if (firstLink != null)
 				{
 					var href = await firstLink.GetAttributeAsync("href");
@@ -68,7 +67,6 @@ namespace Spider.Services
 			}
 
 			return page;
-
 		}
 	}
 }

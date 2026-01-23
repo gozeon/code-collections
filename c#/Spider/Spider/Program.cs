@@ -27,6 +27,7 @@ builder.Services.AddSingleton<UrlDeduplicator>();
 // 任务
 builder.Services.AddSingleton<CrawlTaskQueue>();
 // 注入网站匹配器
+builder.Services.AddSingleton<IPageHandler, DoubanMovieSearchHandler>();
 builder.Services.AddSingleton<IPageHandler, BingSearchHandler>();
 builder.Services.AddSingleton<IPageHandler, DefaultHandler>();
 builder.Services.AddSingleton<PageHandlerFactory>();

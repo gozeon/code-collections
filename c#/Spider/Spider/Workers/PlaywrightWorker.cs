@@ -65,11 +65,13 @@ namespace Spider.Workers
 				new BrowserTypeLaunchOptions
 				{
 					// true 无头，false 显示浏览器
-					Headless = false
+					Headless = false,
+					// 全屏
+					Args = new List<string> { "--start-maximized" },
 				});
 
 			// 如果使用_browser 就是打开多个浏览器
-			_browserContext = await _browser.NewContextAsync();
+			_browserContext = await _browser.NewContextAsync(new BrowserNewContextOptions { ViewportSize = ViewportSize.NoViewport });
 			_logger.LogInformation("Browser  launched");
 
 			// 页面pool 并发，数量设置为2

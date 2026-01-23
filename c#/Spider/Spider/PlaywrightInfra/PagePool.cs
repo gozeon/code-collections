@@ -12,17 +12,19 @@ namespace Spider.PlaywrightInfra
 	{
 		private readonly Channel<IPage> _channel;
 
-		public PagePool(IBrowserContext browser, int size)
+		public PagePool(IBrowserContext browserContext, int size)
 		{
 			_channel = Channel.CreateBounded<IPage>(size);
-			_ = InitializeAsync(browser, size);
+			_ = InitializeAsync(browserContext, size);
 		}
 
-		private async Task InitializeAsync(IBrowserContext browser, int size)
+		private async Task InitializeAsync(IBrowserContext browserContext, int size)
 		{
 			for (int i = 0; i < size; i++)
 			{
-				var page = await browser.NewPageAsync();
+				var page = await browserContext.NewPageAsync();
+				// 强制浏览器进入全屏
+				//await page.EvaluateAsync(@"document.documentElement.requestFullscreen()");
 				await _channel.Writer.WriteAsync(page);
 			}
 		}

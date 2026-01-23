@@ -22,39 +22,24 @@ namespace Spider.Services
 				Environment.GetEnvironmentVariable("BASE_DIR") ?? AppContext.BaseDirectory,
 				options.Value.BaseDir);
 		}
-
-		public async Task SaveAsync(IPage page, string host, string taskId)
-		{
-			var dir = Path.Combine(_baseDir, host, taskId);
-			Directory.CreateDirectory(dir);
-
-
-			// 截图
-			var screenshotPath = Path.Combine(dir, "screenshot.png");
-			await page.ScreenshotAsync(new() { Path = screenshotPath, FullPage = true });
-
-			// 保存 HTML
-			var htmlPath = Path.Combine(dir, "page.html");
-			var content = await page.ContentAsync();
-			await File.WriteAllTextAsync(htmlPath, content);
-		}
-
 		public async Task SaveAsync(IPage page, CrawlTask task)
 		{
 
 			var host = new Uri(task.Url).Host;
 			var taskId = task.TaskId.ToString("D");
-			var dir = Path.Combine(_baseDir, host, taskId);
+			var dir = Path.Combine(_baseDir, host);
 			Directory.CreateDirectory(dir);
+
+			await page.WaitForTimeoutAsync(2_000);
 
 			_logger.LogInformation("save {Url} to {Folder}", task.Url, dir);
 
 			// 截图
-			var screenshotPath = Path.Combine(dir, "screenshot.png");
+			var screenshotPath = Path.Combine(dir, $"{taskId}.png");
 			await page.ScreenshotAsync(new() { Path = screenshotPath, FullPage = true });
 
 			// 保存 HTML
-			var htmlPath = Path.Combine(dir, "page.html");
+			var htmlPath = Path.Combine(dir, $"{taskId}.html");
 			var content = await page.ContentAsync();
 			await File.WriteAllTextAsync(htmlPath, content);
 		}
