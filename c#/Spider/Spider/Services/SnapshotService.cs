@@ -43,7 +43,7 @@ namespace Spider.Services
 		{
 
 			var host = new Uri(task.Url).Host;
-			var taskId = task.TaskId.ToString("N");
+			var taskId = task.TaskId.ToString("D");
 			var dir = Path.Combine(_baseDir, host, taskId);
 			Directory.CreateDirectory(dir);
 

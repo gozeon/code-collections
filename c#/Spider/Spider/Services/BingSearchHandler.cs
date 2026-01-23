@@ -33,30 +33,36 @@ namespace Spider.Services
 		{
 			_logger.LogInformation("Bing search: {Url}", task.Url);
 
-			await page.GotoAsync(task.Url, new PageGotoOptions { WaitUntil = WaitUntilState.DOMContentLoaded });
+			await page.GotoAsync(task.Url, new PageGotoOptions { WaitUntil = WaitUntilState.Load, Timeout = 30_000 });
 
 			var searchBox = page.Locator("#sb_form_q");
 
-			// 模拟打字
-			await searchBox.FillAsync("编译错误 cs1737", new LocatorFillOptions { Timeout = 100 });
+			// 等待出现
+			await searchBox.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 3_000 });
 
-			// 回车
-			await searchBox.PressAsync("Enter");
-
-
-			// 等待结果
-			var firstLink = await page.WaitForSelectorAsync("#b_results > li.b_algo h2 a");
-			if (firstLink != null)
+			if (!string.IsNullOrEmpty(task.Keyword))
 			{
-				var href = await firstLink.GetAttributeAsync("href");
-				if (!string.IsNullOrWhiteSpace(href) && _dedup.TryMark(href))
+				// 模拟打字
+				await searchBox.FillAsync(task.Keyword, new LocatorFillOptions { Timeout = 5_000 });
+
+				// 回车,两下强行触发
+				await searchBox.PressAsync("Enter");
+				await searchBox.PressAsync("Enter");
+
+				// 等待结果
+				var firstLink = await page.WaitForSelectorAsync("#b_results > li.b_algo h2 a", new PageWaitForSelectorOptions { Timeout = 5_000 });
+				if (firstLink != null)
 				{
-					await _queue.EnqueueAsync(new CrawlTask() { Type = CrawlTaskType.Detail, Url = href, Depth = task.Depth + 1 });
+					var href = await firstLink.GetAttributeAsync("href");
+					if (!string.IsNullOrWhiteSpace(href) && _dedup.TryMark(href))
+					{
+						await _queue.EnqueueAsync(new CrawlTask() { Type = CrawlTaskType.Detail, Url = href, Depth = task.Depth + 1 });
+					}
 				}
-			}
-			else
-			{
-				_logger.LogWarning("No search result link for {Url}", task.Url);
+				else
+				{
+					_logger.LogWarning("No search result link for {Url}", task.Url);
+				}
 			}
 
 			return page;

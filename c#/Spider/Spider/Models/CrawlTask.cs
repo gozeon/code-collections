@@ -12,6 +12,7 @@ namespace Spider.Models
 	{
 		public CrawlTaskType Type { get; init; }
 		public string Url { get; init; } = default!;
+		public string? Keyword { get; init; }
 		public int Depth { get; set; }
 		public Guid TaskId { get; } = Guid.NewGuid();
 	}

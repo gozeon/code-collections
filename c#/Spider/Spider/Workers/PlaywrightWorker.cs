@@ -57,7 +57,7 @@ namespace Spider.Workers
 			var tasks = _configuration.GetSection("Tasks").Get<List<CrawlTask>>();
 			foreach (var task in tasks)
 			{
-				_queue.EnqueueAsync(task);
+				await _queue.EnqueueAsync(task);
 			}
 
 			_playwright = await Playwright.CreateAsync();
