@@ -55,9 +55,12 @@ namespace Spider.Workers
 
 			// 读 appsetting.json 或 tasks.json
 			var tasks = _configuration.GetSection("Tasks").Get<List<CrawlTask>>();
-			foreach (var task in tasks)
+			if (tasks != null)
 			{
-				await _queue.EnqueueAsync(task);
+				foreach (var task in tasks)
+				{
+					await _queue.EnqueueAsync(task);
+				}
 			}
 
 			_playwright = await Playwright.CreateAsync();

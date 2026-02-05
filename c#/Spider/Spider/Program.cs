@@ -18,13 +18,12 @@ builder.Services.AddSerilog((services, loggerConfiguration) =>
 	loggerConfiguration.ReadFrom.Configuration(builder.Configuration).ReadFrom.Services(services);
 });
 
-
+// 截图
 builder.Services.Configure<SnapshotOptions>(builder.Configuration.GetSection("Snapshot"));
-
 builder.Services.AddSingleton<SnapshotService>();
-// 去重器
+// 去重
 builder.Services.AddSingleton<UrlDeduplicator>();
-// 任务
+// 任务队列
 builder.Services.AddSingleton<CrawlTaskQueue>();
 // 注入网站匹配器
 builder.Services.AddSingleton<IPageHandler, DoubanMovieSearchHandler>();
