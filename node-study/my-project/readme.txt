@@ -9,3 +9,6 @@ https://www.permapipe.com
 https://thermalpipesystems.com/
 http://www.hengtaizdj.com
 https://patents.google.com/patent/CN218626041U
+https://www.hbhaoyan.com/
+http://www.hbhcbwg.com/
+http://www.qlgd.com.cn/
