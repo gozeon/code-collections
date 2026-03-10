@@ -1,0 +1,38 @@
+enable: true
+topTitle: 主营业务
+title: >
+  ## 一站式管道解决方案
+
+  从管道支架设计、紧固件配套到安装服务，我们提供覆盖项目全周期的一站式解决方案，满足不同工程场景需求，帮助客户高效完成管道系统建设。
+service:
+  - content: >
+      #### 保冷管托 
+
+      聚氨酯管道支架是在木质支架的基础上发展起来的一种低温管道保温新产品，主要用于-196℃至+80℃之间的冷冻水、冷却水和液化天然气（LNG）低温管道温度保温。
+    image: images/service/ef82474f-80f3-4f66-9607-554f20c54316-nobg.png
+  - content: >
+      #### 隔热管托
+
+      保温管道支架是用于保护和保温管道的装置。它通常由具有良好隔热性能的金属或塑料制成。隔热管道支架的主要作用是减少管道的传热损失，防止热量损失和能源浪费。
+    image: images/service/8f1f02db-2320-4e39-b0a9-b925d83643e2-nobg.png
+  - content: >
+      #### 支架
+
+      用于支撑和固定管道，承受荷载并允许热胀冷缩的支撑结构。
+    image: images/service/ad8702aa-9115-405b-bc8e-0a72f0704c6c-nobg.png
+  - content: >
+      #### 支座
+
+      常用于管道与支撑管道的钢结构或混凝土支架之间的连接件，起支撑管道作用
+    image: images/service/8b7f7df7-cac1-43fa-be04-8b335ea5aba6-nobg.png
+  - content: >
+      #### 弹簧支吊架 
+
+      弹簧支吊架是一种重要的工业设备，用于支撑和悬挂管道、导管等设备。
+    image: images/service/b5e7e85e-2c48-4490-8c3f-16af0c415e30-nobg.png
+  - content: >
+      #### 保温管道
+
+      保温管道是一种用于输送液体、气体等介质的绝热管道，由内向外通常由工作钢管、保温层和保护壳组成，以聚氨酯或复合材料为主，常用于石油、化工和集中供热。
+    image: images/service/20241026231235383538.png
+_template: service_template

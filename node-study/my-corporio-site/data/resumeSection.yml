@@ -1,0 +1,41 @@
+# In the Name of God, the Originator the Creative
+# TODO: use semantic names for data fields
+---
+enable: true
+topTitle: 资质证书
+title: >
+  ## 质量保证
+
+  公司始终坚持以质量为核心发展理念，产品严格按照行业标准生产，并通过多项权威资质认证。  
+
+
+  完善的质量管理体系和规范的生产流程，确保每一件产品都具备稳定可靠的品质，为客户提供安全、专业的管道支撑解决方案。
+tab1Name: 公司荣誉
+tab2Name: 产品质量
+tab1Target: education
+tab2Target: experience
+
+education:
+  - content: >
+      #### 营业执照
+
+      企业营业执照齐全，合法合规经营，为客户提供值得信赖的合作保障。
+    image: /images/certificates/53508487-367a-4f81-8256-091d913193d9.jpg
+
+  - content: >
+      #### 企业信用
+
+      企业营业执照齐全，合法合规经营，为客户提供值得信赖的合作保障。
+    image: /images/certificates/55429e69-f41a-4caf-87ae-05204c5b59f1.jpg
+
+experience:
+  - content: >
+      #### 欧美质量体系认证
+
+      企业营业执照齐全，合法合规经营，为客户提供值得信赖的合作保障。
+    image: /images/certificates/5590b944-3da1-4670-9784-9640c93d649a.jpg
+  - content: >
+      #### ISO 质量
+
+      企业营业执照齐全，合法合规经营，为客户提供值得信赖的合作保障。
+    image: /images/certificates/5e66e3c8-fc1b-48c0-af31-c87c8e315161.jpg_366xaf.jpg

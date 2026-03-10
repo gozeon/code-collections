@@ -1,0 +1,7 @@
+enable: true
+topTitle: 产品中心
+title: |
+  ## 最新产品
+
+  据工程需求定制设计，严控生产质量，提供可靠管道支撑产品。
+_template: product_section_template

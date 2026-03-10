@@ -1,0 +1,18 @@
+enable: true
+topTitle: 关于我们
+title: >
+  ## 我们的故事
+
+  河北兴欧管道有限公司成立于2019年，位于河北省沧州市盐山县，是一家专注于管道及管道支撑系统制造的现代化企业。
+content: >
+  ### 我们是您可靠的管道支架合作伙伴
+
+  河北兴欧管道有限公司是一家专业从事管道支架及相关管道配件生产与销售的企业。公司致力于为各类工程项目提供高品质的管道支撑解决方案，产品广泛应用于建筑工程、能源工程、市政建设及工业管道系统等领域。  
+
+  公司始终坚持严格的质量管理和稳定的生产工艺，确保每一件产品都具有可靠的性能和优良的品质。河北兴欧管道有限公司以优质的产品和专业的服务，为客户提供值得信赖的合作与支持。
+button1Name: 联系我们
+button2Name: 产品中心
+button1Target: contact
+button2Target: product
+image: images/about/Piping_Engineering_Design_Training.jpg
+_template: about_template

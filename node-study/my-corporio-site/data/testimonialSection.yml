@@ -1,0 +1,21 @@
+enable: true
+topTitle: 客户反馈
+title: |
+  ## 合作伙伴如何评价我们？
+testimonial:
+  - name: 青海-王经理
+    comment: >-
+      产品质量稳定，管道支架做工扎实，交货及时，能够很好满足我们工程项目的需求。
+    time: "2026年3月"
+    star: 5
+  - name: 河北-李先生
+    comment: >-
+      厂家服务专业，支持定制设计，产品质量可靠，合作过程非常顺利。
+    time: "2026年1月"
+    star: 3
+  - name: 内蒙古-孙女士
+    comment: >-
+      多次合作，产品规格齐全，品质稳定，是值得信赖的管道支架供应商。
+    time: "2025年12月"
+    star: 4
+_template: testimonial_template

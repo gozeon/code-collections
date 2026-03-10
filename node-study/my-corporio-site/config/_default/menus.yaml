@@ -1,0 +1,35 @@
+main:
+  - name: 首页
+    url: ""
+    weight: 1
+  - name: 主营业务
+    url: "#service"
+    weight: 2
+  - name: 资质证书
+    url: "#resume"
+    weight: 3
+  - name: 关于我们
+    url: "#about"
+    weight: 4
+  - name: 产品中心
+    url: "product"
+    weight: 5
+  - name: 客户评价
+    url: "#testimonial"
+    weight: 6
+  - name: 新闻中心
+    url: "blog"
+    weight: 7
+sitemap:
+  - name: 首页
+    url: ""
+    weight: 1
+  - name: 联系我们
+    url: "contact"
+    weight: 2
+  - name: 产品中心
+    url: "product"
+    weight: 3
+  - name: 新闻中心
+    url: "blog"
+    weight: 4

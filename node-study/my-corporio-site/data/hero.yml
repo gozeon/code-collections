@@ -1,0 +1,12 @@
+enable: true
+topTitle: 河北兴欧管道有限公司
+content: >
+  # 专业管道系统解决方案提供商
+
+  集设计、生产、交付于一体，为工程项目提供稳定、耐用、可定制的管道产品。
+buttonName: 联系我们
+buttonURL: contact
+image: images/hero/resized_Trans_Mountain_Pipeline_Project-563x750.jpg
+videoThumb: images/hero/ed1c10456e1840f4ac83a31762b98dea.png
+videoURL: "https://v.douyin.com/lf4qc0xTB50/"
+_template: hero_template

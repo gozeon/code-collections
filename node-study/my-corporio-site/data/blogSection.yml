@@ -1,0 +1,9 @@
+enable: true
+topTitle: 新闻中心
+title: >
+  ## 最新资讯
+
+  关注行业动态与公司新闻，及时了解管道支架产品技术、应用案例及行业发展趋势，为客户提供更多专业资讯与参考。
+buttonName: 查看更多
+buttonTarget: blog
+_template: blog_section_template
