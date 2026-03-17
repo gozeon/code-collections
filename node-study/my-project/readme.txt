@@ -12,3 +12,6 @@ https://patents.google.com/patent/CN218626041U
 https://www.hbhaoyan.com/
 http://www.hbhcbwg.com/
 http://www.qlgd.com.cn/
+https://www.hbgqpipe.com/
+https://www.ruiliguandao.com/
+http://www.boyingpipe.com/
