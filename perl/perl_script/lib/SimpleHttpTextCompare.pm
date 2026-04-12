@@ -10,15 +10,10 @@ sub new {
     my ( $class, %args ) = @_;
     my $dir = $args{out_dir} || '.';
 
-    unless ( -d $dir ) {
-        mkdir $dir or die "无法创建目录 $dir:$!\n";
-
-    }
     my $self = {
         http    => HTTP::Tiny->new(),
         out_dir => $dir,
     };
-    mkdir $dir unless -d $dir;
     return bless $self, $class;
 }
 
@@ -27,7 +22,13 @@ sub url_to_filename {
     my ( $self, $url ) = @_;
     $url =~ s{https?://}{};
     $url =~ s{[/:?&=]}{_}g;
-    return File::Spec->catfile( $self->{out_dir}, $url . ".txt" );
+
+    my $dir = $self->{out_dir};
+    unless ( -d $dir ) {
+        mkdir $dir or die "无法创建目录 $dir:$!\n";
+    }
+
+    return File::Spec->catfile( $dir, $url . ".txt" );
 }
 
 # 获取 HTTP 内容
@@ -52,7 +53,7 @@ sub compare_urls {
     my $text1 = $self->fetch_content($url1);
     my $text2 = $self->fetch_content($url2);
 
-    print "=" x 10, " 对比请求结果\n";
+    print "=" x 10, " 对比请求\n";
     print $url1,    "\n", $url2, "\n";
     print "-" x 10, "\n";
     if ( !$self->text_diff( $text1, $text2 ) ) {
@@ -75,7 +76,6 @@ sub compare_urls {
         close $fh2;
 
         print "差异文件已保存：\n$file1\n$file2\n";
-        print "=" x 10, " end\n";
         return 0;
     }
 }
