@@ -17,21 +17,12 @@ $SIG{INT} = sub { exit };
 # 读取配置
 my $cfg = do './config.pl' or die "加载配置失败: $@";
 
-my %menu_config = (
-    'test_up' =>
-      { label => "测试上传", func => sub { Logic::test_upload( $cfg->{test} ) } },
-    'test_down' =>
-      { label => "测试下载", func => sub { Logic::test_download( $cfg->{test} ) } },
-    'ping_mysql' => {
-        label => "测试环境访问阿里云mysql",
-        func  => sub { Logic::test_mysql( $cfg->{test} ) }
-    },
-    'ping_redis' => {
-        label => "测试环境访问腾讯云redis",
-        func  => sub { Logic::test_redis( $cfg->{test} ) }
-    },
-    'q' => { label => "退出 (Exit)", func => sub { exit } },
-);
+my %menu_config = %{ $cfg->{menu_config} || {} };
+
+$menu_config{'q'} = {
+    label => '退出 (Exit)',
+    func  => sub { exit }
+};
 
 # 如果没有参数，才进入 while(1) 菜单循环
 if (@ARGV) {
@@ -54,7 +45,7 @@ while (1) {
     foreach my $id (@sorted_ids) {
         printf "%-50s : %s\n", $id, $menu_config{$id}->{label};
     }
-    print "\n请输入操作代码: ";
+    print "=" x 10, "\n请输入操作代码: ";
 
     my $choice = <STDIN>;
     last if !defined $choice;

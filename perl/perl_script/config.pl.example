@@ -1,0 +1,88 @@
+use strict;
+use warnings;
+use utf8;
+
+my @test_vps = [
+    {
+        host => 'host',
+        user => 'username',
+        pass => 'password'
+    },
+    {
+        host => 'host',
+        user => 'root',
+        pass => 'TJGD2360iptv1767'
+    }
+];
+
+my @goserver_prod = [
+    {
+        host => 'host',
+        user => 'username',
+        pass => 'password'
+    },
+    {
+        host => 'host',
+        user => 'username',
+        pass => 'password'
+    },
+    {
+        host => 'host',
+        user => 'username',
+        pass => 'password'
+    },
+];
+
+my @goserver_prod_http = [
+    {
+        url1 => 'http://10.10.10.10:9005/schedule/getCategoryList',
+        url2 => 'http://10.10.10.10:9005/schedule/getCategoryList',
+    },
+    {
+        url1 => 'http://10.10.10.10:9005/playLine/playLineConfig',
+        url2 => 'http://10.10.10.10:9005/playLine/playLineConfig',
+    },
+];
+
+
+my $redis = {
+    host => 'xxx.sql.tencentcdb.com',
+    port => 26174,
+    pass => 'xxx'
+};
+my $mysql = {
+    host => 'xxx.mysql.rds.aliyuncs.com',
+    port => 3306,
+};
+
+{
+    'menu_config' => {
+        'test_up' =>
+          { label => '测试上传', func => sub { Logic::test_upload(@test_vps) } },
+        'test_down' =>
+          { label => '测试下载', func => sub { Logic::test_download(@test_vps) } },
+
+        'ping_mysql' => {
+            label => '测试环境访问阿里云 mysql',
+            func  => sub { Logic::test_mysql( @test_vps, $mysql ) }
+        },
+        'ping_redis' => {
+            label => '测试环境访问腾讯云 redis',
+            func  => sub { Logic::test_redis( @test_vps, $redis ) }
+        },
+
+        'goserver_test_deploy' => {
+            label => '测试环境 xxx 部署',
+            func  => sub { Logic::test_goserver(@test_vps) }
+        },
+        'goserver_prod_depoly' => {
+            label => '正式环境 xxx 部署',
+            func  => sub { Logic::prod_goserver(@goserver_prod) }
+        },
+        'goserver_prod_compare' => {
+            label => '正式环境 xxx 接口对比',
+            func  => sub { Logic::compare_http_get(@goserver_prod_http) }
+        },
+    }
+
+};

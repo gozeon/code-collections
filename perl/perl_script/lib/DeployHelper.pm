@@ -57,6 +57,7 @@ sub run {
     # 注入 UTF-8 环境变量，解决远程命令输出乱码
     my $full_cmd = "export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; $cmd";
 
+    $chan->ext_data('merge');
     $chan->exec($full_cmd) or croak "Exec failed: $!";
 
     # 实时读取输出

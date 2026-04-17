@@ -5,9 +5,20 @@ use utf8;
 binmode( STDIN,  ":utf8" );
 binmode( STDOUT, ":utf8" );
 
-my $host = "abcd.sql.tencentcdb.com";
-my $port = 26174;
-my $pass = 'abcd';                     # 如果有密码请填写
+use Getopt::Long;
+my $host;
+my $port;
+my $pass;
+
+GetOptions(
+    "host=s" => \$host,    # 接收目录路径
+    "port=s" => \$port,    # 接收新的占位符密钥
+    "pass=s" => \$pass,    # 接收新的占位符密钥
+) or die "用法: perl xx.pl --host=host --port=port\n";
+
+if ( !$host || !$port ) {
+    die "错误：必须提供 --host 和 --port 参数\n";
+}
 
 my $socket = IO::Socket::INET->new(
     PeerAddr => $host,
