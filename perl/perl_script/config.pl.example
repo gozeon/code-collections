@@ -44,6 +44,16 @@ my @goserver_prod_http = [
     },
 ];
 
+my @api_test = [
+	{
+        url     => 'http://10.10.10.10:9005/recommend/v7/type51',
+        payload => {},
+        headers => {
+            'Content-Type' => 'application/json',
+        },
+    }
+];
+
 
 my $redis = {
     host => 'xxx.sql.tencentcdb.com',
@@ -82,6 +92,10 @@ my $mysql = {
         'goserver_prod_compare' => {
             label => '正式环境 xxx 接口对比',
             func  => sub { Logic::compare_http_get(@goserver_prod_http) }
+        },
+		'api_test' => {
+            label => '接口测试',
+            func  => sub { Logic::test_api(@api_test) }
         },
     }
 

@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use HTTP::Tiny;
 use File::Spec;
+use JSON::MaybeXS;    # 自动选择系统最优的 JSON 库
 use utf8;
 
 sub new {
@@ -35,6 +36,32 @@ sub url_to_filename {
 sub fetch_content {
     my ( $self, $url ) = @_;
     my $resp = $self->{http}->get($url);
+    die "请求失败 $url: $resp->{status} $resp->{reason}\n" unless $resp->{success};
+    return $resp->{content};
+}
+
+# POST 请求
+sub post_request {
+    my ( $self, $url, $data, $headers ) = @_;
+
+    # 准备请求体 (如果是 Hash 引用则转为 JSON)
+    my $content = ( ref $data eq 'HASH' ) ? encode_json($data) : $data;
+
+    # 设置默认请求头 (如果发送 JSON)
+    my %request_headers = (
+        'Content-Type' => 'application/json',
+        'Accept'       => 'application/json',
+        %{ $headers || {} },    # 合并自定义 Header
+    );
+
+    my $resp = $self->{http}->post(
+        $url,
+        {
+            content => $content,
+            headers => \%request_headers,
+        }
+    );
+
     die "请求失败 $url: $resp->{status} $resp->{reason}\n" unless $resp->{success};
     return $resp->{content};
 }

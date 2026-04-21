@@ -3,6 +3,7 @@ package Logic;
 use strict;
 use warnings;
 use utf8;
+use JSON::MaybeXS;    # 自动选择系统最优的 JSON 库
 use DeployHelper;
 use SimpleHttpTextCompare;
 
@@ -163,6 +164,39 @@ sub compare_http_get {
             my $cpre =
               SimpleHttpTextCompare->new( out_dir => "http_compare" . time() );
             $cpre->compare_urls( $api->{url1}, $api->{url2} );
+        };
+        if ( my $err = $@ ) {
+            warn "\n[ERROR] Failed to check: $err\n";
+        }
+    }
+}
+
+sub test_api {
+    my ($api_list) = @_;
+    foreach my $api (@$api_list) {
+        eval {
+            my $cpre =
+              SimpleHttpTextCompare->new( out_dir => "http_compare" . time() );
+
+            my $response = $cpre->post_request( $api->{url}, $api->{payload},
+                $api->{headers} );
+
+            # 如果不需要可以不解析
+            my $json = JSON::MaybeXS->new( utf8 => 1 );
+            my $data;
+            eval { $data = $json->decode($response); };
+            if ($@) {
+                warn "JSON 解析异常: $@\n";
+                return 0;
+            }
+
+            # 检查业务逻辑 code 是否为 200
+            if ( exists $data->{code} && $data->{code} == 200 ) {
+                print "[Success] $api->{url} \n";
+            }
+            else {
+                warn "[Error] $api->{url} \n";
+            }
         };
         if ( my $err = $@ ) {
             warn "\n[ERROR] Failed to check: $err\n";
