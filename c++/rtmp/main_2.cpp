@@ -1,0 +1,104 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
+
+extern "C"
+{
+#include <librtmp/rtmp.h>
+#include <librtmp/log.h>
+}
+
+// 获取当前时间的字符串文件名
+std::string get_current_filename()
+{
+    std::time_t now = std::time(nullptr);
+    std::tm *ltm = std::localtime(&now);
+    std::ostringstream oss;
+    oss << std::put_time(ltm, "%Y%m%d%H%M%S") << ".flv";
+    return oss.str();
+}
+
+int main()
+{
+    const char *url = "rtmp://43.247.4.158:1935/tjradio/XIANGSHENG";
+
+    RTMP_LogSetLevel(RTMP_LOGDEBUG);
+
+    RTMP *rtmp = RTMP_Alloc();
+    RTMP_Init(rtmp);
+
+    // 超时
+    rtmp->Link.timeout = 5;
+
+    if (!RTMP_SetupURL(rtmp, (char *)url))
+    {
+        std::cerr << "设置url失败" << std::endl;
+        RTMP_Free(rtmp);
+        return -1;
+    }
+
+    if (!RTMP_Connect(rtmp, NULL) || !RTMP_ConnectStream(rtmp, 0))
+    {
+        std::cerr << "连接失败" << std::endl;
+        RTMP_Free(rtmp);
+        return -1;
+    }
+
+    std::ofstream currentFile;
+    std::vector<char> flvHeader;
+    int lastMinute = -1;
+
+    char buffer[1024 * 64];
+    int readSize = 0;
+
+    std::cout << "开始循环录制，每分钟生成一个文件..." << std::endl;
+
+    while ((readSize = RTMP_Read(rtmp, buffer, sizeof(buffer))) > 0)
+    {
+        std::time_t now = std::time(nullptr);
+        int currentMinute = now / 60; // 以分钟为单位的时间戳
+        // 捕获 Header（仅限程序启动后的第一次读取）
+        if (flvHeader.empty())
+        {
+            flvHeader.assign(buffer, buffer + readSize);
+        }
+        // 检查是否需要切换文件（分钟变化）
+        if (currentMinute != lastMinute)
+        {
+            if (currentFile.is_open())
+            {
+                currentFile.close();
+            }
+
+            std::string filename = get_current_filename();
+            currentFile.open(filename, std::ios::binary);
+
+            // 写入 Header，保证每个一分钟的小文件都能独立播放
+            if (!flvHeader.empty())
+            {
+                currentFile.write(flvHeader.data(), flvHeader.size());
+            }
+
+            std::cout << "创建新文件: " << filename << std::endl;
+            lastMinute = currentMinute;
+        }
+
+        // 写入文件
+        if (currentFile.is_open())
+        {
+            currentFile.write(buffer, readSize);
+        }
+    }
+
+    if (currentFile.is_open())
+    {
+        currentFile.close();
+    }
+    RTMP_Close(rtmp);
+    RTMP_Free(rtmp);
+
+    return 0;
+}

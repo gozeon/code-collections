@@ -1,0 +1,10 @@
+{
+  "name": "C++ Dev Environment",
+  "image": "mcr.microsoft.com/devcontainers/cpp:1-debian-12",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-vscode.cpptools-extension-pack"]
+    }
+  },
+  "remoteUser": "root"
+}
