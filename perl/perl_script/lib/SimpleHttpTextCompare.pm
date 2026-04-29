@@ -34,9 +34,22 @@ sub url_to_filename {
 
 # 获取 HTTP 内容
 sub fetch_content {
-    my ( $self, $url ) = @_;
+    my ( $self, $url, $show_header ) = @_;
     my $resp = $self->{http}->get($url);
     die "请求失败 $url: $resp->{status} $resp->{reason}\n" unless $resp->{success};
+
+    # 如果 $show_header 为真，则打印所有 header
+    if ($show_header) {
+        print "\n--- response headers: $url \n";
+        while ( my ( $name, $value ) = each %{ $resp->{headers} } ) {
+
+            # 处理可能存在多个相同 key 的 header（存为数组引用的情况）
+            for ( ref $value eq 'ARRAY' ? @$value : $value ) {
+                print "$name: $_\n";
+            }
+        }
+        print "\n";    # 打印一个空行区分 header 和 content
+    }
     return $resp->{content};
 }
 
