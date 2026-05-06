@@ -87,6 +87,7 @@ void record_stream(std::string url)
     while (keep_running)
     {
         RTMP_LogSetLevel(RTMP_LOGDEBUG);
+        // RTMP_LogSetLevel(RTMP_LOGINFO);
         RTMP *rtmp = RTMP_Alloc();
         RTMP_Init(rtmp);
 
@@ -106,24 +107,46 @@ void record_stream(std::string url)
         }
         std::ofstream currentFile;
         std::vector<char> flvHeader;
+        bool header_captured = false;
         int lastMinute = -1;
+        auto last_recv_time = std::time(nullptr);
 
         char buffer[1024 * 64];
         int readSize = 0;
         while (keep_running)
         {
+            // 30s心跳检查：方式RTMP_Read 伪阻塞
+            if (std::time(nullptr) - last_recv_time > 30)
+            {
+                std::cerr << "[30s超时] " << url << " 30秒无数据，强制断开重连" << std::endl;
+                break;
+            }
             readSize = RTMP_Read(rtmp, buffer, sizeof(buffer));
             if (readSize <= 0)
             {
+                std::cerr << "[断开] 读取失败或连接中断: " << url << std::endl;
                 break;
             }
-            std::time_t now = std::time(nullptr);
-            int currentMinute = now / 60; // 以分钟为单位的时间戳
+            // 心跳检测
+            last_recv_time = std::time(nullptr);
+
             // 捕获 Header（仅限程序启动后的第一次读取）
-            if (flvHeader.empty())
+            // if (flvHeader.empty())
+            // {
+            //     flvHeader.assign(buffer, buffer + readSize);
+            // }
+            // 捕获 header,每次 while(keep_running) 重连成功后，它都会被重置为 false。
+            if (!header_captured)
             {
                 flvHeader.assign(buffer, buffer + readSize);
+                header_captured = true;
+                // 捕获到Header后，如果当前文件开着，强制重新生成文件以防时间戳错乱
+                lastMinute = -1;
             }
+
+            std::time_t now = std::time(nullptr);
+            int currentMinute = now / 60; // 以分钟为单位的时间戳
+
             // 检查是否需要切换文件（分钟变化）
             if (currentMinute != lastMinute)
             {
