@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "cppStandard": "c++26",
+            "compilerPath": "/usr/local/bin/gcc",
+            "cStandard": "c17"
+        }
+    ],
+    "version": 4
+}
