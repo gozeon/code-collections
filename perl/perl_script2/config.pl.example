@@ -1,0 +1,63 @@
+use strict;
+use warnings;
+use utf8;
+
+my @test_vps = (
+    {
+        host => '1.1.1.1',
+        user => 'root',
+        pass => 'pass'
+    },
+
+);
+
+my @prod_vps = (
+    {
+        host => '1.1.1.1',
+        user => 'root',
+        pass => 'pass'
+    },
+
+);
+
+my @all_vps = (@test_vps, @prod_vps);
+
+my $redis = {
+    host => 'asd.sql.tencentcdb.com',
+    port => 26174,
+    pass => 'asd'
+};
+
+my $mysql = {
+    host => 'asd.mysql.rds.aliyuncs.com',
+    port => 3306,
+};
+
+sub gen_api_test {
+	my @bases = (
+        'http://aa:9005', 'http://bb:9005',
+    );
+	my @paths = (
+        '/c',
+        '/d',
+    );
+    return map {
+        my $base = $_;
+        map { $base . $_ } @paths
+    } @bases;
+}
+
+{
+    'all_vps'           => [@all_vps],
+    'test_download_vps' => [@all_vps],
+    'test_upload_vps'   => [@all_vps],
+    'ping_mysql_config'    => {
+		vps => [@all_vps],
+		addr => $mysql
+	},
+	'ping_redis_config'    => {
+		vps => [@all_vps],
+		addr => $redis
+	},
+	'test_api_config' => [ gen_api_test() ],
+};
