@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "cppStandard": "c++26",
+            "compilerPath": "/usr/local/bin/gcc",
+            "intelliSenseMode": "linux-gcc-x64",
+            "cStandard": "c23",
+            "compilerArgs": [
+                "-std=c++26",
+                "-fmodules-ts"
+            ],
+            "includePath": [
+                "${workspaceFolder}/ext",
+                "${workspaceFolder}/ext/include",
+                "${workspaceFolder}/**"
+            ]
+        }
+    ],
+    "version": 4
+}

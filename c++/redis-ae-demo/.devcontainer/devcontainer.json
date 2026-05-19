@@ -1,0 +1,10 @@
+{
+  "name": "C++ Dev Environment",
+  "image": "gcc",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-vscode.cpptools-extension-pack"]
+    }
+  },
+  "remoteUser": "root"
+}
