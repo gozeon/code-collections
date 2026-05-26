@@ -14,7 +14,7 @@ cocecef207@ovout.com / cocecef207
 https://jiandantv.com/  
 https://feikuai.tv/  
 
-https://www.gying.in/
+https://www.xn--ykq321c.com/  
 
 rolam90580@shackvine.com / rolam90580
 
