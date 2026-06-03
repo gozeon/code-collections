@@ -73,6 +73,7 @@ ngx.say(cjson.encode(results))
 return ngx.exit(ngx.HTTP_OK)
 ]]
 
+--[[
 local current_dir = string.match(debug.getinfo(1).source, "^@(.*)/")
 package.path =  current_dir .. "/lib/?.lua;" .. current_dir .. "/?.lua;" .. package.path
 
@@ -102,4 +103,29 @@ local results = {
 
 ngx.say(cjson.encode(results))
 return ngx.exit(ngx.HTTP_OK)
+]]
+
+local current_dir = string.match(debug.getinfo(1).source, "^@(.*)/")
+package.path =  current_dir .. "/lib/?.lua;" .. current_dir .. "/?.lua;" .. package.path
+
+local mlcache = require("modules.mlcache_service")
+local args, err = ngx.req.get_uri_args()
+local id = args["id"]
+if not id or id == "" then
+	ngx.status = ngx.HTTP_FORBIDDEN
+	ngx.exit(ngx.HTTP_FORBIDDEN)
+	return
+end
+local value, err = mlcache.get_value(id)
+
+if err then
+	ngx.log(ngx.ERR, " 失败: ", err)
+
+    -- 说明 Redis 挂了，且本地完全没有任何历史缓存，走终极兜底
+    ngx.status = ngx.HTTP_SERVICE_UNAVAILABLE
+	return ngx.exit(ngx.HTTP_SERVICE_UNAVAILABLE)
+end
+
+ngx.header.content_type = "application/json; charset=utf-8"
+ngx.say(value)
 
