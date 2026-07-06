@@ -72,6 +72,7 @@ public class EditModel : PageModel
         DeliveryOrder.Address = DeliveryOrderVM.Address ?? string.Empty;
         DeliveryOrder.Remark = DeliveryOrderVM.Remark;
         DeliveryOrder.DeliveryTime = DeliveryOrderVM.DeliveryTime;
+		DeliveryOrder.YearMonth = yearMonth;
 
 
         // 删除所有旧的details
