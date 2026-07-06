@@ -1,0 +1,33 @@
+﻿@model SimpleERP.Pages.DeliveryOrderPages.DeliveryOrderDetailVM
+@{
+    var rowId = Guid.NewGuid().ToString();
+    // 核心魔法：告诉 asp-for，当前的命名空间前缀是 "Details[YourGuid]"
+    // 这样下面的 asp-for 编译出来会自动变成 name="Details[guid].Sku"
+    ViewData.TemplateInfo.HtmlFieldPrefix = $"DeliveryOrderVM.Details[{rowId}]";
+}
+
+
+<tr>
+    <input type="hidden" name="DeliveryOrderVM.Details.Index" value="@rowId" />
+    <td>
+        <input class="form-control" asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </td>
+    <td>
+        <input class="form-control" asp-for="Sku" />
+        <span asp-validation-for="Sku" class="text-danger"></span>
+    </td>
+    <td>
+        <input class="form-control" asp-for="Price" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </td>
+    <td>
+        <input class="form-control" asp-for="Quantity" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </td>
+
+    <td>
+        <button type="button" class="btn btn-danger btn-sm" onclick="if($(this).closest('tbody').find('tr').length > 1) { this.closest('tr').remove(); } else { alert('至少需要保留一条明细数据！'); }">删除</button>
+    </td>
+</tr>
+

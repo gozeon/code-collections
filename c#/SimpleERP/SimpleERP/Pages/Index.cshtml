@@ -1,0 +1,225 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "看板";
+}
+<div class="container mt-4">
+    <!-- 🖥️ Top Metric Summary Cards Block -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <div class="card bg-gradient bg-opacity-75 bg-primary border-0 text-white shadow-sm">
+                <div class="card-body p-4">
+                    <small class="text-white-50 text-uppercase d-block mb-1">累计发货总金额</small>
+                    <h1 class="fw-bold mb-0">@Model.OverallTotalAmount.ToString("C")</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card bg-gradient bg-opacity-75 bg-success border-0 text-white shadow-sm">
+                <div class="card-body p-4">
+                    <small class="text-white-50 text-uppercase d-block mb-1">累计发货总单数</small>
+                    <h1 class="fw-bold mb-0">@Model.OverallTotalOrders.ToString("N0") 单</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📉 区域 1：月度趋势折线图（宽屏撑满） -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow border-0">
+                <div class="card-header bg-white py-3 fw-bold">
+                    <i class="bi bi-graph-up text-primary"></i> 最近 12 个月发货业绩走势
+                </div>
+                <div class="card-body">
+                    <canvas id="monthlyTrendChart" style="max-height: 300px; width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📊 区域 2：季度柱状图 与 年度饼图（左右并排） -->
+    <div class="row mb-4">
+        <!-- 季度柱状图 -->
+        <div class="col-md-7 mb-4">
+            <div class="card shadow border-0 h-100">
+                <div class="card-header bg-white py-3 fw-bold">
+                    <i class="bi bi-bar-chart-steps text-success"></i> 季度发货业绩对比
+                </div>
+                <div class="card-body">
+                    <canvas id="quarterlyBarChart" style="max-height: 280px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 年度饼图 -->
+        <div class="col-md-5 mb-4">
+            <div class="card shadow border-0 h-100">
+                <div class="card-header bg-white py-3 fw-bold">
+                    <i class="bi bi-pie-chart-fill text-warning"></i> 历年发货资产版图占比
+                </div>
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    <canvas id="yearlyPieChart" style="max-height: 250px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/lib/chart.js/chart.umd.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // 金额本地化转换辅助函数
+            const currencyFormatter = new Intl.NumberFormat('zh-CN', { style: 'currency', currency: 'CNY' });
+
+            // =================================================================
+            // 📊 1. 月度只取最近 12 个月 - 折线图 (Line)
+            // =================================================================
+            var ctxLine = document.getElementById('monthlyTrendChart').getContext('2d');
+            new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: @Json.Serialize(Model.MonthlyLabels),
+                    datasets: [
+                        {
+                            type: 'line', // 系列一：折线图
+                            label: '发货金额 (元)',
+                            data: @Json.Serialize(Model.MonthlyAmounts),
+                            borderColor: '#0d6efd',
+                            backgroundColor: 'rgba(13, 110, 253, 0.04)',
+                            fill: true,
+                            tension: 0.25,
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            yAxisID: 'y' // 💡 绑定到左侧的主 Y 轴
+                        },
+                        {
+                            type: 'bar', // 系列二：柱状图
+                            label: '发货单量 (单)',
+                            data: @Json.Serialize(Model.MonthlyCounts),
+                            backgroundColor: 'rgba(25, 135, 84, 0.2)', // 嫩绿色透明柱体，作为背景不抢眼
+                            borderColor: 'rgba(25, 135, 84, 0.4)',
+                            borderWidth: 1,
+                            borderRadius: 3,
+                            barThickness: 20, // 限制柱子的粗细
+                            yAxisID: 'y1' // 💡 绑定到右侧的副 Y 轴
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true },
+                        tooltip: {
+                            mode: 'index', // 鼠标放上去时，同时弹出该月份的“金额”和“单量”双提示
+                            intersect: false,
+                            callbacks: {
+                                label: function (context) {
+                                    var label = context.dataset.label || '';
+                                    if (context.datasetIndex === 0) {
+                                        // 金额格式化
+                                        return ' ' + label + ': ' + currencyFormatter.format(context.parsed.y);
+                                    } else {
+                                        // 单量格式化
+                                        return ' ' + label + ': ' + context.parsed.y + ' 单';
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: { 
+                        // 💡 左侧主坐标轴：算钱
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            ticks: { callback: function (val) { return currencyFormatter.format(val); } }
+                        },
+                        // 💡 右侧副坐标轴：算单量
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            min: 0, // 数量从 0 开始
+                            ticks: {
+                                stepSize: 5, // 刻度步长
+                                callback: function (val) { return val + ' 单'; }
+                            },
+                            grid: {
+                                drawOnChartArea: false // 🚀 关键：不在图表内部重复画横向网格线，防止两套轴的线交错混乱
+                            }
+                        },
+                    }
+                }
+            });
+
+            // =================================================================
+            // 📊 2. 季度业绩对比 - 柱状图 (Bar)
+            // =================================================================
+            var ctxBar = document.getElementById('quarterlyBarChart').getContext('2d');
+            new Chart(ctxBar, {
+                type: 'bar', // 🚀 切换为柱状图
+                data: {
+                    labels: @Json.Serialize(Model.QuarterXLabels),
+                    datasets: [
+                        {
+                            label: '2025',
+                            data: @Json.Serialize(Model.QuarterAmounts2025),
+                            backgroundColor: 'rgba(108, 117, 125, 0.7)', // 2025年作为历史参照，使用沉稳的灰色
+                            borderColor: '#6c757d',
+                            borderWidth: 1,
+                            borderRadius: 4 // 让柱状图顶部带一点轻微圆角，视觉更柔和
+                        },
+                        {
+                            label: '2026',
+                            data: @Json.Serialize(Model.QuarterAmounts2026),
+                            backgroundColor: 'rgba(13, 110, 253, 0.85)', // 2026年作为当前主色，使用明亮的企业蓝
+                            borderColor: '#0d6efd',
+                            borderWidth: 1,
+                            borderRadius: 4 // 让柱状图顶部带一点轻微圆角，视觉更柔和
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true },
+                        tooltip: {
+                            callbacks: { label: function (ctx) { return ' ' + ctx.dataset.label + ' ' + ctx.label + ': ' + currencyFormatter.format(ctx.parsed.y); } }
+                        }
+                    },
+                    scales: { y: { ticks: { callback: function (val) { return currencyFormatter.format(val); } } } }
+                }
+            });
+
+            // =================================================================
+            // 📊 3. 年度业绩占比 - 饼图 (Pie)
+            // =================================================================
+            var ctxPie = document.getElementById('yearlyPieChart').getContext('2d');
+            new Chart(ctxPie, {
+                type: 'pie', // 🚀 切换为纯正圆饼图
+                data: {
+                    labels: @Json.Serialize(Model.YearlyLabels),
+                    datasets: [{
+                        data: @Json.Serialize(Model.YearlyAmounts),
+                        backgroundColor: ['#ffc107', '#0d6efd', '#6f42c1', '#fd7e14', '#20c997'], // 多年彩配色
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }, // 饼图必须留着图例
+                        tooltip: {
+                            callbacks: { label: function (ctx) { return ' ' + ctx.label + '总额: ' + currencyFormatter.format(ctx.raw); } }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

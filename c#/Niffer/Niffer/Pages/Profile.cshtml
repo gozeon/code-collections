@@ -1,0 +1,65 @@
+﻿@page
+@model Niffer.Pages.ProfileModel
+@{
+    ViewData["Title"] = "控制台";
+    var expiry = Model.CurrentUserSubscription?.SubscriptionExpiry.ToString("d") ?? "永久";
+    var isExpiry = Model.CurrentUserSubscription?.SubscriptionExpiry < DateTime.Now;
+    var currentClass = isExpiry ? "text-bg-danger" : "text-bg-success";
+}
+
+
+@if(isExpiry)
+{
+    <div class="alert alert-danger" role="alert">
+        您的账号已过期，请联系管理员!
+    </div>
+}
+<dl class="row">
+    <dt class="col-sm-2">
+        账号
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.CurrentUser.Email)
+    </dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-2">
+        失效日期
+    </dt>
+    <dd class="col-sm-10">
+        
+        <span class="badge @currentClass">@expiry</span>
+    </dd>
+</dl>
+
+@if (!isExpiry)
+{
+    <dl class="row">
+        <dt class="col-sm-2">
+            订阅
+        </dt>
+        <dd class="col-sm-10">
+            <button class="btn btn-primary copy-trigger"
+                    data-user-id="@Model.CurrentUser.Id">
+                点击复制
+            </button>
+        </dd>
+    </dl>
+}
+
+@section Scripts {
+    <script src="~/lib/clipboard.js/dist/clipboard.min.js" asp-append-version="true"></script>
+    <script>
+        const clipboard = new ClipboardJS('.copy-trigger', {
+                text: function(trigger) {
+                    const userId = trigger.getAttribute('data-user-id');
+                    return window.location.protocol + "//" + window.location.host + "/api/Sub/t/" + userId;
+                }
+        });
+        clipboard.on('success', function (e) {
+            alert("已复制链接");
+        })
+    </script>
+}
+

@@ -1,0 +1,111 @@
+﻿@page
+@model Niffer.Pages.Admin.UsersModel
+@{
+    ViewData["Title"] = "用户管理";
+    var defaultExpiry = DateTime.Now.AddYears(1).ToString("yyyy-MM-dd");
+}
+
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    初始密码:  <strong>UserPassword123!</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<form method="post">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="NewUser.Email" class="control-label"></label>
+        <input asp-for="NewUser.Email" class="form-control" />
+        <span asp-validation-for="NewUser.Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NewUser.SubscriptionExpiry" class="control-label"></label>
+        <input asp-for="NewUser.SubscriptionExpiry" class="form-control" type="date" value="@defaultExpiry" />
+        <span asp-validation-for="NewUser.SubscriptionExpiry" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" asp-page-handler="AddUser" value="添加新用户" class="btn btn-primary" />
+        <input type="submit" asp-page-handler="AddAdmin" value="添加为管理员" class="btn btn-primary" />
+    </div>
+</form>
+
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Expiry</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var user in Model.SystemUsers)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Email</td>
+                @* <td>@(user.Expiry?.ToString("D"))</td> *@
+                <td>
+                    @if (user.Expiry.HasValue)
+                    {
+                        <input type="date"
+                               name="user.Expiry"
+                               value="@(user.Expiry?.ToString("yyyy-MM-dd") ?? "")"
+                               class="form-control" 
+                               onchange="updateExpiryAsync('@user.Id', this.value)" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">永久</span>
+                    }
+
+                    
+                </td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <button class="btn btn-danger" type="submit" asp-page-handler="DeleteUser">删除</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        async function updateExpiryAsync(userId,  newExpiry){
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            const url = `?handler=UpdateExpiry`
+            const formdata = new FormData();
+            formdata.append("userId", userId);
+            formdata.append("newExpiry", newExpiry);
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    body: formdata
+                })
+                if(response.ok) {
+                    const result = await response.json();
+                    if(result.success){
+                        console.log("更新成功：" + result.message);
+                    } else {
+                        alert("修改失败：" + result.message);
+                    }
+                } else {
+                    alert("服务器响应异常，错误码：" + response.status);
+                }
+            }catch(error) {
+                console.error(error);
+                alert("失败，请重试");
+            }
+        }
+    </script>
+}

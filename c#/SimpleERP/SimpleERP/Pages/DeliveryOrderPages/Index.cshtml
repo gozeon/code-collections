@@ -1,0 +1,232 @@
+@page
+@model SimpleERP.Pages.DeliveryOrderPages.IndexModel
+@using X.PagedList.Mvc.Core
+
+@{
+    ViewData["Title"] = "发货单";
+}
+<form method="post">
+    <button class="btn btn-danger" type="submit" asp-page-handler="MockData">添加假数据</button>
+    <button class="btn btn-danger" type="submit" asp-page-handler="ClearData">清空数据</button>
+</form>
+<hr/>
+
+<div class="row mb-3">
+    <form class="col" method="post">
+        <div id="inputHiddens"></div>
+        <button type="submit" asp-page-handler="ExportPdf" class="btn btn-light">导出选中项</button>
+    </form>
+
+    <div class="col text-end">
+        <a asp-page="Create" class="btn btn-primary">创建新的发货单</a>
+    </div>
+</div>
+
+
+<form method="get" class="row g-3 mb-3">
+    <div class="col-auto d-flex align-items-center">
+        <label class="me-2 text-nowrap">每页显示：</label>
+        <select name="PageSize" class="form-select" onchange="this.form.submit()">
+            <option value="10" selected="@(Model.PageSize == 10)">10 条</option>
+            <option value="20" selected="@(Model.PageSize == 20)">20 条</option>
+            <option value="50" selected="@(Model.PageSize == 50)">50 条</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <input type="text" name="searchId" value="@Model.SearchId" class="form-control" placeholder="输入 ID 搜索..." />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">搜索</button>
+        <a asp-page="Index" class="btn btn-secondary">重置</a>
+    </div>
+</form>
+
+<div class="table-responsive">
+
+<table class="table text-nowrap">
+    <thead>
+        <tr>
+            <th style="width: 40px;">
+                <input type="checkbox" id="selectAll" />
+            </th>
+            <th>单号</th>
+            <th>收货人</th>
+            <th>收货地址</th>
+            <th>金额</th>
+            <th>发货时间</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DeliveryOrdersPagedList)
+        {
+        <tr>
+            <td>
+                <input type="checkbox" class="row-checkbox" value="@item.Id" />
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => item.Id)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(model => item.Consignee)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Address)
+            </td>
+            <td>
+                @item.TotalAmount.ToString("C")
+            </td>
+            <td>
+                @item.DeliveryTime?.ToString("d")
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">编辑</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">详情</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">删除</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+
+@if(Model.DeliveryOrdersPagedList.Count > 0)
+{
+    @Html.PagedListPager(Model.DeliveryOrdersPagedList,
+        p => Url.Page("Index", new { pageIndex = p, searchId=Model.SearchId }),
+        new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" },
+        }
+    )
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const selectAllCheckbox = document.getElementById("selectAll");
+            const rowCheckboxes = document.querySelectorAll(".row-checkbox");
+            const btnExportSelected = document.getElementById("btnExportSelected");
+
+            // 1. 全选 / 反选功能
+            selectAllCheckbox.addEventListener("change", function() {
+                rowCheckboxes.forEach(cb => {
+                    cb.checked = selectAllCheckbox.checked;
+                });
+
+                const container = document.getElementById('inputHiddens');
+                if(selectAllCheckbox.checked){
+                    rowCheckboxes.forEach(cb => {
+                        const orderId = cb.value;
+                        const hiddenInputId = 'hidden_order_' + orderId;
+
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.id = hiddenInputId;
+                        input.name = 'orderIds'; // 对应后端的参数名
+                        input.value = orderId;
+                        container.appendChild(input);
+                    })
+                } else {
+                    container.replaceChildren();
+                }
+            });
+
+            // 2. 子复选框状态改变时，同步全选框的状态
+            rowCheckboxes.forEach(cb => {
+                cb.addEventListener("change", function() {
+                    const allChecked = Array.from(rowCheckboxes).every(c => c.checked);
+                    selectAllCheckbox.checked = allChecked;
+
+                    const container = document.getElementById('inputHiddens');
+                    const orderId = cb.value;
+                    const hiddenInputId = 'hidden_order_' + orderId;
+
+                    if(cb.checked){
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.id = hiddenInputId;
+                        input.name = 'orderIds'; // 对应后端的参数名
+                        input.value = orderId;
+                        container.appendChild(input);
+                    } else {
+                        const inputToRemove = document.getElementById(hiddenInputId);
+                        if (inputToRemove) inputToRemove.remove();
+                    }
+                });
+            });
+
+            /*
+
+            // 3. 获取选中项并请求你的 DeliveryExportController API
+            btnExportSelected.addEventListener("click", async function() {
+                // 筛选出所有被选中的 checkbox，并获取它们的 value (ID)
+                const selectedIds = Array.from(document.querySelectorAll(".row-checkbox:checked"))
+                    .map(cb => cb.value);
+
+                if (selectedIds.length === 0) {
+                    alert("请至少选择一项进行导出！");
+                    return;
+                }
+
+                // 将选中的 ID 数组发送给你的 API 控制器
+                try {
+                    const response = await fetch('/api/DeliveryExport/export-pdf', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(selectedIds) // 传递给后端的参数
+                    });
+
+                    // 1. 从 Post 响应头中读取 Content-Disposition
+                    const disposition = response.headers.get('Content-Disposition');
+                    let fileName = "orders_export.pdf";
+
+                    if (disposition && disposition.indexOf('attachment') !== -1) {
+                        // 正则表达式：用于匹配 filename="xxx" 或 filename=xxx
+                        const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                        const matches = filenameRegex.exec(disposition);
+
+                        if (matches != null && matches[1]) {
+                            // 2. 成功提取文件名，并去掉可能包裹的双引号
+                            fileName = matches[1].replace(/['"]/g, '');
+                        }
+                    }
+
+                    if (response.ok) {
+                        // 假设 API 返回的是文件下载，或者成功提示
+                        const blob = await response.blob();
+                        // 核心 2：为这个 blob 创建一个浏览器内部的临时 URL
+                        const url = window.URL.createObjectURL(blob);
+
+                        // 核心 3：动态创建一个 <a> 标签来触发下载
+                        const a = document.createElement('a');
+                        a.href = url;
+
+                        // 这里指定下载的文件名（如果不指定，浏览器会随机命名）
+                        a.download = fileName;
+
+                        // 将标签添加到页面，触发点击，然后移除
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+
+                        // 释放内存中的临时 URL
+                        window.URL.revokeObjectURL(url);
+                    } else {
+                        alert("导出失败，错误码: " + response.status);
+                    }
+                } catch (error) {
+                    console.error("请求异常:", error);
+                    alert("网络请求失败");
+                }
+            });
+            
+            */
+        });
+    </script>
+}

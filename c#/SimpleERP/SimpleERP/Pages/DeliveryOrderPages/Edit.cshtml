@@ -1,0 +1,94 @@
+@page
+@model SimpleERP.Pages.DeliveryOrderPages.EditModel
+
+@{
+    ViewData["Title"] = "编辑";
+}
+
+<h4>ID: @Model.DeliveryOrder.Id</h4>
+
+<hr />
+
+<form class="row g-3" method="post" id="deliveryOrderForm">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="DeliveryOrder.Id" />
+    <div class="col-md-6 form-group">
+        <label asp-for="DeliveryOrderVM.Consignee" class="control-label">收货人</label>
+        <input asp-for="DeliveryOrderVM.Consignee" class="form-control" aria-required="true" />
+        <span asp-validation-for="DeliveryOrderVM.Consignee" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6 form-group">
+        <label asp-for="DeliveryOrderVM.Address" class="control-label">收货地址</label>
+        <input asp-for="DeliveryOrderVM.Address" class="form-control" />
+        <span asp-validation-for="DeliveryOrderVM.Address" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6 form-group">
+        <label asp-for="DeliveryOrderVM.DeliveryTime" class="control-label">发货时间</label>
+        <input asp-for="DeliveryOrderVM.DeliveryTime" type="date" class="form-control" />
+        <span asp-validation-for="DeliveryOrderVM.DeliveryTime" class="text-danger"></span>
+    </div>
+
+    <div class="col-12 form-group">
+        <label asp-for="DeliveryOrderVM.Remark" class="control-label">备注</label>
+        <textarea asp-for="DeliveryOrderVM.Remark" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="DeliveryOrderVM.Remark" class="text-danger"></span>
+    </div>
+
+    <h4>商品明细</h4>
+    <div class="table-responsive">
+    <table class="table table-bordered text-nowrap" id="detailsTable">
+        <thead class="table-light">
+            <tr>
+                <th>商品名称</th>
+                <th>规格/SKU</th>
+                <th style="width: 150px;">单价</th>
+                <th style="width: 120px;">数量</th>
+                <th style="width: 80px;">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.DeliveryOrderVM.Details.Count; i++)
+            {
+                <partial name="_DeliveryOrderDetailVmPartial" model="Model.DeliveryOrderVM.Details[i]"></partial>
+                }
+            </tbody>
+
+        </table>
+        </div>
+
+        <button type="button" class="btn btn-success mb-3" id="addRowBtn">+ 添加行</button>
+
+    <div class="form-group">
+        <input type="submit" value="保存" class="btn btn-primary" />
+    </div>
+</form>
+
+
+<div>
+    <a asp-page="./Index">返回列表</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // 1. 利用 Razor 服务端生成器动态输出合法的本地路由
+            // 后台会自动根据你的路由配置，编译成最正确的 URL 字符串
+            var requestUrl = '@Url.Page("Create", "DetailRowPartial")';
+
+            $('#addRowBtn').on('click', function() {
+                $.get(requestUrl, function(htmlResult) {
+                    $('#detailsTable tbody').append(htmlResult);
+
+                    // 重新激活前端验证
+                    var form = $("#deliveryOrderForm");
+                    form.removeData("validator").removeData("unobtrusiveValidation");
+                    $.validator.unobtrusive.parse(form);
+                })
+            })
+        })
+    </script>
+}

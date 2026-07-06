@@ -1,0 +1,94 @@
+@page
+@model SimpleERP.Pages.DeliveryOrderPages.DetailsModel
+
+@{
+    ViewData["Title"] = "详情";
+}
+
+
+<div>
+    <h4>ID: @Model.DeliveryOrder.Id</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            单号
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.DeliveryOrder.Id
+        </dd>
+
+
+        <dt class="col-sm-2">
+            收货人
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DeliveryOrder.Consignee
+        </dd>
+        
+        <dt class="col-sm-2">
+            收货地址
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DeliveryOrder.Address
+        </dd>
+
+        <dt class="col-sm-2">
+            发货时间
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DeliveryOrder.DeliveryTime?.ToString("d")
+        </dd>
+
+        <dt class="col-sm-2">
+            创建时间
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DeliveryOrder.CreateTime
+        </dd>
+
+        <dt class="col-sm-2">
+            备注
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DeliveryOrder.Remark
+        </dd>
+
+        <dt class="col-sm-2">
+            订单金额
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DeliveryOrder.TotalAmount.ToString("C")
+        </dd>
+    </dl>
+
+    <div class="table-responsive">
+
+    <table class="table table-bordered table-striped text-nowrap">
+        <thead>
+			<tr>
+                <th>名称</th>
+                <th>规格</th>
+                <th>单价</th>
+                <th>数量</th>
+                <th>小计</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.DeliveryOrder.Details.Count; i++)
+            {
+                <tr>
+                    <td>@Model.DeliveryOrder.Details[i].ProductName</td>
+                    <td>@Model.DeliveryOrder.Details[i].SkuSpecification</td>
+                    <td>@Model.DeliveryOrder.Details[i].Price</td>
+                    <td>@Model.DeliveryOrder.Details[i].Quantity</td>
+                    <td>@Model.DeliveryOrder.Details[i].SubTotal.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+   </div>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.DeliveryOrder.Id">编辑</a> |
+    <a asp-page="./Index">返回列表</a>
+</div>

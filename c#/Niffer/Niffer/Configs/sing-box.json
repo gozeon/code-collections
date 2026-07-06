@@ -1,0 +1,1063 @@
+{
+  "dns": {
+    "rules": [
+      {
+        "outbound": [ "any" ],
+        "server": "local"
+      },
+      {
+        "clash_mode": "\u5168\u5c40\u4ee3\u7406",
+        "server": "remote"
+      },
+      {
+        "clash_mode": "\u5173\u95ed\u4ee3\u7406",
+        "server": "local"
+      },
+      {
+        "rule_set": [ "geosite-cn" ],
+        "server": "local"
+      },
+      {
+        "rule_set": [ "geosite-category-ads-all" ],
+        "server": "block"
+      }
+    ],
+    "servers": [
+      {
+        "address": "1.1.1.1",
+        "detour": "\u8282\u70b9\u9009\u62e9",
+        "tag": "remote"
+      },
+      {
+        "address": "https://223.5.5.5/dns-query",
+        "detour": "direct",
+        "tag": "local"
+      },
+      {
+        "address": "rcode://refused",
+        "tag": "block"
+      }
+    ],
+    "final": "remote",
+    "strategy": "ipv4_only",
+    "disable_cache": false
+  },
+  "experimental": {
+    "cache_file": { "enabled": true },
+    "clash_api": {
+      "default_mode": "\u6d77\u5916\u4ee3\u7406",
+      "external_controller": "127.0.0.1:9090",
+      "secret": ""
+    }
+  },
+  "inbounds": [
+    {
+      "auto_route": true,
+      "domain_strategy": "prefer_ipv4",
+      "endpoint_independent_nat": true,
+      "address": [ "172.19.0.1/30", "2001:0470:f9da:fdfa::1/64" ],
+      "mtu": 9000,
+      "sniff_override_destination": true,
+      "stack": "system",
+      "strict_route": true,
+      "type": "tun"
+    },
+    {
+      "domain_strategy": "prefer_ipv4",
+      "listen": "127.0.0.1",
+      "listen_port": 65535,
+      "sniff": true,
+      "sniff_override_destination": true,
+      "tag": "mixed-in",
+      "type": "mixed",
+      "users": []
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "selector",
+      "tag": "\u8282\u70b9\u9009\u62e9",
+      "outbounds": [ "\u81ea\u52a8\u9009\u62e9", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f01|CTCU|0.5x", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f02|CTCU|0.5x", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f01|BGP|CMCU", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f02|BGP|CMCU", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f03|BGP|CMCU", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f04|BGP|CMCU", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f05|BGP|CMCU", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f06|BGP|CMCU", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f01|BGP|CTCUCM", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f02|BGP|CTCUCM", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f03|BGP|CTCUCM", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f04|BGP|CTCUCM", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f05|BGP|CTCUCM", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f06|BGP|CTCU", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f07|BGP|CTCU", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f08|BGP|CTCU", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f01|BGP|CUCM", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f02|BGP|CUCM", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f03|BGP|CUCM", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f04|BGP|CUCM", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f05|BGP|CUCM", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f06|BGP|CTCU", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f07|BGP|CTCU", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f08|BGP|CTCU", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f09|BGP|CTCU", "\ud83c\uddfa\ud83c\uddf8\u7f8e\u56fd\u9ad8\u901f01|CTCU", "\ud83c\uddfa\ud83c\uddf8\u7f8e\u56fd\u9ad8\u901f02|CTCU", "\ud83c\uddec\ud83c\udde7\u82f1\u56fd\u4f26\u6566|CTCU|0.1x", "\ud83c\uddf0\ud83c\uddf7\u97e9\u56fd\u9ad8\u901f01|BGP|\u6d41\u5a92\u4f53", "\ud83c\udde8\ud83c\uddf3\u53f0\u6e7e\u9ad8\u901f01|BGP|\u6d41\u5a92\u4f53", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u4e13\u7ebf02|BGP|\u6d41\u5a92\u4f53", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u4e13\u7ebf03|BGP|\u6d41\u5a92\u4f53", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u4e13\u7ebf04|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u4e13\u7ebf02|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u4e13\u7ebf03|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u4e13\u7ebf04|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u4e13\u7ebf02|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u4e13\u7ebf03|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u4e13\u7ebf04|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddf0\ud83c\uddf7\u97e9\u56fd\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53", "\ud83c\udde8\ud83c\uddf3\u53f0\u6e7e\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddec\ud83c\udde7\u82f1\u56fd\u4f26\u656601|\u6d41\u5a92\u4f53|0.1x", "\ud83c\uddec\ud83c\udde7\u82f1\u56fd\u4f26\u656602|\u6d41\u5a92\u4f53|0.1x", "\ud83c\uddfa\ud83c\uddf8\u7f8e\u56fd01|\u6d41\u5a92\u4f53" ]
+    },
+    {
+      "type": "urltest",
+      "tag": "\u81ea\u52a8\u9009\u62e9",
+      "outbounds": [ "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f01|CTCU|0.5x", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f02|CTCU|0.5x", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f01|BGP|CMCU", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f02|BGP|CMCU", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f03|BGP|CMCU", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f04|BGP|CMCU", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f05|BGP|CMCU", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f06|BGP|CMCU", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f01|BGP|CTCUCM", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f02|BGP|CTCUCM", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f03|BGP|CTCUCM", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f04|BGP|CTCUCM", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f05|BGP|CTCUCM", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f06|BGP|CTCU", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f07|BGP|CTCU", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f08|BGP|CTCU", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f01|BGP|CUCM", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f02|BGP|CUCM", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f03|BGP|CUCM", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f04|BGP|CUCM", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f05|BGP|CUCM", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f06|BGP|CTCU", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f07|BGP|CTCU", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f08|BGP|CTCU", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f09|BGP|CTCU", "\ud83c\uddfa\ud83c\uddf8\u7f8e\u56fd\u9ad8\u901f01|CTCU", "\ud83c\uddfa\ud83c\uddf8\u7f8e\u56fd\u9ad8\u901f02|CTCU", "\ud83c\uddec\ud83c\udde7\u82f1\u56fd\u4f26\u6566|CTCU|0.1x", "\ud83c\uddf0\ud83c\uddf7\u97e9\u56fd\u9ad8\u901f01|BGP|\u6d41\u5a92\u4f53", "\ud83c\udde8\ud83c\uddf3\u53f0\u6e7e\u9ad8\u901f01|BGP|\u6d41\u5a92\u4f53", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u4e13\u7ebf02|BGP|\u6d41\u5a92\u4f53", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u4e13\u7ebf03|BGP|\u6d41\u5a92\u4f53", "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u4e13\u7ebf04|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u4e13\u7ebf02|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u4e13\u7ebf03|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u4e13\u7ebf04|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u4e13\u7ebf02|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u4e13\u7ebf03|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u4e13\u7ebf04|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddf0\ud83c\uddf7\u97e9\u56fd\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53", "\ud83c\udde8\ud83c\uddf3\u53f0\u6e7e\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53", "\ud83c\uddec\ud83c\udde7\u82f1\u56fd\u4f26\u656601|\u6d41\u5a92\u4f53|0.1x", "\ud83c\uddec\ud83c\udde7\u82f1\u56fd\u4f26\u656602|\u6d41\u5a92\u4f53|0.1x", "\ud83c\uddfa\ud83c\uddf8\u7f8e\u56fd01|\u6d41\u5a92\u4f53" ]
+    },
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f01|CTCU|0.5x",
+      "server": "cfyes.lxy1015.top",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "jp-lx.777076.xyz",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/liangxin/jp1",
+        "headers": { "Host": [ "jp-lx.777076.xyz" ] },
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f02|CTCU|0.5x",
+      "server": "cfyes.lxy1015.top",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "jp2-lx.777076.xyz",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/liangxin/jp1",
+        "headers": { "Host": [ "jp2-lx.777076.xyz" ] },
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f01|BGP|CMCU",
+      "server": "aws-link1.liangxin1.xyz",
+      "server_port": 35248,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "www.lamer.com.hk",
+        "reality": {
+          "enabled": true,
+          "public_key": "IGsSxC0wgn7wLy0NM0QN_yOREDKT_814Y_3_rbgDoTc",
+          "short_id": "c8c0f951"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f02|BGP|CMCU",
+      "server": "aws-link2.liangxin1.xyz",
+      "server_port": 38725,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "www.lamer.com.hk",
+        "reality": {
+          "enabled": true,
+          "public_key": "HvwnLBMMKsmvghGX5yVPq3J2HWxwr1GGQB2WIvbPvAY",
+          "short_id": "8f6ca378"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f03|BGP|CMCU",
+      "server": "aws-link3.liangxin1.xyz",
+      "server_port": 27758,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "www.lamer.com.hk",
+        "reality": {
+          "enabled": true,
+          "public_key": "EYa4ic3GAxqznV61U-OOww-WKsu5wuQQptyS3fw7czM",
+          "short_id": "c50db39f"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "ios"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f04|BGP|CMCU",
+      "server": "aws-link4.liangxin1.xyz",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "www.lamer.com.hk",
+        "reality": {
+          "enabled": true,
+          "public_key": "3FPGTaxkfOM3nEUWUyCiqkH5oJGsOx-WxPJfADi1QWY",
+          "short_id": "7f369e14"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "ios"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f05|BGP|CMCU",
+      "server": "aws-link5.liangxin1.xyz",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "www.lamer.com.hk",
+        "reality": {
+          "enabled": true,
+          "public_key": "a11gdDetacKBsiBBfhsPvanTGMtVyZEIvax7gU5Wplg",
+          "short_id": "9bf38508"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "ios"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u9ad8\u901f06|BGP|CMCU",
+      "server": "aws-link6.liangxin1.xyz",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "www.lamer.com.hk",
+        "reality": {
+          "enabled": true,
+          "public_key": "qUCQFvosamzk8NWdkalFmEMYinnt-_FnZZw6_9EdRVY",
+          "short_id": "6eb97c25"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f01|BGP|CTCUCM",
+      "server": "aws-link7.liangxin1.xyz",
+      "server_port": 48574,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "www.lamer.com.sg",
+        "reality": {
+          "enabled": true,
+          "public_key": "lmxSayN8tUg2Dag2MPXrdqZ2SQK9K3OjlaKk8wVCRnc",
+          "short_id": "f8f18902"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "ios"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f02|BGP|CTCUCM",
+      "server": "aws-link8.liangxin1.xyz",
+      "server_port": 39645,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "iosapps.itunes.apple.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "x7VqpFP7_PrY4ebNw8hi8Ec5Tm5Upmt5JOdrN1M9VnQ",
+          "short_id": "2b3b0b93"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "ios"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f03|BGP|CTCUCM",
+      "server": "aws-link9.liangxin1.xyz",
+      "server_port": 23587,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "iosapps.itunes.apple.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "H66PLLf6HkZwHk4oFqisfTawIvw2cxkEwk8Ue8sHZgA",
+          "short_id": "19b580ae"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "ios"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f04|BGP|CTCUCM",
+      "server": "aws-link30.liangxin1.xyz",
+      "server_port": 23568,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "www.lamer.com.hk",
+        "reality": {
+          "enabled": true,
+          "public_key": "EjcM-ENrpWY8iIL82qJtQrZgRs4KlVqhdisqLAXonUY",
+          "short_id": "55d046dc"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f05|BGP|CTCUCM",
+      "server": "aws-link31.liangxin1.xyz",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "download-porter.hoyoverse.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "wXayfckurSM2zWeis7OAL_QVGm9wBLr0WYp2zFtJFAE",
+          "short_id": "c7487aeb"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f06|BGP|CTCU",
+      "server": "cfyes.lxy1015.top",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "lx-1sg.lxy1015.top",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/liangxin/sg1",
+        "headers": { "Host": [ "lx-1sg.lxy1015.top" ] },
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f07|BGP|CTCU",
+      "server": "cfyes.lxy1015.top",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "lx-1sg.lxy1015.top",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/liangxin/sg1",
+        "headers": { "Host": [ "lx-1sg.lxy1015.top" ] },
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u9ad8\u901f08|BGP|CTCU",
+      "server": "cfyes.lxy1015.top",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "lx-1sg.lxy1015.top",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/liangxin/sg1",
+        "headers": { "Host": [ "lx-1sg.lxy1015.top" ] },
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f01|BGP|CUCM",
+      "server": "aws-link13.liangxin1.xyz",
+      "server_port": 36574,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "www.apple.com.cn",
+        "reality": {
+          "enabled": true,
+          "public_key": "sDG-KQk1BF7V83-xnmrWDouXxpPd_ZSxKcHrJJzbols",
+          "short_id": "32a3650d"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f02|BGP|CUCM",
+      "server": "aws-link14.liangxin1.xyz",
+      "server_port": 25485,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "www.apple.com.cn",
+        "reality": {
+          "enabled": true,
+          "public_key": "VOFSjjWT0wIH3Q0ntyEZd8WwksrIAb5gPt_3PBnEASg",
+          "short_id": "9c5b8c53"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "ios"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f03|BGP|CUCM",
+      "server": "aws-link19.liangxin1.xyz",
+      "server_port": 8654,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "download-porter.hoyoverse.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "QE5l0RUqs4OsH3j3u_xHm06-4NlILmQivZUJqiEx11o",
+          "short_id": "6314e825"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f04|BGP|CUCM",
+      "server": "aws-link20.liangxin1.xyz",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "download-porter.hoyoverse.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "QE5l0RUqs4OsH3j3u_xHm06-4NlILmQivZUJqiEx11o",
+          "short_id": "6314e825"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "ios"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f05|BGP|CUCM",
+      "server": "aws-link23.liangxin1.xyz",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "download-porter.hoyoverse.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "dLmUAqcdy4Z7iucApd9zjOhkXTjl-xt_eHumShIYW0c",
+          "short_id": "ba826a54"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f06|BGP|CTCU",
+      "server": "cfyes.lxy1015.top",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "lxs1jp.lxy1015.top",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/liangxin/jp1",
+        "headers": { "Host": [ "lx-1jp.lxy1015.top" ] },
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f07|BGP|CTCU",
+      "server": "cfyes.lxy1015.top",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "lxs1jp.lxy1015.top",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/liangxin/jp1",
+        "headers": { "Host": [ "lx-1jp.lxy1015.top" ] },
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f08|BGP|CTCU",
+      "server": "cfyes.lxy1015.top",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "lxs2jp.lxy1015.top",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/liangxin/jp1",
+        "headers": { "Host": [ "lx-2jp.lxy1015.top" ] },
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u9ad8\u901f09|BGP|CTCU",
+      "server": "cfyes.lxy1015.top",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "lxs2jp.lxy1015.top",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/liangxin/jp1",
+        "headers": { "Host": [ "lx-2jp.lxy1015.top" ] },
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddfa\ud83c\uddf8\u7f8e\u56fd\u9ad8\u901f01|CTCU",
+      "server": "cfyes.lxy1015.top",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "lx-us1.lxy1015.top",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/liangxin/us",
+        "headers": { "Host": [ "lx-us1.lxy1015.top" ] },
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddfa\ud83c\uddf8\u7f8e\u56fd\u9ad8\u901f02|CTCU",
+      "server": "cfyes.lxy1015.top",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "lx-us1.lxy1015.top",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/liangxin/us",
+        "headers": { "Host": [ "lx-us1.lxy1015.top" ] },
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddec\ud83c\udde7\u82f1\u56fd\u4f26\u6566|CTCU|0.1x",
+      "server": "cfyes.lxy1015.top",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "gb-lx.777076.xyz",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "ios"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/liangxin/gb1",
+        "headers": { "Host": [ "gb-lx.777076.xyz" ] },
+        "max_early_data": 2048,
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\uddf0\ud83c\uddf7\u97e9\u56fd\u9ad8\u901f01|BGP|\u6d41\u5a92\u4f53",
+      "server": "aws-link27.liangxin1.xyz",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "download-porter.hoyoverse.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "a9I2uA3NNZA6uBAe3Tui9vZ8CG5MrMaYOifWrAdc0zg",
+          "short_id": "a8609be8"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "\ud83c\udde8\ud83c\uddf3\u53f0\u6e7e\u9ad8\u901f01|BGP|\u6d41\u5a92\u4f53",
+      "server": "aws-link28.liangxin1.xyz",
+      "server_port": 443,
+      "uuid": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "insecure": false,
+        "server_name": "download-porter.hoyoverse.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "PFTc9Cn176HxLhtBCIzONGZIBVDJJodsCs4QHaTt7Sc",
+          "short_id": "b8fe57fe"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      }
+    },
+    {
+      "server": "aws-linkhy1.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "iosapps.itunes.apple.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "aws-linkhy2.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "iosapps.itunes.apple.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u4e13\u7ebf02|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "aws-linkhy3.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "iosapps.itunes.apple.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u4e13\u7ebf03|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "aws-linkhy4.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "iosapps.itunes.apple.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\udded\ud83c\uddf0\u9999\u6e2f\u4e13\u7ebf04|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "aws-linkhy9.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "iosapps.itunes.apple.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "aws-linkhy10.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "iosapps.itunes.apple.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u4e13\u7ebf02|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "aws-linkhy11.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "iosapps.itunes.apple.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u4e13\u7ebf03|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "aws-linkhy12.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "iosapps.itunes.apple.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\uddf8\ud83c\uddec\u65b0\u52a0\u5761\u4e13\u7ebf04|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "aws-linkhy15.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "bilibili-jp.biliimg.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "aws-linkhy16.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "bilibili-jp2.biliimg.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u4e13\u7ebf02|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "aws-linkhy17.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "bilibili-jp3.biliimg.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u4e13\u7ebf03|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "aws-linkhy18.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "bilibili-jp4.biliimg.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\uddef\ud83c\uddf5\u65e5\u672c\u4e13\u7ebf04|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "aws-linkhy21.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "bilibili-kr.biliimg.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\uddf0\ud83c\uddf7\u97e9\u56fd\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "aws-linkhy22.liangxin1.xyz",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "bilibili-tw.biliimg.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\udde8\ud83c\uddf3\u53f0\u6e7e\u4e13\u7ebf01|BGP|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    },
+    {
+      "server": "62.164.143.251",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "bilibili-gb.biliimg.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\uddec\ud83c\udde7\u82f1\u56fd\u4f26\u656601|\u6d41\u5a92\u4f53|0.1x",
+      "type": "hysteria2"
+    },
+    {
+      "server": "62.164.143.251",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "bilibili-gb.biliimg.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\uddec\ud83c\udde7\u82f1\u56fd\u4f26\u656602|\u6d41\u5a92\u4f53|0.1x",
+      "type": "hysteria2"
+    },
+    {
+      "server": "203.10.97.121",
+      "server_port": 60000,
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "www.apple.com"
+      },
+      "password": "32f2f718-510a-4625-a8eb-b23657d912c6",
+      "tag": "\ud83c\uddfa\ud83c\uddf8\u7f8e\u56fd01|\u6d41\u5a92\u4f53",
+      "type": "hysteria2"
+    }
+  ],
+  "route": {
+    "auto_detect_interface": true,
+    "rules": [
+      { "action": "sniff" },
+      {
+        "protocol": "dns",
+        "action": "hijack-dns"
+      },
+      {
+        "clash_mode": "\u5173\u95ed\u4ee3\u7406",
+        "outbound": "direct"
+      },
+      {
+        "clash_mode": "\u5168\u5c40\u4ee3\u7406",
+        "outbound": "\u8282\u70b9\u9009\u62e9"
+      },
+      {
+        "rule_set": [ "geosite-cn", "geoip-cn" ],
+        "outbound": "direct"
+      },
+      {
+        "ip_is_private": true,
+        "outbound": "direct"
+      },
+      {
+        "rule_set": [ "geosite-category-ads-all" ],
+        "action": "reject"
+      }
+    ],
+    "rule_set": [
+      {
+        "tag": "geosite-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-cn.srs",
+        "download_detour": "\u8282\u70b9\u9009\u62e9"
+      },
+      {
+        "tag": "geosite-category-ads-all",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/SagerNet/sing-geosite@rule-set/geosite-category-ads-all.srs",
+        "download_detour": "\u8282\u70b9\u9009\u62e9"
+      },
+      {
+        "tag": "geoip-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/Loyalsoldier/geoip@release/srs/cn.srs",
+        "download_detour": "\u8282\u70b9\u9009\u62e9"
+      }
+    ]
+  }
+}
