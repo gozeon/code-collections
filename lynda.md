@@ -2,8 +2,8 @@
 
 https://www.youtube.com/watch?v=dESyfyHSLNs
 
-https://links.progrmrslife.com/LinkedIn_Learning_PRO
-
+https://links.progrmrslife.com/LinkedIn_Learning_PRO  
+其实就是 https://www.linkedin.com/learning-login/go/dcpubliclibrary  
 ---------- ✅ Working From 22/02/2025 -----------   
 Library Card 1: 21172104042248  
 Pin: 1980  
