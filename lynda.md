@@ -1,8 +1,16 @@
 ## linkedin
-25555013055243 /W2)ltbav% https://www.nypl.org/
 
-https://ls2pac.lapl.org/
-https://www.linkedin.com/learning-login/go/lapl
+https://www.youtube.com/watch?v=dESyfyHSLNs
+
+https://links.progrmrslife.com/LinkedIn_Learning_PRO
+
+---------- ✅ Working From 22/02/2025 -----------   
+Library Card 1: 21172104042248  
+Pin: 1980  
+---------- ✅ Working From 18/06/2025 -----------     
+Library Card 2: 41172384512640  
+Pin: 2006
+-------------------------------------------------  
 	
 ## udemy
 https://www.udemy.com/course/python-networking/learn/lecture/27758702#overview
