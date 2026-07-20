@@ -19,8 +19,8 @@ cocecef207@ovout.com / cocecef207
 
 ## btnull
 
-https://jiandantv.com/  
-https://feikuai.tv/  
+https://jiandantv.cc/  
+https://feikuai.in/  
 
 https://www.xn--ykq321c.com/  
 
