@@ -1,0 +1,105 @@
+﻿@page "/"
+@using System.ComponentModel
+@using ChatApp.Services
+@inject IChatClient ChatClient
+@inject NavigationManager Nav
+@implements IDisposable
+@inject CustomerServiceToolkit ToolInstance
+
+<PageTitle>用户画像助手</PageTitle>
+
+@* <ChatHeader OnNewChat="@ResetConversationAsync" /> *@
+
+<ChatMessageList Messages="@messages" InProgressMessage="@currentResponseMessage">
+    <NoMessagesContent>
+        <div>系统就绪。请发送 ‘用户id: xxx’，让我来帮您秒懂用户、精准应答。</div>
+
+    </NoMessagesContent>
+</ChatMessageList>
+
+<div class="chat-container">
+    <ChatSuggestions OnSelected="@AddUserMessageAsync" @ref="@chatSuggestions" />
+    <ChatInput OnSend="@AddUserMessageAsync" @ref="@chatInput" />
+    <SurveyPrompt /> @* Remove this line to eliminate the template survey message *@
+</div>
+
+@code {
+    private const string SystemPrompt = @"你是一位精通流媒体运营与用户心理的客服 AI 专家。你的任务是根据系统传入的用户多维度数据（设备、历史、工单、话术规则），输出精炼、无废话的【用户画像与沟通指南】。必须严格按照 Markdown 格式输出，不要输出多余的客套话。";
+
+    private int statefulMessageCount;
+    private readonly ChatOptions chatOptions = new();
+    private readonly List<ChatMessage> messages = new();
+    private CancellationTokenSource? currentResponseCancellation;
+    private ChatMessage? currentResponseMessage;
+    private ChatInput? chatInput;
+    private ChatSuggestions? chatSuggestions;
+
+    protected override void OnInitialized()
+    {
+        statefulMessageCount = 0;
+        messages.Add(new(ChatRole.System, SystemPrompt));
+        chatOptions.Tools = [
+            AIFunctionFactory.Create(ToolInstance.GetDeviceEnvironmentAsync),
+            AIFunctionFactory.Create(ToolInstance.GetWatchHistoryAsync),
+            AIFunctionFactory.Create(ToolInstance.GetSupportTicketsAsync),
+            AIFunctionFactory.Create(ToolInstance.GetSubRulesByCategoryAsync),
+            AIFunctionFactory.Create(ToolInstance.GetRuleContentByIdAsync),
+        ];
+    }
+
+    private async Task AddUserMessageAsync(ChatMessage userMessage)
+    {
+        CancelAnyCurrentResponse();
+
+        // Add the user message to the conversation
+        messages.Add(userMessage);
+        chatSuggestions?.Clear();
+        await chatInput!.FocusAsync();
+
+        // Stream and display a new response from the IChatClient
+        var responseText = new TextContent("");
+        currentResponseMessage = new ChatMessage(ChatRole.Assistant, [responseText]);
+        currentResponseCancellation = new();
+        await foreach (var update in ChatClient.GetStreamingResponseAsync(messages.Skip(statefulMessageCount), chatOptions, currentResponseCancellation.Token))
+        {
+            messages.AddMessages(update, filter: c => c is not TextContent);
+            responseText.Text += update.Text;
+            chatOptions.ConversationId = update.ConversationId;
+            ChatMessageItem.NotifyChanged(currentResponseMessage);
+
+            await InvokeAsync(StateHasChanged); // 实时刷新打字机效果
+        }
+
+        // Store the final response in the conversation, and begin getting suggestions
+        messages.Add(currentResponseMessage!);
+        statefulMessageCount = chatOptions.ConversationId is not null ? messages.Count : 0;
+        currentResponseMessage = null;
+        chatSuggestions?.Update(messages);
+    }
+
+    private void CancelAnyCurrentResponse()
+    {
+        // If a response was cancelled while streaming, include it in the conversation so it's not lost
+        if (currentResponseMessage is not null)
+        {
+            messages.Add(currentResponseMessage);
+        }
+
+        currentResponseCancellation?.Cancel();
+        currentResponseMessage = null;
+    }
+
+    private async Task ResetConversationAsync()
+    {
+        CancelAnyCurrentResponse();
+        messages.Clear();
+        messages.Add(new(ChatRole.System, SystemPrompt));
+        chatOptions.ConversationId = null;
+        statefulMessageCount = 0;
+        chatSuggestions?.Clear();
+        await chatInput!.FocusAsync();
+    }
+    
+    public void Dispose()
+        => currentResponseCancellation?.Cancel();
+}

@@ -1,0 +1,77 @@
+@inject IChatClient ChatClient
+
+@if (suggestions is not null)
+{
+    <div class="page-width suggestions">
+        @foreach (var suggestion in suggestions)
+        {
+            <button class="btn-subtle" @onclick="@(() => AddSuggestionAsync(suggestion))">
+                @suggestion
+            </button>
+        }
+    </div>
+}
+
+@code {
+    private static string Prompt = @"
+        建议提供最多 3 个后续问题，供我向你提问以帮助我完成任务。
+        每条建议必须是完整的句子，最多 15 个字。
+        每条建议的语气都必须像是我（用户）为了回应你刚才的消息而向你（助手）提问的内容，例如“怎么做？”或“解释一下...”。
+        如果没有建议，请回复空列表。
+    ";
+
+    private string[]? suggestions;
+    private CancellationTokenSource? cancellation;
+
+    [Parameter]
+    public EventCallback<ChatMessage> OnSelected { get; set; }
+
+    public void Clear()
+    {
+        suggestions = null;
+        cancellation?.Cancel();
+    }
+
+    public void Update(IReadOnlyList<ChatMessage> messages)
+    {
+        // Runs in the background and handles its own cancellation/errors
+        _ = UpdateSuggestionsAsync(messages);
+    }
+
+    private async Task UpdateSuggestionsAsync(IReadOnlyList<ChatMessage> messages)
+    {
+        cancellation?.Cancel();
+        cancellation = new CancellationTokenSource();
+
+        try
+        {
+            var response = await ChatClient.GetResponseAsync<string[]>(
+                [.. ReduceMessages(messages), new(ChatRole.User, Prompt)],
+                cancellationToken: cancellation.Token);
+            if (!response.TryGetResult(out suggestions))
+            {
+                suggestions = null;
+            }
+
+            StateHasChanged();
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            await DispatchExceptionAsync(ex);
+        }
+    }
+
+    private async Task AddSuggestionAsync(string text)
+    {
+        await OnSelected.InvokeAsync(new(ChatRole.User, text));
+    }
+
+    private IEnumerable<ChatMessage> ReduceMessages(IReadOnlyList<ChatMessage> messages)
+    {
+        // Get any leading system messages, plus up to 5 user/assistant messages
+        // This should be enough context to generate suggestions without unnecessarily resending entire conversations when long
+        var systemMessages = messages.TakeWhile(m => m.Role == ChatRole.System);
+        var otherMessages = messages.Where((m, index) => m.Role == ChatRole.User || m.Role == ChatRole.Assistant).Where(m => !string.IsNullOrEmpty(m.Text)).TakeLast(5);
+        return systemMessages.Concat(otherMessages);
+    }
+}
