@@ -39,7 +39,8 @@ vpn tracker 365 hewalom354@runfons.com / hewalom354
 
 ## zlibrary
 
-[ https://z-lib.by/ ](http://zlib.re/)    ykxnyht@pretreer.com / ykxnyht
+https://z-lib.sk/  
+ykxnyht@pretreer.com / ykxnyht
 
 ## temp email
 https://mail.tm/zh/  
