@@ -83,6 +83,12 @@ export default function Home() {
     }
   }, [error]);
 
+  // 自动滚动到底部
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'instant' });
+  }, [messages, status]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (inputValue.trim() && status !== 'streaming') {
@@ -316,19 +322,19 @@ export default function Home() {
 
                           {/* Tool Input Card */}
                           {getToolInput(toolPart) && (
-                            <div className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg">
+                            <div className="flex items-start gap-2 px-3 py-2 text-sm bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg min-w-0">
                               {hasToolOutput(toolPart) ? (
-                                <svg className="w-4 h-4 flex-shrink-0 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <svg className="w-4 h-4 flex-shrink-0 mt-0.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                 </svg>
                               ) : (toolPart as any).state === 'output-error' ? (
-                                <svg className="w-4 h-4 flex-shrink-0 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <svg className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                               ) : (
-                                <Loader2 className="w-4 h-4 flex-shrink-0 animate-spin" />
+                                <Loader2 className="w-4 h-4 flex-shrink-0 mt-0.5 animate-spin" />
                               )}
-                              <div className="text-xs opacity-70">
+                              <div className="text-xs opacity-70 break-all min-w-0">
                                 参数: {getToolInput(toolPart)}
                               </div>
                             </div>
@@ -336,11 +342,11 @@ export default function Home() {
 
                           {/* Tool Output Card */}
                           {hasToolOutput(toolPart) && (
-                            <div className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg">
-                              <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <div className="flex items-start gap-2 px-3 py-2 text-sm bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg min-w-0">
+                              <svg className="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                               </svg>
-                              <code className="text-xs">
+                              <code className="text-xs break-all whitespace-pre-wrap min-w-0">
                                 {getToolOutput(toolPart)}
                               </code>
                             </div>
@@ -380,6 +386,8 @@ export default function Home() {
               </div>
             );
           })}
+          {/* 滚动锚点 */}
+          <div ref={messagesEndRef} />
         </div>
       </main>
 
