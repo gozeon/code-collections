@@ -144,6 +144,25 @@ const getUserViewHistory = tool({
   },
 });
 
+// ============ 时间工具 ============
+
+const getCurrentTime = tool({
+  description: '获取当前准确的日期和时间信息，包括年月日、时分秒、星期、Unix 时间戳，用于 LLM 在需要时间上下文时调用',
+  inputSchema: zodSchema(z.object({})),
+  execute: async () => {
+    const now = new Date();
+    const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+    return {
+      iso: now.toISOString(),
+      datetime: now.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }),
+      date: now.toLocaleDateString('zh-CN', { timeZone: 'Asia/Shanghai' }),
+      time: now.toLocaleTimeString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false }),
+      weekday: weekdays[now.getDay()],
+      timestamp: now.getTime(),
+    };
+  },
+});
+
 // ============ 话术工具（AI 根据 system prompt 中的规则列表自行匹配，只调一个工具取话术）============
 
 const getTalkScriptByRuleId = tool({
@@ -224,6 +243,7 @@ ${rulesText}
         getUserFeedbackInfo,
         getUserViewHistory,
         getTalkScriptByRuleId,
+        getCurrentTime,
       },
       stopWhen: stepCountIs(15),
     });
@@ -235,6 +255,7 @@ ${rulesText}
         getUserFeedbackInfo,
         getUserViewHistory,
         getTalkScriptByRuleId,
+        getCurrentTime,
       },
     });
 
