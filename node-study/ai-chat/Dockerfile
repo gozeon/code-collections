@@ -76,6 +76,14 @@ FROM node:${NODE_VERSION} AS runner
 # Set working directory
 WORKDIR /app
 
+# Set timezone to Beijing time
+RUN apt-get update && apt-get install -y --no-install-recommends tzdata \
+  && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+  && echo "Asia/Shanghai" > /etc/timezone \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ENV TZ=Asia/Shanghai
+
 # Set production environment variables
 ENV NODE_ENV=production
 ENV PORT=3000
