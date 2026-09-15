@@ -50,9 +50,12 @@ import {
   DEFAULT_RESOLUTION,
   IMAGE_ASPECT_RATIOS,
   IMAGE_RESOLUTIONS,
+  REFERENCE_SIZE_MODE,
   resolveImageSize,
+  resolveReferenceSize,
   type ImageAspectRatio,
   type ImageResolution,
+  type ImageSizeChoice,
 } from "@/lib/image-size";
 import { extractImagePrompt } from "@/lib/prompt";
 import { cn } from "@/lib/utils";
@@ -85,7 +88,14 @@ const DEFAULT_SETTINGS: ChatSettings = {
 };
 
 const MAX_ATTACHMENTS = 4;
-const MAX_IMAGE_EDGE = 2048;
+/** 参考图上传时的长边上限：只为控制请求体大小，生成尺寸仍按原图宽高 */
+const MAX_UPLOAD_EDGE = 2048;
+
+/** 图片宽高 */
+type ImageSize = { width: number; height: number };
+
+/** 参考图：url 为发给模型的数据 URL，size 为原图宽高（用于「跟随参考图尺寸」） */
+type Attachment = { url: string; size?: ImageSize };
 
 /** 画图模式可手动指定的张数（上限与后端解析一致） */
 const IMAGE_COUNT_OPTIONS = Array.from({ length: MAX_IMAGE_COUNT }, (_, index) => index + 1);
@@ -97,26 +107,48 @@ function mediaTypeOf(url: string) {
   return /^data:([^;,]+)/.exec(url)?.[1] ?? "image/png";
 }
 
-/** 等比缩小过大的参考图，避免请求体过大 */
-async function downscaleImage(dataUrl: string) {
-  const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+function loadImage(src: string) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
     const element = new window.Image();
     element.onload = () => resolve(element);
     element.onerror = () => reject(new Error("无法解析该图片"));
-    element.src = dataUrl;
+    element.src = src;
   });
+}
+
+function naturalSizeOf(image: HTMLImageElement): ImageSize | undefined {
+  const size = { width: image.naturalWidth, height: image.naturalHeight };
+  return size.width > 0 && size.height > 0 ? size : undefined;
+}
+
+/** 读取图片原始宽高；读不出时返回 undefined，由服务端自行解析参考图 */
+async function measureImage(url: string): Promise<ImageSize | undefined> {
+  try {
+    return naturalSizeOf(await loadImage(url));
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * 准备参考图：等比缩小过大的图片避免请求体过大，同时带上原图宽高，
+ * 这样图片被压缩后「跟随参考图尺寸」仍能按原尺寸生成。
+ */
+async function prepareReference(dataUrl: string): Promise<Attachment> {
+  const image = await loadImage(dataUrl);
+  const size = naturalSizeOf(image);
   const edge = Math.max(image.naturalWidth, image.naturalHeight);
-  const scale = edge > 0 ? Math.min(1, MAX_IMAGE_EDGE / edge) : 1;
-  if (scale >= 1) return dataUrl;
+  const scale = edge > 0 ? Math.min(1, MAX_UPLOAD_EDGE / edge) : 1;
+  if (scale >= 1) return { url: dataUrl, size };
 
   const canvas = document.createElement("canvas");
   canvas.width = Math.round(image.naturalWidth * scale);
   canvas.height = Math.round(image.naturalHeight * scale);
   const context = canvas.getContext("2d");
-  if (!context) return dataUrl;
+  if (!context) return { url: dataUrl, size };
   context.drawImage(image, 0, 0, canvas.width, canvas.height);
   const type = mediaTypeOf(dataUrl) === "image/png" ? "image/png" : "image/jpeg";
-  return canvas.toDataURL(type, 0.92);
+  return { url: canvas.toDataURL(type, 0.92), size };
 }
 
 async function readImageFile(file: File) {
@@ -126,7 +158,7 @@ async function readImageFile(file: File) {
     reader.onerror = () => reject(new Error("读取图片失败"));
     reader.readAsDataURL(file);
   });
-  return downscaleImage(dataUrl);
+  return prepareReference(dataUrl);
 }
 
 function jimengPayload(settings: ChatSettings): JimengPayload {
@@ -144,8 +176,13 @@ type ImageCountChoice = "auto" | number;
 
 /** 画图模式随本轮请求发送的参数；提示词与参考图由服务端从最后一条用户消息中读取 */
 type ImageRequestOptions = {
-  aspectRatio: ImageAspectRatio;
+  /** 「跟随参考图」或某个具体宽高比 */
+  sizeMode: ImageSizeChoice;
+  /** 「跟随参考图」时不发送，由服务端换算 */
+  aspectRatio?: ImageAspectRatio;
   resolution: ImageResolution;
+  /** 参考图原始宽高（上传时在前端测出），供服务端换算生成尺寸 */
+  referenceSize?: ImageSize;
   /** 手动指定的张数；「自动」时不发送，由服务端从提示词里解析 */
   count?: number;
   jimeng: JimengPayload;
@@ -344,9 +381,9 @@ export function Chat() {
   });
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mode, setMode] = useState<ChatMode>("chat");
-  const [aspectRatio, setAspectRatio] = useState<ImageAspectRatio>(DEFAULT_ASPECT_RATIO);
+  const [sizeMode, setSizeMode] = useState<ImageSizeChoice>(REFERENCE_SIZE_MODE);
   const [resolution, setResolution] = useState<ImageResolution>(DEFAULT_RESOLUTION);
-  const [attachments, setAttachments] = useState<string[]>([]);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [imageCount, setImageCount] = useState<ImageCountChoice>("auto");
   const [markingIndex, setMarkingIndex] = useState<number | null>(null);
   const [preview, setPreview] = useState<{ urls: string[]; index: number } | null>(null);
@@ -367,6 +404,15 @@ export function Chat() {
   const parsedCount = parseImageCount(input);
   // 张数选择器：默认按提示词解析并展示结果，解析不准时可手动指定，手动指定优先
   const effectiveCount = imageCount === "auto" ? (parsedCount ?? 1) : imageCount;
+  // 「跟随参考图」取第一张已知原始尺寸的参考图，没有参考图时按默认宽高比 + 分辨率生成
+  const referenceSize = attachments.find((item) => item.size)?.size;
+  // 展示给用户的生成尺寸：与服务端共用一套规则（超出模型范围时等比缩放）
+  const resolvedReferenceSize = referenceSize
+    ? resolveReferenceSize(referenceSize.width, referenceSize.height)
+    : undefined;
+  // 分辨率档位换算像素时用的宽高比：「跟随参考图」没有参考图时回退到默认宽高比
+  const effectiveAspectRatio =
+    sizeMode === REFERENCE_SIZE_MODE ? DEFAULT_ASPECT_RATIO : sizeMode;
   // 生成结果与参考图分组预览，保证左右切换只在本组内进行
   const imageUrlsOf = (role: UIMessage["role"]) =>
     messages
@@ -398,14 +444,17 @@ export function Chat() {
           role: "user",
           parts: [
             { type: "text", text },
-            ...attachments.map((url) => toFilePart(url, "reference-image")),
+            ...attachments.map((item) => toFilePart(item.url, "reference-image")),
           ],
         },
         {
           body: {
             mode: "image",
-            aspectRatio,
+            sizeMode,
             resolution,
+            // 原图尺寸随请求发送：上传时可能已等比压缩，服务端按同一套规则换算生成尺寸
+            ...(sizeMode === REFERENCE_SIZE_MODE && referenceSize ? { referenceSize } : {}),
+            ...(sizeMode === REFERENCE_SIZE_MODE ? {} : { aspectRatio: sizeMode }),
             ...(imageCount === "auto" ? {} : { count: imageCount }),
             jimeng: jimengPayload(settings),
           },
@@ -446,9 +495,14 @@ export function Chat() {
     }
   };
 
-  const applyAsReference = (url: string) => {
+  const applyAsReference = async (url: string) => {
     setMode("image");
-    setAttachments((prev) => (prev.includes(url) ? prev : [...prev, url].slice(-MAX_ATTACHMENTS)));
+    const size = await measureImage(url);
+    setAttachments((prev) =>
+      prev.some((item) => item.url === url)
+        ? prev
+        : [...prev, { url, size }].slice(-MAX_ATTACHMENTS),
+    );
     toast.info("已设为参考图，输入修改指令后点击生成");
   };
 
@@ -689,10 +743,10 @@ export function Chat() {
         <form onSubmit={handleSubmit} className="flex w-full flex-col gap-2">
           {imageMode && attachments.length > 0 && (
             <div className="flex flex-wrap items-center gap-2">
-              {attachments.map((source, i) => (
+              {attachments.map((attachment, i) => (
                 <div key={i} className="relative size-16">
                   <Image
-                    src={source}
+                    src={attachment.url}
                     alt={`参考图 ${i + 1}`}
                     fill
                     unoptimized
@@ -769,32 +823,45 @@ export function Chat() {
             {imageMode && (
               <>
                 <select
-                  aria-label="宽高比"
+                  aria-label="生成尺寸"
                   className={cn(selectClassName, "h-7 w-auto text-xs")}
-                  value={aspectRatio}
-                  onChange={(e) => setAspectRatio(e.target.value as ImageAspectRatio)}
+                  value={sizeMode}
+                  onChange={(e) => setSizeMode(e.target.value as ImageSizeChoice)}
                 >
+                  <option value={REFERENCE_SIZE_MODE}>跟随参考图</option>
                   {IMAGE_ASPECT_RATIOS.map((item) => (
                     <option key={item.value} value={item.value}>
                       {item.label}
                     </option>
                   ))}
                 </select>
-                <select
-                  aria-label="分辨率"
-                  className={cn(selectClassName, "h-7 w-auto text-xs")}
-                  value={resolution}
-                  onChange={(e) => setResolution(e.target.value as ImageResolution)}
-                >
-                  {IMAGE_RESOLUTIONS.map((item) => {
-                    const pixels = resolveImageSize(aspectRatio, item.value);
-                    return (
-                      <option key={item.value} value={item.value}>
-                        {item.label} · {pixels.width}×{pixels.height}
-                      </option>
-                    );
-                  })}
-                </select>
+                {sizeMode === REFERENCE_SIZE_MODE && resolvedReferenceSize ? (
+                  <span
+                    title="生成尺寸沿用参考图宽高，超出模型允许范围时等比缩放"
+                    className={cn(
+                      selectClassName,
+                      "flex h-7 w-auto items-center border-dashed text-xs text-muted-foreground",
+                    )}
+                  >
+                    参考图尺寸 · {resolvedReferenceSize.width}×{resolvedReferenceSize.height}
+                  </span>
+                ) : (
+                  <select
+                    aria-label="分辨率"
+                    className={cn(selectClassName, "h-7 w-auto text-xs")}
+                    value={resolution}
+                    onChange={(e) => setResolution(e.target.value as ImageResolution)}
+                  >
+                    {IMAGE_RESOLUTIONS.map((item) => {
+                      const pixels = resolveImageSize(effectiveAspectRatio, item.value);
+                      return (
+                        <option key={item.value} value={item.value}>
+                          {item.label} · {pixels.width}×{pixels.height}
+                        </option>
+                      );
+                    })}
+                  </select>
+                )}
               </>
             )}
             {imageMode && (
@@ -914,14 +981,15 @@ export function Chat() {
       </CardFooter>
 
       <ImageMarker
-        url={markingIndex !== null ? (attachments[markingIndex] ?? "") : ""}
+        url={markingIndex !== null ? (attachments[markingIndex]?.url ?? "") : ""}
         open={markingIndex !== null}
         onOpenChange={(open) => {
           if (!open) setMarkingIndex(null);
         }}
         onSave={(dataUrl) => {
+          // 标记画布与参考图同尺寸，宽高不变
           setAttachments((prev) =>
-            prev.map((item, index) => (index === markingIndex ? dataUrl : item)),
+            prev.map((item, index) => (index === markingIndex ? { ...item, url: dataUrl } : item)),
           );
           toast.success("标记已应用到参考图");
         }}
@@ -937,7 +1005,7 @@ export function Chat() {
           }}
           onEdit={(url) => {
             setPreview(null);
-            applyAsReference(url);
+            void applyAsReference(url);
           }}
         />
       )}

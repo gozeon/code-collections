@@ -1,12 +1,15 @@
 import { createUIMessageStream, createUIMessageStreamResponse, type UIMessage } from "ai";
 
 import { normalizeImageCount, parseImageCount } from "@/lib/image-count";
+import { dataUrlImageSize } from "@/lib/image-dimensions";
 import {
   DEFAULT_ASPECT_RATIO,
   DEFAULT_RESOLUTION,
+  isReferenceSizeMode,
   parseAspectRatio,
   parseResolution,
   resolveImageSize,
+  resolveReferenceSize,
 } from "@/lib/image-size";
 import {
   generateJimengImages,
@@ -35,6 +38,10 @@ type ImageRequestBody = {
   aspectRatio?: string;
   /** 分辨率档位："2k" 或 "4k" */
   resolution?: string;
+  /** "reference" 表示沿用参考图尺寸，此时宽高比与分辨率只在没有参考图时兜底 */
+  sizeMode?: string;
+  /** 参考图的原始宽高（前端上传时测出），参考图被等比压缩后仍能按原尺寸生成 */
+  referenceSize?: { width?: number; height?: number };
   /** 旧版直接指定的宽x高，优先级低于宽高比 + 分辨率 */
   size?: string;
   seed?: number;
@@ -44,14 +51,36 @@ type ImageRequestBody = {
   jimeng?: JimengOverrides;
 };
 
-/** 优先按宽高比 + 分辨率推算宽高；都没有时兼容旧版 size 入参 */
-function resolveDimensions(body: ImageRequestBody) {
+/** 参考图尺寸：优先用前端测出的原始宽高，缺失时解析参考图本身（如直接调接口传图） */
+function referenceDimensions(body: ImageRequestBody, images: string[]) {
+  const declared = resolveReferenceSize(
+    Number(body.referenceSize?.width),
+    Number(body.referenceSize?.height),
+  );
+  return declared ?? dataUrlImageSize(images[0]);
+}
+
+/**
+ * 生成尺寸的优先级：
+ * 1. 「跟随参考图尺寸」（sizeMode=reference）时用参考图宽高；
+ * 2. 有参考图且调用方没指定尺寸时同样沿用参考图宽高，避免参考图被拉伸成默认画幅；
+ * 3. 其余按宽高比 + 分辨率推算，最后兼容旧版 size 入参。
+ * 解析不出参考图（如没传参考图、格式不支持）时继续往下走。
+ */
+function resolveDimensions(body: ImageRequestBody, images: string[]) {
   const aspectRatio = parseAspectRatio(body.aspectRatio);
   const resolution = parseResolution(body.resolution);
+  const legacySize = parseSize(body.size);
+  const hasExplicitSize = Boolean(aspectRatio || resolution || legacySize.width);
+
+  if (isReferenceSizeMode(body.sizeMode) || !hasExplicitSize) {
+    const reference = referenceDimensions(body, images);
+    if (reference) return reference;
+  }
   if (aspectRatio || resolution) {
     return resolveImageSize(aspectRatio ?? DEFAULT_ASPECT_RATIO, resolution ?? DEFAULT_RESOLUTION);
   }
-  return parseSize(body.size);
+  return legacySize;
 }
 
 function parseSize(size?: string) {
@@ -106,7 +135,7 @@ export async function POST(req: Request) {
     prompt,
     images,
     count: normalizeImageCount(body.count ?? parseImageCount(prompt)),
-    ...resolveDimensions(body),
+    ...resolveDimensions(body, images),
     seed: body.seed,
     watermark: body.watermark,
   };

@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   experimental: {
     // 使用进程内 TypeScript API 解析 tsconfig（默认 CLI 方式需 spawn 子进程）
     useTypeScriptCli: false,
