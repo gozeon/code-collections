@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import type { FileUIPart, UIMessage } from "ai";
+import { DefaultChatTransport, type FileUIPart, type UIMessage } from "ai";
 import {
   Bot,
   Brush,
@@ -18,14 +18,17 @@ import {
   Settings,
   Square,
   User,
+  WandSparkles,
   X,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { ImageMarker } from "@/components/image-marker";
 import { Markdown } from "@/components/markdown";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -41,7 +44,17 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { parseImageCount } from "@/lib/image-count";
+import { MAX_IMAGE_COUNT, parseImageCount } from "@/lib/image-count";
+import {
+  DEFAULT_ASPECT_RATIO,
+  DEFAULT_RESOLUTION,
+  IMAGE_ASPECT_RATIOS,
+  IMAGE_RESOLUTIONS,
+  resolveImageSize,
+  type ImageAspectRatio,
+  type ImageResolution,
+} from "@/lib/image-size";
+import { extractImagePrompt } from "@/lib/prompt";
 import { cn } from "@/lib/utils";
 
 type ChatSettings = {
@@ -49,25 +62,13 @@ type ChatSettings = {
   apiKey: string;
   model: string;
   baseUrl: string;
-  // 即梦图片生成
-  jimengProvider: "" | "volc" | "ark";
-  jimengAccessKeyId: string;
-  jimengSecretAccessKey: string;
-  jimengRegion: string;
-  jimengReqKey: string;
-  jimengEditReqKey: string;
+  // 即梦图片生成（火山方舟，OpenAI 兼容）
   jimengApiKey: string;
   jimengBaseUrl: string;
   jimengModel: string;
 };
 
 type JimengPayload = {
-  provider?: "volc" | "ark";
-  accessKeyId?: string;
-  secretAccessKey?: string;
-  region?: string;
-  reqKey?: string;
-  editReqKey?: string;
   apiKey?: string;
   baseUrl?: string;
   model?: string;
@@ -78,27 +79,16 @@ const DEFAULT_SETTINGS: ChatSettings = {
   apiKey: "",
   model: "",
   baseUrl: "",
-  jimengProvider: "",
-  jimengAccessKeyId: "",
-  jimengSecretAccessKey: "",
-  jimengRegion: "",
-  jimengReqKey: "",
-  jimengEditReqKey: "",
   jimengApiKey: "",
   jimengBaseUrl: "",
   jimengModel: "",
 };
 
-const IMAGE_SIZES = [
-  { label: "1:1 · 1024×1024", value: "1024x1024" },
-  { label: "4:3 · 1152×864", value: "1152x864" },
-  { label: "3:4 · 864×1152", value: "864x1152" },
-  { label: "16:9 · 1280×720", value: "1280x720" },
-  { label: "9:16 · 720×1280", value: "720x1280" },
-];
-
 const MAX_ATTACHMENTS = 4;
 const MAX_IMAGE_EDGE = 2048;
+
+/** 画图模式可手动指定的张数（上限与后端解析一致） */
+const IMAGE_COUNT_OPTIONS = Array.from({ length: MAX_IMAGE_COUNT }, (_, index) => index + 1);
 
 const selectClassName =
   "h-8 w-full rounded-lg border border-input bg-transparent px-2 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30";
@@ -141,24 +131,39 @@ async function readImageFile(file: File) {
 
 function jimengPayload(settings: ChatSettings): JimengPayload {
   return {
-    provider: settings.jimengProvider || undefined,
-    accessKeyId: settings.jimengAccessKeyId.trim() || undefined,
-    secretAccessKey: settings.jimengSecretAccessKey.trim() || undefined,
-    region: settings.jimengRegion.trim() || undefined,
-    reqKey: settings.jimengReqKey.trim() || undefined,
-    editReqKey: settings.jimengEditReqKey.trim() || undefined,
     apiKey: settings.jimengApiKey.trim() || undefined,
     baseUrl: settings.jimengBaseUrl.trim() || undefined,
     model: settings.jimengModel.trim() || undefined,
   };
 }
 
-function GeneratedImage({
+type ChatMode = "chat" | "image";
+
+/** 画图模式的张数：「auto」表示按提示词解析（选择器里会显示解析结果） */
+type ImageCountChoice = "auto" | number;
+
+/** 画图模式随本轮请求发送的参数；提示词与参考图由服务端从最后一条用户消息中读取 */
+type ImageRequestOptions = {
+  aspectRatio: ImageAspectRatio;
+  resolution: ImageResolution;
+  /** 手动指定的张数；「自动」时不发送，由服务端从提示词里解析 */
+  count?: number;
+  jimeng: JimengPayload;
+};
+
+/** 参考图与生成结果统一转成消息的 file part，两种模式共用同一套消息格式 */
+function toFilePart(url: string, filename: string): FileUIPart {
+  return { type: "file", mediaType: mediaTypeOf(url), filename, url };
+}
+
+function MessageImage({
   url,
+  alt = "即梦生成的图片",
   onPreview,
   onEdit,
 }: {
   url: string;
+  alt?: string;
   onPreview: () => void;
   onEdit: (url: string) => void;
 }) {
@@ -170,7 +175,14 @@ function GeneratedImage({
         onClick={onPreview}
         className="block cursor-zoom-in"
       >
-        <img src={url} alt="即梦生成的图片" className="size-40 object-cover sm:size-48" />
+        <Image
+          src={url}
+          alt={alt}
+          width={0}
+          height={0}
+          unoptimized
+          className="block h-40 w-auto max-w-full object-contain sm:h-48"
+        />
         <span className="absolute inset-0 flex items-center justify-center bg-black/40 text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
           <Maximize2 className="size-5" />
         </span>
@@ -237,9 +249,12 @@ function ImagePreviewDialog({
           <DialogDescription>查看生成的图片，可下载或用作参考图</DialogDescription>
         </DialogHeader>
         <div className="relative flex items-center justify-center rounded-lg border bg-muted/30 p-2">
-          <img
+          <Image
             src={url}
             alt="图片预览"
+            width={0}
+            height={0}
+            unoptimized
             className="max-h-[70vh] w-auto max-w-full rounded object-contain"
           />
           {hasMultiple && (
@@ -294,7 +309,28 @@ function ImagePreviewDialog({
 }
 
 export function Chat() {
-  const { messages, sendMessage, setMessages, stop, status } = useChat();
+  // 两种模式共用一个 useChat：transport 按本轮请求的 mode 选择接口，
+  // 于是状态流转（submitted / streaming / ready / error）、停止与消息渲染完全一致
+  const transport = useMemo(
+    () =>
+      new DefaultChatTransport({
+        api: "/api/chat",
+        prepareSendMessagesRequest: ({ api, messages, body }) => {
+          const { mode, ...extra } = (body ?? {}) as Partial<ImageRequestOptions> & {
+            mode?: ChatMode;
+          };
+          if (mode !== "image") return { api, body: { messages, ...extra } };
+          // 画图只依赖本轮提示词与参考图，不带历史，避免把历史生成的大图重复上传
+          const last = messages[messages.length - 1];
+          return {
+            api: "/api/image",
+            body: { messages: last ? [last] : [], stream: true, ...extra },
+          };
+        },
+      }),
+    [],
+  );
+  const { messages, sendMessage, stop, status, error } = useChat({ transport });
   const [input, setInput] = useState("");
   const [settings, setSettings] = useState<ChatSettings>(() => {
     if (typeof window === "undefined") return DEFAULT_SETTINGS;
@@ -307,25 +343,41 @@ export function Chat() {
     }
   });
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [mode, setMode] = useState<"chat" | "image">("chat");
-  const [size, setSize] = useState(IMAGE_SIZES[0].value);
+  const [mode, setMode] = useState<ChatMode>("chat");
+  const [aspectRatio, setAspectRatio] = useState<ImageAspectRatio>(DEFAULT_ASPECT_RATIO);
+  const [resolution, setResolution] = useState<ImageResolution>(DEFAULT_RESOLUTION);
   const [attachments, setAttachments] = useState<string[]>([]);
+  const [imageCount, setImageCount] = useState<ImageCountChoice>("auto");
   const [markingIndex, setMarkingIndex] = useState<number | null>(null);
-  const [generating, setGenerating] = useState(false);
   const [preview, setPreview] = useState<{ urls: string[]; index: number } | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const abortRef = useRef<AbortController | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const isBusy = status === "submitted" || status === "streaming";
-  const isWorking = isBusy || generating;
+  const isWorking = status === "submitted" || status === "streaming";
   const imageMode = mode === "image";
-  const requestedCount = parseImageCount(input);
-  const generatedImages = messages.flatMap((message) =>
-    message.parts.flatMap((part) =>
-      part.type === "file" && part.mediaType.startsWith("image/") ? [part.url] : [],
-    ),
-  );
+  // 错误文案：接口返回的提示优先，缺省时按模式给出兜底提示
+  const errorMessage = error?.message.trim();
+  const errorText =
+    errorMessage && errorMessage !== "An error occurred."
+      ? errorMessage
+      : imageMode
+        ? "图片生成失败，请检查接口配置后重试。"
+        : "请求出错，请检查 API Key 配置后重试。";
+  const parsedCount = parseImageCount(input);
+  // 张数选择器：默认按提示词解析并展示结果，解析不准时可手动指定，手动指定优先
+  const effectiveCount = imageCount === "auto" ? (parsedCount ?? 1) : imageCount;
+  // 生成结果与参考图分组预览，保证左右切换只在本组内进行
+  const imageUrlsOf = (role: UIMessage["role"]) =>
+    messages
+      .filter((message) => message.role === role)
+      .flatMap((message) =>
+        message.parts.flatMap((part) =>
+          part.type === "file" && part.mediaType.startsWith("image/") ? [part.url] : [],
+        ),
+      );
+  const generatedImages = imageUrlsOf("assistant");
+  const referenceImages = imageUrlsOf("user");
 
   const updateSettings = (patch: Partial<ChatSettings>) => {
     setSettings((prev) => {
@@ -335,75 +387,44 @@ export function Chat() {
     });
   };
 
-  const generateImage = async (prompt: string, references: string[]) => {
-    const controller = new AbortController();
-    abortRef.current = controller;
-    setGenerating(true);
-    try {
-      const response = await fetch("/api/image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        signal: controller.signal,
-        body: JSON.stringify({
-          prompt,
-          images: references,
-          count: parseImageCount(prompt),
-          size,
-          jimeng: jimengPayload(settings),
-        }),
-      });
-      const data = (await response.json().catch(() => null)) as
-        | { images?: string[]; error?: string }
-        | null;
-      if (!response.ok) throw new Error(data?.error || `生成失败（HTTP ${response.status}）`);
-
-      const images = (data?.images ?? []).filter(Boolean);
-      if (images.length === 0) throw new Error("接口没有返回图片，请稍后重试。");
-
-      const reply: UIMessage = {
-        id: crypto.randomUUID(),
-        role: "assistant",
-        parts: images.map<FileUIPart>((url) => ({
-          type: "file",
-          mediaType: mediaTypeOf(url),
-          filename: "jimeng-image",
-          url,
-        })),
-      };
-      setMessages((prev) => [
-        ...prev,
-        { id: crypto.randomUUID(), role: "user", parts: [{ type: "text", text: prompt }] },
-        reply,
-      ]);
-      setInput("");
-      setAttachments([]);
-    } catch (error) {
-      if (controller.signal.aborted) return;
-      toast.error(error instanceof Error ? error.message : "图片生成失败，请稍后重试。");
-    } finally {
-      abortRef.current = null;
-      setGenerating(false);
-    }
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const text = input.trim();
     if (!text || isWorking) return;
+
     if (imageMode) {
-      void generateImage(text, attachments);
-      return;
-    }
-    sendMessage(
-      { text },
-      {
-        body: {
-          apiKey: settings.apiKey || undefined,
-          model: settings.model || undefined,
-          baseUrl: settings.baseUrl || undefined,
+      void sendMessage(
+        {
+          role: "user",
+          parts: [
+            { type: "text", text },
+            ...attachments.map((url) => toFilePart(url, "reference-image")),
+          ],
         },
-      },
-    );
+        {
+          body: {
+            mode: "image",
+            aspectRatio,
+            resolution,
+            ...(imageCount === "auto" ? {} : { count: imageCount }),
+            jimeng: jimengPayload(settings),
+          },
+        },
+      );
+      setAttachments([]);
+    } else {
+      void sendMessage(
+        { text },
+        {
+          body: {
+            mode: "chat",
+            apiKey: settings.apiKey || undefined,
+            model: settings.model || undefined,
+            baseUrl: settings.baseUrl || undefined,
+          },
+        },
+      );
+    }
     setInput("");
   };
 
@@ -431,23 +452,24 @@ export function Chat() {
     toast.info("已设为参考图，输入修改指令后点击生成");
   };
 
+  /** 对话返回的提示词一键填进「画图」输入框，省去复制粘贴；已选的参考图保持不变，便于继续图生图 */
+  const applyAsPrompt = (prompt: string) => {
+    setMode("image");
+    setInput(prompt);
+    textareaRef.current?.focus();
+    toast.success("提示词已填入「画图」输入框");
+  };
+
   const openPreview = (urls: string[], url: string) => {
     const index = urls.indexOf(url);
     setPreview({ urls, index: index >= 0 ? index : 0 });
   };
 
-  const handleStop = () => {
-    if (generating) {
-      abortRef.current?.abort();
-      setGenerating(false);
-      return;
-    }
-    stop();
-  };
+  const handleStop = () => void stop();
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, status, generating]);
+  }, [messages, status]);
 
   return (
     <Card className="flex h-dvh w-full flex-col rounded-none border-0">
@@ -514,71 +536,8 @@ export function Chat() {
 
                 <div className="flex flex-col gap-3">
                   <p className="text-xs font-medium text-muted-foreground">
-                    即梦图片生成（文生图 / 图生图）
+                    即梦图片生成（火山方舟，OpenAI 兼容）
                   </p>
-                  <label className="flex flex-col gap-1.5 text-sm">
-                    <span className="font-medium">提供方</span>
-                    <select
-                      className={selectClassName}
-                      value={settings.jimengProvider}
-                      onChange={(e) =>
-                        updateSettings({ jimengProvider: e.target.value as ChatSettings["jimengProvider"] })
-                      }
-                    >
-                      <option value="">自动（有 AK/SK 用视觉智能，否则用方舟）</option>
-                      <option value="volc">火山引擎视觉智能（AK/SK）</option>
-                      <option value="ark">火山方舟（API Key）</option>
-                    </select>
-                  </label>
-
-                  <p className="text-xs text-muted-foreground">火山引擎视觉智能（AK/SK，即梦图片生成）</p>
-                  <label className="flex flex-col gap-1.5 text-sm">
-                    <span className="font-medium">AccessKeyId</span>
-                    <Input
-                      value={settings.jimengAccessKeyId}
-                      onChange={(e) => updateSettings({ jimengAccessKeyId: e.target.value })}
-                      placeholder="AKLT...（留空使用 JIMENG_ACCESS_KEY_ID）"
-                      autoComplete="off"
-                    />
-                  </label>
-                  <label className="flex flex-col gap-1.5 text-sm">
-                    <span className="font-medium">SecretAccessKey</span>
-                    <Input
-                      type="password"
-                      value={settings.jimengSecretAccessKey}
-                      onChange={(e) => updateSettings({ jimengSecretAccessKey: e.target.value })}
-                      placeholder="留空使用 JIMENG_SECRET_ACCESS_KEY"
-                      autoComplete="off"
-                    />
-                  </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <label className="flex flex-col gap-1.5 text-sm">
-                      <span className="font-medium">Region</span>
-                      <Input
-                        value={settings.jimengRegion}
-                        onChange={(e) => updateSettings({ jimengRegion: e.target.value })}
-                        placeholder="cn-north-1"
-                      />
-                    </label>
-                    <label className="flex flex-col gap-1.5 text-sm">
-                      <span className="font-medium">文生图 req_key</span>
-                      <Input
-                        value={settings.jimengReqKey}
-                        onChange={(e) => updateSettings({ jimengReqKey: e.target.value })}
-                        placeholder="jimeng_high_aes_general_v21_L"
-                      />
-                    </label>
-                  </div>
-                  <label className="flex flex-col gap-1.5 text-sm">
-                    <span className="font-medium">图生图 / 图片修改 req_key</span>
-                    <Input
-                      value={settings.jimengEditReqKey}
-                      onChange={(e) => updateSettings({ jimengEditReqKey: e.target.value })}
-                      placeholder="留空则与文生图一致（如 byteedit_v2.0）"
-                    />
-                  </label>
-
-                  <p className="text-xs text-muted-foreground">火山方舟（OpenAI 兼容，API Key）</p>
                   <label className="flex flex-col gap-1.5 text-sm">
                     <span className="font-medium">方舟 API Key</span>
                     <Input
@@ -631,6 +590,11 @@ export function Chat() {
                   part.type === "file" && part.mediaType.startsWith("image/"),
               );
               if (textParts.length === 0 && imageParts.length === 0) return null;
+              // 助手回复里的成品提示词可以直接一键拿去画图，提取不到（如追问、闲聊）就不显示
+              const draftPrompt =
+                message.role === "assistant"
+                  ? extractImagePrompt(textParts.map((part) => part.text).join("\n\n"))
+                  : "";
 
               return (
                 <div
@@ -670,13 +634,39 @@ export function Chat() {
                     {imageParts.length > 0 && (
                       <div className="flex flex-wrap gap-2">
                         {imageParts.map((part, i) => (
-                          <GeneratedImage
+                          <MessageImage
                             key={i}
                             url={part.url}
-                            onPreview={() => openPreview(generatedImages, part.url)}
+                            alt={message.role === "user" ? "参考图" : "即梦生成的图片"}
+                            onPreview={() =>
+                              openPreview(
+                                message.role === "user" ? referenceImages : generatedImages,
+                                part.url,
+                              )
+                            }
                             onEdit={applyAsReference}
                           />
                         ))}
+                      </div>
+                    )}
+                    {draftPrompt && !isWorking && (
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Tooltip>
+                          <TooltipTrigger
+                            render={
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => applyAsPrompt(draftPrompt)}
+                              >
+                                <WandSparkles />
+                                用提示词画图
+                              </Button>
+                            }
+                          />
+                          <TooltipContent>把这段提示词填入「画图」输入框，可再改后生成</TooltipContent>
+                        </Tooltip>
                       </div>
                     )}
                   </div>
@@ -686,20 +676,10 @@ export function Chat() {
             {status === "submitted" && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Loader2 className="size-4 animate-spin" />
-                思考中...
+                {imageMode ? "正在生成图片，请稍候..." : "思考中..."}
               </div>
             )}
-            {generating && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Loader2 className="size-4 animate-spin" />
-                正在生成图片，请稍候...
-              </div>
-            )}
-            {status === "error" && (
-              <p className="text-sm text-destructive">
-                请求出错，请检查 API Key 配置后重试。
-              </p>
-            )}
+            {status === "error" && <p className="text-sm text-destructive">{errorText}</p>}
             <div ref={bottomRef} />
           </div>
         </ScrollArea>
@@ -710,11 +690,13 @@ export function Chat() {
           {imageMode && attachments.length > 0 && (
             <div className="flex flex-wrap items-center gap-2">
               {attachments.map((source, i) => (
-                <div key={i} className="relative">
-                  <img
+                <div key={i} className="relative size-16">
+                  <Image
                     src={source}
                     alt={`参考图 ${i + 1}`}
-                    className="size-16 rounded-md border object-cover"
+                    fill
+                    unoptimized
+                    className="rounded-md border object-cover"
                   />
                   <Tooltip>
                     <TooltipTrigger
@@ -754,11 +736,16 @@ export function Chat() {
           )}
 
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-0.5 rounded-lg bg-muted p-0.5">
+            <div className="flex items-center gap-1 rounded-xl border border-border/70 bg-muted/70 p-1">
               <Button
                 type="button"
                 size="sm"
-                variant={imageMode ? "ghost" : "secondary"}
+                variant="ghost"
+                aria-pressed={!imageMode}
+                className={cn(
+                  "px-3 font-medium",
+                  imageMode ? "text-muted-foreground" : "bg-background text-foreground shadow-sm",
+                )}
                 onClick={() => setMode("chat")}
               >
                 <MessageSquare />
@@ -767,7 +754,12 @@ export function Chat() {
               <Button
                 type="button"
                 size="sm"
-                variant={imageMode ? "secondary" : "ghost"}
+                variant="ghost"
+                aria-pressed={imageMode}
+                className={cn(
+                  "px-3 font-medium",
+                  imageMode ? "bg-background text-foreground shadow-sm" : "text-muted-foreground",
+                )}
                 onClick={() => setMode("image")}
               >
                 <Images />
@@ -775,30 +767,72 @@ export function Chat() {
               </Button>
             </div>
             {imageMode && (
-              <select
-                aria-label="图片尺寸"
-                className={cn(selectClassName, "h-7 w-auto text-xs")}
-                value={size}
-                onChange={(e) => setSize(e.target.value)}
-              >
-                {IMAGE_SIZES.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
+              <>
+                <select
+                  aria-label="宽高比"
+                  className={cn(selectClassName, "h-7 w-auto text-xs")}
+                  value={aspectRatio}
+                  onChange={(e) => setAspectRatio(e.target.value as ImageAspectRatio)}
+                >
+                  {IMAGE_ASPECT_RATIOS.map((item) => (
+                    <option key={item.value} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  aria-label="分辨率"
+                  className={cn(selectClassName, "h-7 w-auto text-xs")}
+                  value={resolution}
+                  onChange={(e) => setResolution(e.target.value as ImageResolution)}
+                >
+                  {IMAGE_RESOLUTIONS.map((item) => {
+                    const pixels = resolveImageSize(aspectRatio, item.value);
+                    return (
+                      <option key={item.value} value={item.value}>
+                        {item.label} · {pixels.width}×{pixels.height}
+                      </option>
+                    );
+                  })}
+                </select>
+              </>
             )}
             {imageMode && (
-              <span className="text-xs text-muted-foreground">
+              <Badge variant="secondary">
                 {attachments.length > 0 ? "图生图 / 图片修改" : "文生图"}
-                {requestedCount && requestedCount > 1
-                  ? ` · 将生成 ${requestedCount} 张`
-                  : ""}
-              </span>
+              </Badge>
+            )}
+            {imageMode && (
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <select
+                      aria-label="生成张数"
+                      className={cn(selectClassName, "h-7 w-auto text-xs")}
+                      value={imageCount}
+                      onChange={(event) =>
+                        setImageCount(
+                          event.target.value === "auto" ? "auto" : Number(event.target.value),
+                        )
+                      }
+                    >
+                      <option value="auto">张数：自动 · {effectiveCount} 张</option>
+                      {IMAGE_COUNT_OPTIONS.map((value) => (
+                        <option key={value} value={value}>
+                          张数：{value} 张
+                        </option>
+                      ))}
+                    </select>
+                  }
+                />
+                <TooltipContent>
+                  默认按提示词里的张数解析（如「两张不同风格」）；解析不准时可在这里手动指定
+                </TooltipContent>
+              </Tooltip>
             )}
           </div>
 
-          <div className="flex w-full items-end gap-2">
+          <div className="flex w-full items-end gap-2 rounded-xl border border-input bg-background p-1.5 shadow-sm transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 dark:bg-input/30">
             {imageMode && (
               <>
                 <input
@@ -814,7 +848,7 @@ export function Chat() {
                     render={
                       <Button
                         type="button"
-                        variant="outline"
+                        variant="ghost"
                         size="icon-lg"
                         disabled={attachments.length >= MAX_ATTACHMENTS}
                         onClick={() => fileInputRef.current?.click()}
@@ -828,6 +862,7 @@ export function Chat() {
               </>
             )}
             <Textarea
+              ref={textareaRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
@@ -844,13 +879,13 @@ export function Chat() {
                   : "输入消息，Enter 发送，Shift+Enter 换行"
               }
               rows={1}
-              className="max-h-32 min-h-9 resize-none"
+              className="max-h-32 min-h-9 flex-1 resize-none border-0 bg-transparent px-2 py-2 shadow-none focus-visible:ring-0 dark:bg-transparent"
             />
             {isWorking ? (
               <Tooltip>
                 <TooltipTrigger
                   render={
-                    <Button type="button" variant="destructive" size="icon-lg" onClick={handleStop}>
+                    <Button type="button" variant="outline" size="icon-lg" onClick={handleStop}>
                       <Square className="size-4" />
                     </Button>
                   }
@@ -861,7 +896,12 @@ export function Chat() {
               <Tooltip>
                 <TooltipTrigger
                   render={
-                    <Button type="submit" size="icon-lg" disabled={!input.trim()}>
+                    <Button
+                      type="submit"
+                      size="icon-lg"
+                      disabled={!input.trim()}
+                      className="shrink-0"
+                    >
                       <Send className="size-4" />
                     </Button>
                   }

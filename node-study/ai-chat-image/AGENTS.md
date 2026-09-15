@@ -28,6 +28,17 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - 组件 PascalCase（`chat.tsx` 导出 `Chat`），函数/工具 camelCase；导入别名 `@/*` → `src/*`
 - 类名合并统一用 `cn()`；客户端组件顶部必须声明 `"use client"`
 
+## 配色规范（全黑白中性色）
+
+- 项目主题只有黑白中性色：`src/app/globals.css` 不新增彩色 token，组件里也不要散落调色板颜色（`blue-*` / `purple-*` 等 Tailwind 调色板一律不用），只用 shadcn 语义 token（`background` / `foreground` / `muted` / `border` / `input` / `ring` / `primary` 等）
+- 输入区不按模式区分颜色：对话与画图的「模式切换 → 输入框描边 / 聚焦光圈 → 发送按钮 → 状态标签」外观完全一致，全部中性色
+  - 模式切换选中态用 `bg-background text-foreground shadow-sm`（轨道是 `bg-muted` 类的中性底），未选中用 `text-muted-foreground`
+  - 输入框容器用 `border-input`，聚焦用 `focus-within:border-ring focus-within:ring-ring/50`（与 shadcn 输入一致）
+  - 发送 / 生成按钮用默认 `variant`，停止按钮用 `variant="outline"`
+  - 状态标签复用 `Badge variant="secondary"`，不要自己拼彩色描边和透明底
+- 合并类名一律用 `cn()`
+- 语义状态照旧用 shadcn 语义 token（错误文案 `text-destructive` 等），不要为了强调另造颜色；标注画笔颜色（`src/components/image-marker.tsx` 的 `MARK_COLORS`）画在图片上、属于用户内容，不受本规则约束
+
 ## 测试指南
 
 - 当前未配置测试框架；提交前依次运行 `npm run lint`、`npx tsc --noEmit`、`npm run build`，并将各项结果（成功/失败及关键报错）汇报给用户
@@ -46,3 +57,4 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - 根布局签名为 `LayoutProps<"/">`；Next.js 16 的 API 差异以 `node_modules/next/dist/docs/` 内置文档为准
 - `next.config.ts` 中 `useTypeScriptCli: false` 与 `ignoreBuildErrors: true` 是为兼容受限容器环境（node 孙进程输出被吞、内网端口绑定受限），正常环境保留无副作用
 - 添加组件：`npx shadcn@latest add <name>`（`components.json` 中 style 为 `base-nova`）
+- 输入区的模式强调色（对话蓝 / 画图紫）已移除：不要重新引入 `MODE_ACCENT` 之类的按模式配色，新增控件一律按上面「配色规范」走黑白中性色

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Eraser, Loader2, Undo2 } from "lucide-react";
+import Image from "next/image";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 
 type Point = { x: number; y: number };
@@ -34,45 +36,37 @@ const MARK_COLORS = [
   { label: "白色", value: "#ffffff" },
 ];
 
-/** 画笔粗细按图片短边比例换算，保证不同分辨率下手感一致 */
+/**
+ * 画笔粗细按图片短边比例换算，保证不同分辨率下手感一致。
+ * 最粗一档刻意夸张（短边的 16%），方便一口气涂掉大片区域。
+ */
 const MARK_BRUSHES = [
-  { label: "细", ratio: 0.004 },
-  { label: "中", ratio: 0.009 },
-  { label: "粗", ratio: 0.018 },
+  { label: "细", ratio: 0.006 },
+  { label: "中", ratio: 0.02 },
+  { label: "粗", ratio: 0.06 },
+  { label: "超粗", ratio: 0.16 },
 ];
+
+/** 滑块范围取最细与最粗两档，默认停在「中」档 */
+const MARK_BRUSH_MIN = MARK_BRUSHES[0].ratio;
+const MARK_BRUSH_MAX = MARK_BRUSHES[MARK_BRUSHES.length - 1].ratio;
+const MARK_BRUSH_DEFAULT = MARK_BRUSHES[1].ratio;
+/**
+ * 步进取满量程的 1/32：每拖动一格画笔直径都有肉眼可见的变化，
+ * 又不会细碎到要推很久；由档位推算，改档位时不用同步维护这个值。
+ */
+const MARK_BRUSH_STEP = (MARK_BRUSH_MAX - MARK_BRUSH_MIN) / 32;
+
+/** 画笔在画布上的最小宽度（画布像素），避免小图配细笔时细到看不见 */
+const MARK_BRUSH_MIN_WIDTH = 3;
+/**
+ * 圆环光标直径下限（CSS 像素）。系统指针已被 cursor-none 隐藏，圆环是唯一指针，
+ * 所以只有「细笔 + 大图被缩得很小」这种极端情况才允许它对不齐笔画。
+ */
+const MARK_CURSOR_MIN_SIZE = 3;
 
 function isPngLike(url: string) {
   return /^data:image\/png/i.test(url) || /\.png(\?|$)/i.test(url);
-}
-
-function readAsDataUrl(blob: Blob) {
-  return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result));
-    reader.onerror = () => reject(new Error("读取图片失败"));
-    reader.readAsDataURL(blob);
-  });
-}
-
-/**
- * 把参考图转换成不会污染 canvas 的地址（data URL）。
- * 直接绘制跨域图片会让画布变成 tainted，导出时 toDataURL 会抛 SecurityError；
- * 这里先尝试直接读取（对方允许 CORS 时最省事），失败再走后端代理转成 base64。
- */
-async function toCanvasSafeSource(url: string) {
-  if (url.startsWith("data:") || url.startsWith("blob:") || url.startsWith("/")) return url;
-  const candidates = [url, `/api/image/proxy?url=${encodeURIComponent(url)}`];
-  for (const candidate of candidates) {
-    try {
-      const response = await fetch(candidate, { mode: "cors", credentials: "omit" });
-      if (!response.ok) continue;
-      const blob = await response.blob();
-      if (blob.size > 0 && blob.type.startsWith("image/")) return await readAsDataUrl(blob);
-    } catch {
-      // 读取失败时尝试下一个来源
-    }
-  }
-  throw new Error("无法读取该参考图");
 }
 
 function drawStroke(context: CanvasRenderingContext2D, stroke: Stroke, dotOnly = false) {
@@ -116,6 +110,12 @@ export function ImageMarker({
   const imageRef = useRef<HTMLImageElement | null>(null);
   const baseCanvasRef = useRef<HTMLCanvasElement>(null);
   const drawCanvasRef = useRef<HTMLCanvasElement>(null);
+  /** 标注层 2D 上下文：缓存下来，pointermove 里不必反复 getContext */
+  const drawContextRef = useRef<CanvasRenderingContext2D | null>(null);
+  const cursorRef = useRef<HTMLSpanElement | null>(null);
+  /** 圆环已生效的直径与显隐，用来跳过重复的样式写入（写尺寸会标脏布局） */
+  const cursorSizeRef = useRef(0);
+  const cursorVisibleRef = useRef(false);
   const strokesRef = useRef<Stroke[]>([]);
   const drawingRef = useRef<Stroke | null>(null);
   const onOpenChangeRef = useRef(onOpenChange);
@@ -128,12 +128,15 @@ export function ImageMarker({
   } | null>(null);
   const [strokes, setStrokes] = useState<Stroke[]>([]);
   const [color, setColor] = useState(MARK_COLORS[0].value);
-  const [brushRatio, setBrushRatio] = useState(MARK_BRUSHES[1].ratio);
+  const [brushRatio, setBrushRatio] = useState(MARK_BRUSH_DEFAULT);
 
   const ready = loaded !== null && loaded.url === url;
   const displayUrl = loaded && loaded.url === url ? loaded.source : url;
   const brushWidth = loaded
-    ? Math.max(3, Math.round(Math.min(loaded.width, loaded.height) * brushRatio))
+    ? Math.max(
+        MARK_BRUSH_MIN_WIDTH,
+        Math.round(Math.min(loaded.width, loaded.height) * brushRatio),
+      )
     : 8;
 
   useEffect(() => {
@@ -154,100 +157,168 @@ export function ImageMarker({
     if (!open || !url) return;
     let cancelled = false;
 
-    const load = async () => {
-      let source: string;
-      try {
-        source = await toCanvasSafeSource(url);
-      } catch {
-        if (cancelled) return;
-        toast.error("无法读取该参考图，请重新上传或稍后再试。");
+    const image = new window.Image();
+    image.onload = () => {
+      if (cancelled) return;
+      const width = image.naturalWidth;
+      const height = image.naturalHeight;
+      if (width === 0 || height === 0) {
+        toast.error("图片加载失败，无法标注。");
         onOpenChangeRef.current(false);
         return;
       }
-      if (cancelled) return;
+      imageRef.current = image;
 
-      const image = new window.Image();
-      image.onload = () => {
-        if (cancelled) return;
-        const width = image.naturalWidth;
-        const height = image.naturalHeight;
-        if (width === 0 || height === 0) {
-          toast.error("图片加载失败，无法标注。");
-          onOpenChangeRef.current(false);
-          return;
-        }
-        imageRef.current = image;
-
-        const base = baseCanvasRef.current;
-        if (base) {
-          base.width = width;
-          base.height = height;
-          base.getContext("2d")?.drawImage(image, 0, 0, width, height);
-        }
-        const draw = drawCanvasRef.current;
-        if (draw) {
-          draw.width = width;
-          draw.height = height;
-        }
-        strokesRef.current = [];
-        drawingRef.current = null;
-        setStrokes([]);
-        setLoaded({ url, source, width, height });
-      };
-      image.onerror = () => {
-        if (cancelled) return;
-        toast.error("图片加载失败，无法标注。");
-        onOpenChangeRef.current(false);
-      };
-      image.src = source;
+      const base = baseCanvasRef.current;
+      if (base) {
+        base.width = width;
+        base.height = height;
+        base.getContext("2d")?.drawImage(image, 0, 0, width, height);
+      }
+      const draw = drawCanvasRef.current;
+      if (draw) {
+        draw.width = width;
+        draw.height = height;
+      }
+      drawContextRef.current = draw?.getContext("2d") ?? null;
+      // 弹窗关闭时会重建圆环节点，缓存值必须跟着归零，否则新节点拿不到尺寸/显隐
+      if (cursorRef.current) cursorRef.current.style.opacity = "0";
+      cursorSizeRef.current = 0;
+      cursorVisibleRef.current = false;
+      strokesRef.current = [];
+      drawingRef.current = null;
+      setStrokes([]);
+      setLoaded({ url, source: url, width, height });
     };
+    image.onerror = () => {
+      if (cancelled) return;
+      toast.error("图片加载失败，无法标注。");
+      onOpenChangeRef.current(false);
+    };
+    // 参考图统一为 base64 data URL，可直接绘制到 canvas，无需代理或跨域转换
+    image.src = url;
 
-    void load();
     return () => {
       cancelled = true;
     };
   }, [open, url]);
 
-  const toPoint = (event: React.PointerEvent<HTMLCanvasElement>): Point => {
-    const canvas = drawCanvasRef.current;
-    if (!canvas) return { x: 0, y: 0 };
-    const rect = canvas.getBoundingClientRect();
+  /** 客户端坐标 → 画布像素；rect 由调用方量一次复用，一次移动里不再重复读布局 */
+  const toPoint = (
+    canvas: HTMLCanvasElement,
+    rect: DOMRect,
+    clientX: number,
+    clientY: number,
+  ): Point => {
     const scaleX = rect.width > 0 ? canvas.width / rect.width : 1;
     const scaleY = rect.height > 0 ? canvas.height / rect.height : 1;
     return {
-      x: (event.clientX - rect.left) * scaleX,
-      y: (event.clientY - rect.top) * scaleY,
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY,
     };
+  };
+
+  /**
+   * 一帧内浏览器会把多次指针移动合并成一个 pointermove，只取最后一个点会让笔画在快速
+   * 拖动时明显跟不上手速；把被合并掉的中间点一并画出来，笔画才跟得住指针。
+   */
+  const eventPoints = (
+    event: React.PointerEvent<HTMLCanvasElement>,
+    canvas: HTMLCanvasElement,
+    rect: DOMRect,
+  ): Point[] => {
+    const native = event.nativeEvent;
+    const coalesced = native.getCoalescedEvents?.() ?? [];
+    const list = coalesced.length > 0 ? coalesced : [native];
+    const points = list.map((item) => toPoint(canvas, rect, item.clientX, item.clientY));
+    // 兜底：个别浏览器不会把事件本身算进合并列表，补上最后落点
+    const current = toPoint(canvas, rect, native.clientX, native.clientY);
+    const last = points[points.length - 1];
+    if (!last || last.x !== current.x || last.y !== current.y) points.push(current);
+    return points;
+  };
+
+  /** 圆环显隐也直接改 DOM，省掉一次 setState */
+  const setCursorVisible = (visible: boolean) => {
+    if (cursorVisibleRef.current === visible) return;
+    cursorVisibleRef.current = visible;
+    const node = cursorRef.current;
+    if (node) node.style.opacity = visible ? "1" : "0";
+  };
+
+  /**
+   * 用圆环光标代替系统十字光标：直径严格等于画笔宽度按显示比例换算后的尺寸
+   * （画布像素 × rect.width / canvas.width），圆环圈住多大，落笔就覆盖多大。
+   * 位置、尺寸、显隐全部直接写 DOM：pointermove 里不做 setState，且只有尺寸真的变化时
+   * 才写 width / height（写尺寸会标脏布局，逐次写会让指针发滞）。
+   */
+  const syncCursor = (event: React.PointerEvent<HTMLCanvasElement>, rect: DOMRect) => {
+    if (event.pointerType === "touch") {
+      setCursorVisible(false);
+      return;
+    }
+    setCursorVisible(true);
+    const node = cursorRef.current;
+    if (!node) return;
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    node.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+    const canvas = event.currentTarget;
+    const displayScale = canvas.width > 0 && rect.width > 0 ? rect.width / canvas.width : 1;
+    const size = Math.max(MARK_CURSOR_MIN_SIZE, brushWidth * displayScale);
+    if (size !== cursorSizeRef.current) {
+      cursorSizeRef.current = size;
+      node.style.width = `${size}px`;
+      node.style.height = `${size}px`;
+      node.style.borderWidth = size >= 8 ? "2px" : "1px";
+    }
+  };
+
+  const handlePointerEnter = (event: React.PointerEvent<HTMLCanvasElement>) => {
+    syncCursor(event, event.currentTarget.getBoundingClientRect());
+  };
+
+  const handlePointerLeave = () => {
+    setCursorVisible(false);
   };
 
   const handlePointerDown = (event: React.PointerEvent<HTMLCanvasElement>) => {
     if (!ready) return;
-    event.currentTarget.setPointerCapture(event.pointerId);
-    const stroke: Stroke = { color, width: brushWidth, points: [toPoint(event)] };
+    const canvas = event.currentTarget;
+    const rect = canvas.getBoundingClientRect();
+    syncCursor(event, rect);
+    canvas.setPointerCapture(event.pointerId);
+    const stroke: Stroke = {
+      color,
+      width: brushWidth,
+      points: [toPoint(canvas, rect, event.clientX, event.clientY)],
+    };
     drawingRef.current = stroke;
     strokesRef.current = [...strokesRef.current, stroke];
-    const context = drawCanvasRef.current?.getContext("2d");
+    const context = drawContextRef.current;
     if (context) drawStroke(context, stroke, true);
   };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLCanvasElement>) => {
-    const stroke = drawingRef.current;
-    const canvas = drawCanvasRef.current;
-    if (!stroke || !canvas) return;
-    const context = canvas.getContext("2d");
-    if (!context) return;
+    const canvas = event.currentTarget;
+    const rect = canvas.getBoundingClientRect();
+    syncCursor(event, rect);
 
-    const point = toPoint(event);
-    const previous = stroke.points[stroke.points.length - 1];
-    stroke.points.push(point);
+    const stroke = drawingRef.current;
+    const context = drawContextRef.current;
+    if (!stroke || !context) return;
 
     context.strokeStyle = stroke.color;
     context.lineWidth = stroke.width;
     context.lineCap = "round";
     context.lineJoin = "round";
     context.beginPath();
-    context.moveTo(previous.x, previous.y);
-    context.lineTo(point.x, point.y);
+    for (const point of eventPoints(event, canvas, rect)) {
+      const previous = stroke.points[stroke.points.length - 1];
+      context.moveTo(previous.x, previous.y);
+      context.lineTo(point.x, point.y);
+      stroke.points.push(point);
+    }
     context.stroke();
   };
 
@@ -318,18 +389,20 @@ export function ImageMarker({
               />
             ))}
           </div>
-          <div className="flex items-center gap-0.5 rounded-lg bg-muted p-0.5">
-            {MARK_BRUSHES.map((item) => (
-              <Button
-                key={item.label}
-                type="button"
-                size="sm"
-                variant={brushRatio === item.ratio ? "secondary" : "ghost"}
-                onClick={() => setBrushRatio(item.ratio)}
-              >
-                {item.label}
-              </Button>
-            ))}
+          <div className="flex min-w-44 flex-1 items-center gap-2">
+            <span className="text-xs text-muted-foreground">{MARK_BRUSHES[0].label}</span>
+            <Slider
+              className="flex-1"
+              min={MARK_BRUSH_MIN}
+              max={MARK_BRUSH_MAX}
+              step={MARK_BRUSH_STEP}
+              value={brushRatio}
+              onValueChange={setBrushRatio}
+              thumbAriaLabel="画笔粗细"
+            />
+            <span className="text-xs text-muted-foreground">
+              {MARK_BRUSHES[MARK_BRUSHES.length - 1].label}
+            </span>
           </div>
           <div className="ml-auto flex items-center gap-2">
             <Button
@@ -359,9 +432,12 @@ export function ImageMarker({
           <div className="relative inline-block">
             {displayUrl && (
               <>
-                <img
+                <Image
                   src={displayUrl}
                   alt="待标记的参考图"
+                  width={0}
+                  height={0}
+                  unoptimized
                   className="block max-h-[62vh] w-auto max-w-full rounded select-none"
                   draggable={false}
                 />
@@ -369,11 +445,18 @@ export function ImageMarker({
                   ref={drawCanvasRef}
                   onPointerDown={handlePointerDown}
                   onPointerMove={handlePointerMove}
+                  onPointerEnter={handlePointerEnter}
+                  onPointerLeave={handlePointerLeave}
                   onPointerUp={handlePointerUp}
                   onPointerCancel={handlePointerUp}
-                  className="absolute inset-0 size-full cursor-crosshair touch-none"
+                  className="absolute inset-0 size-full cursor-none touch-none"
                 />
                 <canvas ref={baseCanvasRef} className="hidden" />
+                <span
+                  ref={cursorRef}
+                  aria-hidden
+                  className="pointer-events-none absolute top-0 left-0 z-10 rounded-full border-2 border-white opacity-0 shadow-[0_0_0_1px_rgba(0,0,0,0.6)]"
+                />
                 {open && !ready && (
                   <span className="absolute inset-0 flex items-center justify-center bg-background/60">
                     <Loader2 className="size-5 animate-spin" />

@@ -16,8 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI App",
-  description: "Next.js + shadcn/ui + Vercel AI SDK",
+  title: "图片提示词助手",
+  description: "对话式图片提示词助手：把一句话创意打磨成高质量生图提示词，并可一键切到画图模式出图。",
+  applicationName: "图片提示词助手",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
