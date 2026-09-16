@@ -1,0 +1,50 @@
+# make_mp4.pl 配置示例（UTF-8 编码保存，# 后面是注释）
+# 用法: perl make_mp4.pl -c make_mp4.ini
+# 也可以直接把本文件改名为 make_mp4.ini，脚本会自动读取。
+
+# 音频目录（文件名格式: 歌曲名-作者.mp3）
+audio_dir = D:\music\audio
+
+# 图片目录（文件名格式: Image00001.jpg, 五位递增）
+image_dir = D:\music\picture
+
+# 输出目录，不填则为「音频目录\out」
+#out_dir = D:\music\audio\out
+
+# 封面字体（默认自动查找 C:\Windows\Fonts 下的中文字体）
+#font = C:\Windows\Fonts\msyh.ttc
+
+# 视频尺寸 / 帧率 / 每张图片显示秒数
+size = 1280x720
+fps = 25
+seconds = 5
+# 片头封面显示的秒数（只在成片开头出现一次，后面的循环不会重复）
+cover_seconds = 5
+
+# 封面配色
+cover_color = #101418
+title_color = white
+artist_color = #c8d0d8
+
+# 编码参数
+vcodec = libx264
+crf = 23
+# 幻灯片全是静帧，ultrafast 编码快很多、画质几乎没区别；
+# 想要更小的文件可以改成 veryfast / medium。
+preset = ultrafast
+abitrate = 192k
+pad_color = black
+
+# 其它开关: 1 开 / 0 关
+shuffle = 1
+force = 0
+keep_temp = 0
+# 封面按文件名缓存；封面排版/配色相关配置变化后会自动重建，不用手动 --force。
+keep_cover = 1
+
+# 外部程序路径（一般不用填，脚本会自动在 PATH 里查找）
+#magick = C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\magick.exe
+#ffmpeg = C:\ffmpeg\bin\ffmpeg.exe
+
+# 控制台/文件名编码，默认自动（Windows 用系统 ANSI 代码页）
+#charset = CP936
