@@ -4,6 +4,7 @@
 - Rename 批量化文件命名
 - Spider 爬虫，利用Playwright和线程池
 - iptvtool 托盘应用，快捷方式
+- MakeMp4 图片和短视频 + 音频 随机合成mp4
 
 # web 应用
 
